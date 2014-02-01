@@ -24,10 +24,7 @@ bool Engine::initialize()
 	clock = new sf::Clock;
 	int width = 1024, height = 640;
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Nånting spännande");
-
-
-
-
+	window->setVerticalSyncEnabled(true);
 
 //	sf::RenderWindow window(sf::VideoMode(width, height), "Nånting spännande");
 /*
