@@ -2,12 +2,9 @@
 
 #pragma once
 
-
 #include "stdafx.h"
-#include <iostream>
-#include <cstdio>
-#include <fstream>
 
+#include "FileManager.h"
 
 
 Engine::Engine()
@@ -25,6 +22,10 @@ bool Engine::initialize()
 	int width = 1024, height = 640;
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Haunted Light");
 	window->setVerticalSyncEnabled(true);
+
+	FileManager file_manager;
+
+	file_manager.Write("../bin/Awesome.txt", "#Yolo"); 
 
 //	sf::RenderWindow window(sf::VideoMode(width, height), "Nånting spännande");
 /*
