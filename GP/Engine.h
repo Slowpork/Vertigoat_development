@@ -3,12 +3,14 @@
 #pragma once
 #include "stdafx.h"
 
-
 class StateManager;
-namespace sf {class Clock;}
-namespace sf {class Keyboard;}
-namespace sf {class RenderWindow;}
 
+namespace sf 
+{
+	class Clock;
+	class Keyboard;
+	class RenderWindow;
+}
 
 class Engine
 {

@@ -4,6 +4,10 @@
 
 #include <sdkddkver.h>
 
+#include <string>
+#include <fstream>
+#include <sstream>
+
 #include <stdio.h>
 #include <tchar.h>
 #include "StateManager.h"
