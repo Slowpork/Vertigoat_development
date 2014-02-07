@@ -69,3 +69,5 @@ packages/
 
 #Own extensions
 *.exe
+*.vcxproj
+*.filters
