@@ -37,7 +37,6 @@ bool MenuState::Update(float deltatime){
 		m_done = true;
 	};
 	
-	system("pause");
 	return !m_done;
 }
 void MenuState::Draw(){
