@@ -3,147 +3,44 @@
 #include "stdafx.h"
 #include "LightSystem.h"
 
-#include "SFML\Network.hpp"
-#include "SFML\Graphics.hpp"
-#include "SFML\Window.hpp"
-#include "SFML\System.hpp"
-#include "SFML\Audio.hpp"
-
-#include "LightSystem.h"
 #include "Random.h"
-#include "Window.h"
 #include "Math.h"
-#include "Angle.h"
-#include "Guard.h"
-#include "Wall.h"
-#include "InputManager.h"
 #include <iostream>
-
-//#include "boost\utility.hpp"
-//#include "boost\assert.hpp"
-
-#include "clipper.hpp"
 
 #include <string>
 #include <algorithm>
 
 void LightSystem::Createwall(sf::Vector2f pos, sf::Vector2f size)
 {
-	Wall* wall2 = new Wall();
-	wall2->setSize(size);
-	wall2->setPosition(pos);
-	wall2->setOutlineColor(sf::Color(0,0,0,0));
-	wall2->setOutlineThickness(2);
-	wall2->setFillColor(sf::Color(128, 128, 128, 255));
-	walls.push_back(wall2);
+	Points *point = new Points();
+	point->point1 = sf::Vector2f(pos.x, pos.y);
+	point->point2 = sf::Vector2f(pos.x + size.x, pos.y);
+	point->point3 = sf::Vector2f(pos.x, pos.y + size.y);
+	point->point4 = sf::Vector2f(pos.x + size.x, pos.y + size.y);
+
+	points.push_back(point);
 
 	loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
 }
 
-LightSystem::LightSystem()
+LightSystem::LightSystem(sf::RenderWindow* _window)
 {
-	mWindow = new Window();
-	mWindow->create(sf::VideoMode(mWindow->getScreenResolution().x, mWindow->getScreenResolution().y), mWindow->getTitle());
-	mWindow->setFramerateLimit(60);
-
-	mQuit = false;
-
-	keyboard = new Keyboard();
-	mouse = new Mouse();
+	mWindow = _window;
 	
 	// Create the lightsource of the guard
-	Guard* guard = new Guard();
-	guard->setRadius(15.f);
-	guard->setPosition(sf::Vector2f(mWindow->getScreenResolution().x / 2, mWindow->getScreenResolution().y / 2));
-	guard->setFillColor(sf::Color(255, 255, 255));
-	guard->setLengthOfSight(100.f);
-	guard->setFov(500.f);
-	guard->setPointCount(64);
-	guard->setRotation(45.f);
-	guard->setOrigin(15.f, 15.f);
-	this->guard = guard;
-
-	degrees = 0.f;
-
-	start_pos.x = -1;
-	start_pos.y = -1;
+	light_pos = sf::Vector2f(0.f,0.f);
 }
 
 /*
 LightSystem::~LightSystem()
 {
-	delete mWindow;
-}
-
-void LightSystem::run()
-{
-	Random::setRandomSeed();
-
-	loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
-
-	font.loadFromFile("verdana.ttf");
-
-	while (!mQuit){
-		handleEvents();
-		logic();
-		render();
-		keyboard->PostUpdate();
-		mouse->PostUpdate();
-	}
+	
 }
 */
 
-void LightSystem::handleEvents()
-{
-	sf::Event event;
-	while (mWindow->pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
-			mQuit = true;
-			mWindow->close();
-		}
-		if (event.type == sf::Event::KeyPressed)
-			keyboard->current[event.key.code] = true;
-		if (event.type == sf::Event::KeyReleased)
-			keyboard->current[event.key.code] = false;
-		if (event.type == sf::Event::MouseButtonPressed)
-			mouse->current[event.mouseButton.button] = true;
-		if (event.type == sf::Event::MouseButtonReleased)
-			mouse->current[event.mouseButton.button] = false;
-	}
-}
-
 void LightSystem::logic()
 {
-	guard->setPosition(sf::Vector2f(sf::Mouse::getPosition(*mWindow).x, sf::Mouse::getPosition(*mWindow).y));
-
-	setGuardLocation(guard->getPosition().x, guard->getPosition().y);
-
-	if ( !mouse->IsDown(Left))
-	{
-		if (start_pos.x != -1 && start_pos.y != -1 )
-		{
-			Createwall(sf::Vector2f(start_pos.x, start_pos.y)
-			,sf::Vector2f( fabs(sf::Mouse::getPosition(*mWindow).x - start_pos.x), fabs(sf::Mouse::getPosition(*mWindow).y - start_pos.y)));
-			start_pos.x = -1;
-			start_pos.y = -1;
-
-			std::cout << "yes" << std::endl;
-		}
-	}
-	
-	if ( mouse->IsDown(Left) )
-	{
-		if (start_pos.x == -1 && start_pos.y == -1)
-		{
-			start_pos = sf::Vector2f(sf::Mouse::getPosition(*mWindow).x, sf::Mouse::getPosition(*mWindow).y);
-		}
-	}
-
 	sweep();
-	processTriangle();
-	//sf::Vector2i mouse_pos = sf::Mouse::getPosition(*mWindow);
 }
 
 bool LightSystem::cursorInside(sf::Vector2f pos, sf::Vector2f size)
@@ -162,39 +59,27 @@ bool LightSystem::cursorInside(sf::Vector2f pos, sf::Vector2f size)
 
 void LightSystem::render()
 {
-	
-	mWindow->clear(); // Clear the window
-	mWindow->draw(*guard); // Draw the guard(light)
+	/*mWindow->clear(); // Clear the window
+	mWindow->draw(*guard); // Draw the guard(light)*/
 
-	
-
-	bool inside = false;
-
-	for (auto wall: walls) // Draw walls
+	for (auto point: points) // FIX ME! draw walls
 	{
-		if ( cursorInside(wall->getPosition(), wall->getSize()))
-		{
-			wall->setFillColor(sf::Color(128,128,128,128));
-			wall->setOutlineColor(sf::Color(128,128,128,255));
+		sf::RectangleShape rect(sf::Vector2f( 
+			point->point2.x - point->point1.x, 
+			point->point3.y - point->point1.y));
+		rect.setOutlineColor(sf::Color::Red);
+		rect.setPosition(point->point1);
+		rect.setOutlineThickness(2.f);
+		rect.setFillColor(sf::Color(40,60,80,128));
 
-			inside = true;
-		}
-		else
-		{
-			wall->setFillColor(sf::Color(128,128,128,255));
-			wall->setOutlineColor(sf::Color(255,0,0,0));
-		}
-
-		mWindow->draw(*wall);
+		mWindow->draw(rect);
 	}
 
-	if ( !inside )
-	{
-		field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
-		//mWindow->draw(field_of_view); // Draw the light itself
-		mWindow->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
-	}
+	field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
+	//mWindow->draw(field_of_view); // Draw the light itself
+	mWindow->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
 	
+	/*
 	int counter = 0;
 	for (int i = 0; i < endPoints.size(); i++)
 	{
@@ -202,15 +87,14 @@ void LightSystem::render()
 		{
 			counter++;
 			
-			/*
+			
 			sf::CircleShape point;
 			point.setRadius(3.f);
 			point.setPosition(sf::Vector2f(endPoints.at(i)->x, endPoints.at(i)->y));
 			point.setFillColor(sf::Color(255, 100, 0));
 			point.setOrigin(3.f, 3.f);
 			mWindow->draw(point);
-			*/
-
+			
 			/*
 			sf::Text text;
 			text.setFont(font);
@@ -218,9 +102,11 @@ void LightSystem::render()
 			text.setColor(sf::Color::Red);
 			text.setPosition(sf::Vector2f(endPoints.at(i)->x, endPoints.at(i)->y));
 			text.setCharacterSize(12);
-			mWindow->draw(text);*/
+			mWindow->draw(text);
 		}
 	}
+	
+	*/
 
 	/*
 	for (auto segment : segments)
@@ -233,22 +119,6 @@ void LightSystem::render()
 
 		mWindow->draw(line, 2, sf::Lines);
 	}*/
-
-	if ( mouse->IsDown(Left))
-	{
-		sf::RectangleShape rect(sf::Vector2f( 
-			fabs(sf::Mouse::getPosition(*mWindow).x - start_pos.x), 
-			fabs(sf::Mouse::getPosition(*mWindow).y - start_pos.y)));
-		rect.setOutlineColor(sf::Color::Red);
-		rect.setPosition(sf::Vector2f(start_pos.x,start_pos.y));
-		rect.setOutlineThickness(2.f);
-		rect.setFillColor(sf::Color(40,60,80,128));
-		
-		mWindow->draw(rect);
-	}
-
-
-	mWindow->display();
 }
 
 void LightSystem::loadEdgeOfMap(sf::Vector2f position, sf::Vector2f size)
@@ -264,12 +134,12 @@ void LightSystem::loadMap(sf::Vector2f position, sf::Vector2f size)
 	segments.clear();
 	endPoints.clear();
 	loadEdgeOfMap(sf::Vector2f(50.f, 50.f), sf::Vector2f(700.f, 500.f)); // Whole window
-	for (auto wall : walls)
+	for (auto point : points)
 	{
-		addSegment(wall->getPosition().x , wall->getPosition().y , wall->getPosition().x + wall->getSize().x , wall->getPosition().y ); // Upper left to upper right
-		addSegment(wall->getPosition().x + wall->getSize().x , wall->getPosition().y , wall->getPosition().x + wall->getSize().x , wall->getPosition().y + wall->getSize().y ); // Upper right to lower right
-		addSegment(wall->getPosition().x + wall->getSize().x , wall->getPosition().y + wall->getSize().y , wall->getPosition().x , wall->getPosition().y + wall->getSize().y ); // Lower right to lower left
-		addSegment(wall->getPosition().x , wall->getPosition().y + wall->getSize().y , wall->getPosition().x , wall->getPosition().y ); // Lower left to upper left
+		addSegment(point->point1.x , point->point1.y , point->point2.x , point->point2.y ); // Upper left to upper right
+		addSegment(point->point2.x , point->point2.y , point->point3.x , point->point3.y ); // Upper right to lower right
+		addSegment(point->point3.x , point->point3.y , point->point4.x , point->point4.y ); // Lower right to lower left
+		addSegment(point->point4.x , point->point4.y , point->point1.x , point->point1.y ); // Lower left to upper left
 	}
 }
 
@@ -302,7 +172,7 @@ void LightSystem::addSegment(float x1, float y1, float x2, float y2)
 	endPoints.push_back(p2);
 }
 
-void LightSystem::setGuardLocation(float x, float y)
+void LightSystem::setLightLocation(float x, float y)
 {
 	center.x = x;
 	center.y = y;
@@ -338,41 +208,25 @@ bool sortEndPoints(EndPoint* a, EndPoint* b)
 	return false;
 }
 
-sf::Vector2f RotatePoint(sf::Vector2f pointToRotate, sf::Vector2f centerPoint, double angleInDegrees)
-{
-	double angleInRadians = angleInDegrees * (3.1415f / 180.f);
-	double cosTheta = cosf(angleInRadians);
-	double sinTheta = sinf(angleInRadians);
-	return sf::Vector2f((cosTheta * (pointToRotate.x - centerPoint.x) -
-		sinTheta * (pointToRotate.y - centerPoint.y) + centerPoint.x),
-		(sinTheta * (pointToRotate.x - centerPoint.x) +
-		cosTheta * (pointToRotate.y - centerPoint.y) + centerPoint.y)
-		);
-}
-
 void LightSystem::sweep()
 {
 	std::sort(endPoints.begin(), endPoints.end(), sortEndPoints);
 
 	field_of_view.clear(); // Clear all vertex becuase we will have new ones from our addTriangle();
 	open.clear();
-	lightPoly.clear();
-	float startingAngle = 0.f;
+	float startingAngle = 0.0f;
 
 	for (unsigned int i = 0; i <= 1; i++)
 	{
 		for (auto p : endPoints)
 		{
-
 			Segment* current_old = open.empty() ? nullptr : open.front();
-
 			
 			if (p->begin)
 			{
 				auto it = open.begin();
 				while (it != open.end() && _segment_in_front_of(p->segment, (*it), sf::Vector2f(center.x, center.y)))
 				{
-					//it = boost::next(it);
 					it++;
 				}
 				if (it == open.end())
@@ -401,66 +255,8 @@ void LightSystem::sweep()
 		}
 	}
 
-	// Create the guards vision or FoV
-	ClipperLib::Path maskPoly;
-	maskPoly.clear();
-
-	float cone_length = 800.f;
-	float cone_width = 2000000.f;
-
-	sf::Vector2f p1(/*guard->getPosition().x * 1000.f*/50.f, guard->getPosition().y * 1000.f);
-	sf::Vector2f p2((cone_length + guard->getPosition().x) * 1000.f, (-cone_width + guard->getPosition().y) * 1000.f);
-	sf::Vector2f p3((cone_length + 50.f + guard->getPosition().x) * 1000.f, (guard->getPosition().y) * 1000.f);
-	sf::Vector2f p4((cone_length + guard->getPosition().x) * 1000.f, (cone_width + guard->getPosition().y) * 1000.f);
-
-	/*sf::Vector2f p1(50, 50);
-	sf::Vector2f p2(600, 50);
-	sf::Vector2f p3(600, 400);
-	sf::Vector2f p4(50,400);*/
-
-	/*p2 = RotatePoint(p2, p1, degrees);
-	p3 = RotatePoint(p3, p1, degrees);
-	p4 = RotatePoint(p4, p1, degrees);*/
-	//degrees += 1;
-
-	maskPoly.emplace_back(p1.x, p1.y);
-	maskPoly.emplace_back(p2.x, p2.y);
-	maskPoly.emplace_back(p3.x, p3.y);
-	maskPoly.emplace_back(p4.x, p4.y);
-
-	/*maskPoly.emplace_back(51.f,51.f);
-	maskPoly.emplace_back(600,51.f);
-	maskPoly.emplace_back(51.f,600);
-	maskPoly.emplace_back(500,500);*/
-
-	// Create the clipper object
-	ClipperLib::Clipper clipper;
-	clipper.AddPath(lightPoly, ClipperLib::ptSubject, true);
-	clipper.AddPath(maskPoly, ClipperLib::ptClip, true);
-
-	ClipperLib::Paths output;
-
-	// And this row executes the cutting
-	clipper.Execute(ClipperLib::ctIntersection, output, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
-
 	light.clear();
-	light.emplace_back(sf::Vector2f(guard->getPosition().x, guard->getPosition().y), sf::Color(255, 255, 128, 192));
-	
-	if (!output.empty())
-	{
-		ClipperLib::Path &path = output[0];
-
-		for (ClipperLib::IntPoint &point : path)
-		{
-			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
-			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
-		}
-		{
-			ClipperLib::IntPoint &point = path[0];
-			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
-			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
-		}
-	}
+	light.emplace_back(light_pos, sf::Color(255, 255, 128, 192));
 }
 
 bool LightSystem::_segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo)
@@ -514,16 +310,9 @@ void LightSystem::addTriangle(float angle1, float angle2, Segment* segment)
 	sf::Transform inverse;
 	sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);
 
-	lightPoly.emplace_back(tp1.x * 1000.f + guard->getPosition().x, tp1.y * 1000.f + guard->getPosition().y);
-	lightPoly.emplace_back(tp2.x * 1000.f + guard->getPosition().x, tp2.y * 1000.f + guard->getPosition().y);
-	field_of_view.LightSystemend(middle);
-	field_of_view.LightSystemend(begin);
-	field_of_view.LightSystemend(end);
-}
-
-void LightSystem::processTriangle()
-{
-	
+	field_of_view.append(middle);
+	field_of_view.append(begin);
+	field_of_view.append(end);
 }
 
 bool LightSystem::leftOf(Segment* a, sf::Vector2f p)

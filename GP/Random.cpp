@@ -1,9 +1,11 @@
-#include "Random.h"
+// Random.cpp
 
-#include <SFML\System\Time.hpp>
+#include "stdafx.h"
 
 #include <random>
 #include <ctime>
+
+#include <SFML\System\Time.hpp>
 
 namespace 
 {

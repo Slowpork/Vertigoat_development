@@ -2,20 +2,9 @@
 
 #include <vector>
 
-// Somehow I couldn't forward declare Vector2f :S
 #include "SFML/System/Vector2.hpp"
-#include "SFML\Graphics\VertexArray.hpp"
-#include "SFML\Graphics\Font.hpp"
-
-#include "clipper.hpp"
-
-// FORWARD DECLARATION
-class Window;
-class State;
-class Guard;
-class Wall;
-class Keyboard;
-class Mouse;
+#include "SFML/Graphics/VertexArray.hpp"
+#include "SFML/Graphics/Font.hpp"
 
 struct Segment;
 
@@ -25,6 +14,7 @@ namespace sf
 	class ConvexShape;
 	class VertexArray;
 	class Font;
+	class RenderWindow;
 }
 
 // This struct stores an edge or a segment
@@ -45,15 +35,23 @@ struct Segment
 	float d;
 };
 
+struct Points
+{
+	sf::Vector2f point1;
+	sf::Vector2f point2;
+	sf::Vector2f point3;
+	sf::Vector2f point4;
+};
+
 class LightSystem
 {
 public:
-	LightSystem();
+
+	LightSystem(sf::RenderWindow* _window);
 	~LightSystem();
 
 	void run();
 
-	void handleEvents();
 	void logic();
 	void render();
 
@@ -71,9 +69,7 @@ public:
 
 	// Set location of guard
 	// Segment and EndPoint data can't be processed until the guard location is known
-	void setGuardLocation(float x, float y);
-
-	void processTriangle();
+	void setLightLocation(float x, float y);
 
 	bool cursorInside(sf::Vector2f pos, sf::Vector2f size);
 
@@ -84,28 +80,24 @@ public:
 
 	void Createwall(sf::Vector2f pos, sf::Vector2f size);
 
-	sf::Vector2f interpolate(sf::Vector2f p, sf::Vector2f q, float f);
-
-	sf::Vector2f LinesIntersection(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2f p4);
-
-	void LightSystem::addTriangle(float angle1, float angle2, Segment* segment);
-
 	// Max, min functions
-	float min(float a, float b) { return (a < b) ? a : b; }
-	float max(float a, float b) { return (a > b) ? a : b; }
-
-	float degrees;
-
+	//float min(float a, float b) { return (a < b) ? a : b; }
+	//float max(float a, float b) { return (a > b) ? a : b; }
 
 private:
+
+	void LightSystem::addTriangle(float angle1, float angle2, Segment* segment);
+	sf::Vector2f interpolate(sf::Vector2f p, sf::Vector2f q, float f);
+	sf::Vector2f LinesIntersection(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2f p4);
+
+private:
+
 	std::vector<State*> states;
 	State* current;
 
-	sf::Vector2f start_pos;
+	sf::Vector2f light_pos;
 
-	Guard* guard;
-
-	std::vector<Wall*> walls;
+	std::vector<Points*> points;
 
 	std::vector<Segment*> segments;
 	std::vector<Segment*> open;
@@ -114,14 +106,7 @@ private:
 	sf::Vector2f center; // Light center
 	sf::VertexArray field_of_view;
 
-	ClipperLib::Path lightPoly;
 	std::vector<sf::Vertex> light;
 
-	sf::Font font;
-
-	Keyboard* keyboard;
-	Mouse* mouse;
-
-	bool mQuit;
-	Window* mWindow;
+	sf::RenderWindow* mWindow;
 };

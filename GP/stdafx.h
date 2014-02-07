@@ -12,6 +12,7 @@
 #include <tchar.h>
 
 #include "Math.h"
+#include "Random.h"
 #include "StateManager.h"
 #include "State.h"
 #include "Engine.h"
