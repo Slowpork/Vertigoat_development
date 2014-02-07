@@ -31,12 +31,13 @@ LightSystem::LightSystem(sf::RenderWindow* _window)
 	light_pos = sf::Vector2f(0.f,0.f);
 }
 
-/*
 LightSystem::~LightSystem()
 {
-	
+	for(auto point: points)
+		point = nullptr;
+
+	delete &points;
 }
-*/
 
 void LightSystem::logic()
 {
