@@ -25,7 +25,7 @@ bool Engine::initialize()
 
 	FileManager file_manager;
 
-	file_manager.Write("../bin/Awesome.txt", "#Yolo"); 
+	file_manager.Write("../bin/Awesome.txt", "#Yolo");
 
 //	sf::RenderWindow window(sf::VideoMode(width, height), "Nånting spännande");
 /*

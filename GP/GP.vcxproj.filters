@@ -25,6 +25,18 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{b030c77d-5fbe-4907-8308-b1e261239069}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SubSystems">
+      <UniqueIdentifier>{6eca6729-0d35-4b50-aa52-bf7b9faead19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SubSystem">
+      <UniqueIdentifier>{28914ed2-b876-4ac8-8d0b-f1fa29db4798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SubSystem\Light">
+      <UniqueIdentifier>{0bc7df3a-a9ac-4687-9330-e2ada61a17a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SubSystems\Light">
+      <UniqueIdentifier>{b8dfc9f1-2fcd-4f13-a23a-457b2fc7cfe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,6 +84,18 @@
     <ClInclude Include="Drawmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSystem.h">
+      <Filter>Header Files\SubSystems\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="clipper.hpp">
+      <Filter>Header Files\SubSystems\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files\SubSystems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -109,6 +133,15 @@
     </ClCompile>
     <ClCompile Include="SoundClip.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clipper.cpp">
+      <Filter>Source Files\SubSystem\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSystem.cpp">
+      <Filter>Source Files\SubSystem\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files\SubSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

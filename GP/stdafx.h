@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include <tchar.h>
+
+#include "Math.h"
 #include "StateManager.h"
 #include "State.h"
 #include "Engine.h"
