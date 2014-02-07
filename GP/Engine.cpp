@@ -16,7 +16,7 @@ Engine::Engine()
 	m_ticks = 0;
 }
 
-bool Engine::initialize()
+bool Engine::Init()
 {	
 	clock = new sf::Clock;
 	int width = 1024, height = 640;

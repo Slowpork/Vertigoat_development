@@ -94,6 +94,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightSystem.h" />
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="Math.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="main.cpp" />

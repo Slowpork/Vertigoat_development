@@ -1,5 +1,7 @@
 // Input.cpp
 
+#include "stdafx.h"
+
 #include "InputManager.h"
 
 Keyboard::Keyboard()

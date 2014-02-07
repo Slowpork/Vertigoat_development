@@ -18,7 +18,7 @@ public:
 	Engine();
 	//~Engine();
 
-	bool initialize();
+	bool Init();
 
 	void runGame();
 	void Cleanup();

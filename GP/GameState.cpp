@@ -24,7 +24,6 @@ void GameState::Exit(){
 bool GameState::Update(float deltatime){
 	std::cout << "GameState::Update" << std::endl;
 
-
 	return false;
 }
 
