@@ -1,82 +1,96 @@
 //Engine.cpp
 
 #pragma once
-
 #include "stdafx.h"
-
-#include "FileManager.h"
-
 
 Engine::Engine()
 {
-	window = nullptr;
 	m_running = false;
-	clock = nullptr;
-
-	m_ticks = 0;
 }
 
 bool Engine::Init()
 {
-	clock = new sf::Clock;
-	int width = 1024, height = 640;
-	window = new sf::RenderWindow(sf::VideoMode(width, height), "Haunted Light");
-	window->setVerticalSyncEnabled(true);
+	m_system = new System();
+
+	if (!m_system->Init())
+		return false;
 
 	FileManager file_manager;
 	file_manager.Write("../bin/Awesome.txt", "#Yolo");
 
-	state_manager.engine = this;
-	state_manager.Attach(new MenuState);
-	state_manager.Attach(new LoadingState);
-	state_manager.Attach(new OptionsState);
-	state_manager.Attach(new GameState);
+	state_manager.Attach(new MenuState(m_system));
+	state_manager.Attach(new LoadingState(m_system));
+	state_manager.Attach(new OptionsState(m_system));
+	state_manager.Attach(new GameState(m_system));
 	state_manager.SetState("MenuState");
 
 	m_running = true;
 	return true;
 }
 
-void Engine::runGame()
+void Engine::Run()
 {
 	while(m_running)
 	{
-		state_manager.Update(m_deltatime);
-		state_manager.Draw();
+		// UPDATE
 		updateDeltatime();
 		updateEvents();
+		state_manager.Update(m_deltatime);
+
+		// DRAW 
+		m_system->m_window->clear(sf::Color::Black);
+		state_manager.Draw();
+		m_system->m_window->display();
+
+		m_system->m_keyboard->PostUpdate();
+		m_system->m_mouse->PostUpdate();
 	}
 }
 
 void Engine::Cleanup()
 {
-
+	delete m_system;
+	m_system = nullptr;
 }
 
 void Engine::updateDeltatime()
 {
-	sf::Time deltatime = clock->restart();
+	sf::Time deltatime = m_system->m_clock->restart();
 	
-	float m_ticks = (float)deltatime.asMilliseconds();
+	m_system->m_ticks = (float)deltatime.asMilliseconds();
 }
 
 void Engine::updateEvents()
 {
-	while(window->isOpen())
+	sf::Event event;
+	while(m_system->m_window->pollEvent(event))
 	{
-		sf::Event event;
-		while(window->pollEvent(event))
-		{
-			if(event.type == event.Closed)
-			{
-				window->close();
-			}
+		if(event.type == event.Closed){
+			m_system->m_window->close();
+			m_running = false;
 		}
 
-		if(keyboard->isKeyPressed(keyboard->Escape))
-		{
-			window->close();
+		// KEYBOARD
+		if (event.type == sf::Event::KeyPressed){
+			m_system->m_keyboard->current[event.key.code] = true;
 		}
+		if (event.type == sf::Event::KeyReleased){
+			m_system->m_keyboard->current[event.key.code] = false;
+		}
+		
+		// MOUSE
+		if (event.type == sf::Event::MouseButtonPressed){
+			m_system->m_mouse->current[event.mouseButton.button] = true;
+		}
+		if (event.type == sf::Event::MouseButtonReleased){
+			m_system->m_mouse->current[event.mouseButton.button] = false;
+		}
+		
+	}
+
+	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
+		m_system->m_window->close();
+		m_running = false;
 	}
 }
  

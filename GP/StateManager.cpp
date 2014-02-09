@@ -55,7 +55,7 @@ void StateManager::ChangeState(){
 	for(unsigned int i = 0; i < m_states.size(); i++) {
 		if(m_states[i]->IsType(next)) {
 			m_current = m_states[i];
-			m_current->Enter(engine);
+			m_current->Enter();
 			return;
 		}
 	}

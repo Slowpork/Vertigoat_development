@@ -4,15 +4,14 @@
 
 #include "stdafx.h"
 #include "State.h"
-#include <string>
 
-class Engine;
+class System;
 
 class GameState : public State {
 public:
-	GameState();
+	GameState(System* _system);
 
-	bool Enter(Engine* engine);
+	bool Enter();
 	void Exit();
 	bool Update(float deltatime);
 	void Draw();
@@ -22,5 +21,5 @@ public:
 private:
 	bool m_done;
 	std::string m_next_state;
-	Engine* m_engine;
+	System* m_system;
 };

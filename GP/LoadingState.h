@@ -4,13 +4,13 @@
 #include "State.h"
 #include "stdafx.h"
 
-class Engine;
+class System;
 
 class LoadingState : public State {
 public:
-	LoadingState();
+	LoadingState(System* _system);
 
-	bool Enter(Engine* engine);
+	bool Enter();
 	void Exit();
 	bool Update(float deltatime);
 	void Draw();
@@ -18,5 +18,5 @@ public:
 	bool IsType(const std::string &type);
 
 private:
-	Engine* m_engine;
+	System* m_system;
 };

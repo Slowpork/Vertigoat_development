@@ -41,7 +41,6 @@ Mouse::Mouse()
 		current[i] = false;
 		previous[i] = false;
 	}
-	
 }
 
 int Mouse::GetX() const

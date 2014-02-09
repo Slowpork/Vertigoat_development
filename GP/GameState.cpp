@@ -6,13 +6,12 @@
 #include "Gamestate.h"
 #include <iostream>
 
-GameState::GameState(){
+GameState::GameState(System* _system){
+	m_system = _system;
 	std::cout << "GameState::GameState" << std::endl;
-	
 }
 
-bool GameState::Enter(Engine* engine){
-	m_engine = engine;
+bool GameState::Enter(){
 	std::cout << "GameState::Enter" << std::endl;
 	return true;
 }

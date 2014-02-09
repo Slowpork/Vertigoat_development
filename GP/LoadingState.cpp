@@ -4,12 +4,12 @@
 #include "LoadingState.h"
 #include <iostream>
 
-LoadingState::LoadingState(){
+LoadingState::LoadingState(System* _system){
+	m_system = _system;
 	std::cout << "LoadingState::LoadingState" << std::endl;
 }
 
-bool LoadingState::Enter(Engine* engine){
-	m_engine = engine;
+bool LoadingState::Enter(){
 	std::cout << "LoadingState::Enter" << std::endl;
 	return true;
 }

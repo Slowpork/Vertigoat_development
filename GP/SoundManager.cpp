@@ -1,6 +1,6 @@
 // SoundManager
 
-
+#pragma once
 #include "stdafx.h"
 
 /*

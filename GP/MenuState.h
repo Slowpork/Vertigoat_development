@@ -1,18 +1,15 @@
 //MenuState.h
 
 #pragma once
-
-#include "State.h"
 #include "stdafx.h"
 
-
-class Engine;
+class System;
 
 class MenuState : public State {
 public:
-	MenuState();
+	MenuState(System* _system);
 
-	bool Enter(Engine* engine);
+	bool Enter();
 	void Exit();
 	bool Update(float deltatime);
 	void Draw();
@@ -22,5 +19,5 @@ public:
 private:
 	bool m_done;
 	std::string m_next_state;
-	Engine* m_engine;
+	System* m_system;
 };

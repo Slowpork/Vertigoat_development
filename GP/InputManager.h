@@ -1,5 +1,6 @@
 // InputManager.h
 
+#include "stdafx.h"
 #pragma once
 
 enum EMouseButton
@@ -15,23 +16,22 @@ enum EMouseButton
 
 class Keyboard
 {
-	friend class App;
+	friend class Engine;
 public:
 	Keyboard();
 
 	bool IsDown(int _key) const;
 	bool IsDownOnce(int _key) const;
-	bool current[256];
-	bool previous[256];
-
+	
 	void PostUpdate();
 private:
-	
+	bool current[256];
+	bool previous[256];
 };
 
 class Mouse
 {
-	friend class App;
+	friend class Engine;
 public:
 	Mouse();
 

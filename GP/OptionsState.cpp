@@ -4,12 +4,12 @@
 #include "OptionsState.h"
 #include <iostream>
 
-OptionsState::OptionsState(){
+OptionsState::OptionsState(System* _system){
+	m_system = _system;
 	std::cout << "OptionsState::OptionsState" << std::endl;
 }
 
-bool OptionsState::Enter(Engine* engine){
-	m_engine = engine;
+bool OptionsState::Enter(){
 	std::cout << "OptionsState::Enter" << std::endl;
 	return true;
 }

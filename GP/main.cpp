@@ -7,10 +7,13 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	Engine engine;
-	if(engine.Init())
+	if( engine.Init() )
 	{
-		engine.runGame();
+		engine.Run();
+		engine.Cleanup();
 	}
+
+	
 
 	return 0;
 }

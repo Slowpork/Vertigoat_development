@@ -1,16 +1,15 @@
 // State.h
 
 #pragma once
-
-#include <string>
 #include "stdafx.h"
-#include "Engine.h"
+
+class System;
 
 class State {
 public:
 	virtual ~State() {};
 
-	virtual bool Enter(Engine* engine) = 0;
+	virtual bool Enter() = 0;
 	virtual void Exit() = 0;
 	virtual bool Update(float deltatime) = 0;
 	virtual void Draw() = 0;

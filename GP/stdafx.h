@@ -7,19 +7,29 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include <stdio.h>
 #include <tchar.h>
+#include <iostream>
 
 #include "Math.h"
 #include "Random.h"
+
+#include "InputManager.h"
+#include "SoundManager.h"
 #include "StateManager.h"
+#include "FileManager.h"
+
 #include "State.h"
-#include "Engine.h"
-#include "GameState.h"
 #include "LoadingState.h"
 #include "MenuState.h"
 #include "OptionsState.h"
+#include "GameState.h"
+
+#include "Engine.h"
+#include "System.h"
+
 
 #pragma warning(disable:4099)
 #define SFML_STATIC
