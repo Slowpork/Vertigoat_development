@@ -30,7 +30,7 @@ protected:
 
 //	Keyboard m_keyboard;
 	Engine* m_engine;
-	StateManager manager;
+	StateManager state_manager;
 	struct sf::RenderWindow* window;
 	sf::Keyboard *keyboard;
 

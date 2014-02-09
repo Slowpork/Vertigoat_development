@@ -22,6 +22,7 @@ bool MenuState::Update(float deltatime){
 	std::cout << "[new] New game" << std::endl;
 	std::cout << "[opt] Options" << std::endl;
 	std::cout << "[quit] Quit" << std::endl;
+	/*
 	std::string choice;
 	std::cin >> choice;
 	if(choice.compare("new") == 0) {
@@ -36,6 +37,7 @@ bool MenuState::Update(float deltatime){
 		m_next_state = "";
 		m_done = true;
 	};
+	*/
 	
 	return !m_done;
 }
