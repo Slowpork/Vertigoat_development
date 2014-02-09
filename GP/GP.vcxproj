@@ -90,7 +90,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Drawmanager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameState.h" />

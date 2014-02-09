@@ -96,9 +96,6 @@
     <ClInclude Include="SoundClip.h">
       <Filter>Header Files\SubSystems\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Drawmanager.h">
-      <Filter>Header Files\managers</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\managers</Filter>
     </ClInclude>
