@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 #include "System.h"
-#include "InputManager.h"
 
 System::System()
 {
@@ -32,7 +31,7 @@ bool System::Init()
 	if (m_window == nullptr)
 		return false;
 
-	//m_window->setFramerateLimit(60);
+	m_window->setFramerateLimit(60);
 
 	m_clock = new sf::Clock();
 

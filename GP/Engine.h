@@ -27,6 +27,7 @@ protected:
 
 	bool m_running;
 	float m_deltatime;
+	float m_fps;
 
 	float m_ticks;
 };

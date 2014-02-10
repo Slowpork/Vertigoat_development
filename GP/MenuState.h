@@ -2,6 +2,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "SFML/System/Vector2.hpp"
 
 class System;
 
@@ -11,7 +12,7 @@ public:
 
 	bool Enter();
 	void Exit();
-	bool Update(float deltatime);
+	bool Update(float _deltatime);
 	void Draw();
 	std::string Next();
 	bool IsType(const std::string &type);
@@ -20,4 +21,6 @@ private:
 	bool m_done;
 	std::string m_next_state;
 	System* m_system;
+
+	sf::Vector2f pos;
 };

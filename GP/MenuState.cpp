@@ -7,6 +7,8 @@ MenuState::MenuState(System* _system)
 	m_system = _system;
 	std::cout << "MenuState::MenuState" << std::endl;
 	m_done = false;
+
+	pos = sf::Vector2f(1280/2,720/2);
 }
 
 bool MenuState::Enter(){
@@ -19,7 +21,7 @@ void MenuState::Exit(){
 	std::cout << "MenuState::exit" << std::endl;
 }
 
-bool MenuState::Update(float deltatime){
+bool MenuState::Update(float _deltatime){
 	//std::cout << "MenuState::Update" << std::endl;
 	
 	/*
@@ -43,7 +45,11 @@ bool MenuState::Update(float deltatime){
 	};
 	*/
 
-	return true;
+	//std::cout << _deltatime << std::endl;
+
+	//_deltatime = 0.05;
+
+	pos.x += 64*_deltatime;
 	
 	return !m_done;
 }
@@ -51,20 +57,21 @@ bool MenuState::Update(float deltatime){
 void MenuState::Draw(){
 	//std::cout << "MenuState::Draw" << std::endl;
 
-	if ( m_system->m_keyboard->IsDown(sf::Keyboard::Space))
+	//if ( m_system->m_keyboard->IsDown(sf::Keyboard::Space))
+	//for(int i = 0; i < 100; i++)
 	{
-		sf::CircleShape shape(10);
+		sf::CircleShape shape(5);
 
 		// set the shape color to green
-		if (m_system->m_mouse->IsDown(Left))
+		if (m_system->m_mouse->IsDown(Middle))
 			shape.setFillColor(sf::Color::Red);
 		else if (m_system->m_mouse->IsDown(Right))
 			shape.setFillColor(sf::Color::Blue);
 		else
 			shape.setFillColor(sf::Color::White);
-		shape.setOrigin(10,10);
-		shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(*m_system->m_window).x, sf::Mouse::getPosition(*m_system->m_window).y));
-
+		shape.setOrigin(5,5);
+		//shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(*m_system->m_window).x, sf::Mouse::getPosition(*m_system->m_window).y));
+		shape.setPosition(pos);
 		m_system->m_window->draw(shape);
 	}
 }

@@ -6,6 +6,8 @@
 Engine::Engine()
 {
 	m_running = false;
+	m_deltatime = 0.f;
+	m_fps = 10.f;
 }
 
 bool Engine::Init()
@@ -37,6 +39,9 @@ void Engine::Run()
 		updateEvents();
 		state_manager.Update(m_deltatime);
 
+		if ( !state_manager.IsRunning())
+			m_running = false;
+
 		// DRAW 
 		m_system->m_window->clear(sf::Color::Black);
 		state_manager.Draw();
@@ -55,9 +60,12 @@ void Engine::Cleanup()
 
 void Engine::updateDeltatime()
 {
-	sf::Time deltatime = m_system->m_clock->restart();
-	
-	m_system->m_ticks = (float)deltatime.asMilliseconds();
+	// DELTATIME
+	m_deltatime = m_system->m_clock->restart().asSeconds();
+
+	// FPS
+	m_fps = 1.f / m_deltatime;
+	std::cout << m_fps << std::endl;
 }
 
 void Engine::updateEvents()
@@ -65,6 +73,7 @@ void Engine::updateEvents()
 	sf::Event event;
 	while(m_system->m_window->pollEvent(event))
 	{
+		// PRESS CLOSE TO QUIT
 		if(event.type == event.Closed){
 			m_system->m_window->close();
 			m_running = false;
@@ -88,6 +97,7 @@ void Engine::updateEvents()
 		
 	}
 
+	// ESCAPE TO QUIT
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
 		m_system->m_window->close();
 		m_running = false;
