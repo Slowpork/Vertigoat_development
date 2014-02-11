@@ -6,6 +6,7 @@
 #include "State.h"
 
 class System;
+class ObjectManager;
 
 class GameState : public State {
 public:
@@ -22,4 +23,6 @@ private:
 	bool m_done;
 	std::string m_next_state;
 	System* m_system;
+
+	ObjectManager* object_manager;
 };

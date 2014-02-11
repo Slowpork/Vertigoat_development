@@ -6,7 +6,8 @@
 
 class System;
 
-class MenuState : public State {
+class MenuState : public State 
+{
 public:
 	MenuState(System* _system);
 
@@ -21,6 +22,8 @@ private:
 	bool m_done;
 	std::string m_next_state;
 	System* m_system;
+
+	ObjectManager* object_manager;
 
 	sf::Vector2f pos;
 };

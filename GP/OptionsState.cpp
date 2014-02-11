@@ -6,6 +6,8 @@
 
 OptionsState::OptionsState(System* _system){
 	m_system = _system;
+	object_manager = new ObjectManager();
+
 	std::cout << "OptionsState::OptionsState" << std::endl;
 }
 
@@ -25,6 +27,8 @@ bool OptionsState::Update(float deltatime){
 }
 void OptionsState::Draw(){
 	std::cout << "OptionsState::Draw" << std::endl;
+
+	object_manager->Draw(m_system->m_window);
 }
 std::string OptionsState::Next(){
 	std::cout << "OptionsState::next" << std::endl;

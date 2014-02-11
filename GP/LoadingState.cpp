@@ -6,6 +6,8 @@
 
 LoadingState::LoadingState(System* _system){
 	m_system = _system;
+	object_manager = new ObjectManager();
+
 	std::cout << "LoadingState::LoadingState" << std::endl;
 }
 
@@ -22,6 +24,8 @@ bool LoadingState::Update(float deltatime){
 }
 void LoadingState::Draw(){
 	std::cout << "LoadingState::Draw" << std::endl;
+
+	object_manager->Draw(m_system->m_window);
 }
 std::string LoadingState::Next(){
 	std::cout << "LoadingState::Next" << std::endl;

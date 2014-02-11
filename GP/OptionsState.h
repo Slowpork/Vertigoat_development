@@ -20,4 +20,6 @@ private:
 	bool m_done;
 	std::string m_next_state;
 	System* m_system;
+
+	ObjectManager* object_manager;
 };

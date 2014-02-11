@@ -31,6 +31,7 @@ bool System::Init()
 	if (m_window == nullptr)
 		return false;
 
+	//m_window->setVerticalSyncEnabled(true);
 	m_window->setFramerateLimit(60);
 
 	m_clock = new sf::Clock();
@@ -40,4 +41,6 @@ bool System::Init()
 
 	m_keyboard = new Keyboard();
 	m_mouse = new Mouse();
+
+	return true;
 }

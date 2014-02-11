@@ -5,6 +5,8 @@
 MenuState::MenuState(System* _system)
 {
 	m_system = _system;
+	object_manager = new ObjectManager();
+
 	std::cout << "MenuState::MenuState" << std::endl;
 	m_done = false;
 
@@ -45,6 +47,8 @@ bool MenuState::Update(float _deltatime){
 	};
 	*/
 
+	//printf("woo");
+
 	//std::cout << _deltatime << std::endl;
 
 	//_deltatime = 0.05;
@@ -74,6 +78,8 @@ void MenuState::Draw(){
 		shape.setPosition(pos);
 		m_system->m_window->draw(shape);
 	}
+
+	object_manager->Draw(m_system->m_window);
 }
 
 std::string MenuState::Next(){

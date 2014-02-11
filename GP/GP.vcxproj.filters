@@ -43,6 +43,18 @@
     <Filter Include="Source Files\SubSystems\Sound">
       <UniqueIdentifier>{cf0f5677-04e2-4240-89f4-f699af6f9c82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{a15235de-897d-41ec-935f-2cd0e07fe055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{d8e7ada5-01ff-43b0-8ffa-0bc9be50c8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Properties">
+      <UniqueIdentifier>{dbf02c67-9982-418f-a2a0-6d73292af642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Properties">
+      <UniqueIdentifier>{99542e21-0df3-4592-b584-9adf94c06a03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -102,6 +114,18 @@
     <ClInclude Include="System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Header Files\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Header Files\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\Objects\Properties</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -151,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

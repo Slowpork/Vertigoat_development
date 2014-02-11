@@ -8,6 +8,9 @@
 
 GameState::GameState(System* _system){
 	m_system = _system;
+
+	object_manager = new ObjectManager();
+
 	std::cout << "GameState::GameState" << std::endl;
 }
 
@@ -28,6 +31,8 @@ bool GameState::Update(float deltatime){
 
 void GameState::Draw(){
 	std::cout << "GameState::Draw" << std::endl;
+
+	object_manager->Draw(m_system->m_window);
 }
 
 std::string GameState::Next(){

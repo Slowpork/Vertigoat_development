@@ -16,10 +16,15 @@
 #include "Math.h"
 #include "Random.h"
 
+#include "ObjectManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
 #include "StateManager.h"
 #include "FileManager.h"
+#include "CollisionManager.h"
+
+#include "GameObject.h"
+#include "Collider.h"
 
 #include "State.h"
 #include "LoadingState.h"

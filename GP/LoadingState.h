@@ -19,4 +19,6 @@ public:
 
 private:
 	System* m_system;
+
+	ObjectManager* object_manager;
 };
