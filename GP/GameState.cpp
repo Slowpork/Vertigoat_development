@@ -10,6 +10,12 @@ GameState::GameState(System* _system){
 
 	object_manager = new ObjectManager();
 
+	/*sf::Sprite* sprite = new sf::Sprite();
+	sf::Texture*  tex_player = new sf::Texture();
+
+	tex_player->loadFromFile("../data/sprites/player.png");
+	sprite->setTexture(*tex_player);*/
+
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
 
@@ -30,12 +36,16 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
+	m_system->m_view->setCenter(player->getPosition());
+	m_system->m_window->setView(*m_system->m_view);
+
 	return true;
 }
 
 void GameState::Draw(){
 	//std::cout << "GameState::Draw" << std::endl;
 
+	
 	sf::CircleShape shape(10);
 
 	// set the shape color to green

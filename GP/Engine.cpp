@@ -94,6 +94,12 @@ void Engine::updateEvents()
 		if (event.type == sf::Event::MouseButtonReleased){
 			m_system->m_mouse->current[event.mouseButton.button] = false;
 		}
+
+		if (event.type == sf::Event::MouseMoved)
+		{
+			m_system->m_mouse->x = event.mouseMove.x;
+			m_system->m_mouse->y = event.mouseMove.y;
+		}
 		
 	}
 

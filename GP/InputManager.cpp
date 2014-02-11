@@ -1,10 +1,9 @@
 // Input.cpp
 
 #include "stdafx.h"
-
 #include "InputManager.h"
 
-Keyboard::Keyboard()
+KeyboardObject::KeyboardObject()
 {
 	for(int i = 0; i < 256; i++)
 	{
@@ -13,17 +12,17 @@ Keyboard::Keyboard()
 	}
 }
 
-bool Keyboard::IsDown(int _key) const
+bool KeyboardObject::IsDown(int _key) const
 {
 	return current[_key];
 }
 
-bool Keyboard::IsDownOnce(int _key) const
+bool KeyboardObject::IsDownOnce(int _key) const
 {
 	return current[_key] && !previous[_key];
 }
 
-void Keyboard::PostUpdate()
+void KeyboardObject::PostUpdate()
 {
 	for(int i = 0; i < 256; i++)
 	{
@@ -31,7 +30,7 @@ void Keyboard::PostUpdate()
 	}
 }
 
-Mouse::Mouse()
+MouseObject::MouseObject()
 {
 	x = 0;
 	y = 0;
@@ -43,27 +42,27 @@ Mouse::Mouse()
 	}
 }
 
-int Mouse::GetX() const
+int MouseObject::GetX() const
 {
 	return x;
 }
 
-int Mouse::GetY() const
+int MouseObject::GetY() const
 {
 	return y;
 }
 
-bool Mouse::IsDown(EMouseButton _button) const
+bool MouseObject::IsDown(EMouseButton _button) const
 {
 	return current[_button];
 }
 
-bool Mouse::IsDownOnce(EMouseButton _button) const
+bool MouseObject::IsDownOnce(EMouseButton _button) const
 {
 	return current[_button] && !previous[_button];
 }
 
-void Mouse::PostUpdate()
+void MouseObject::PostUpdate()
 {
 	for(int i = 0; i < ButtonCount; i++)
 	{

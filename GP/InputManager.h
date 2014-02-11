@@ -1,7 +1,10 @@
 // InputManager.h
 
-#include "stdafx.h"
 #pragma once
+#include "stdafx.h"
+//#include "SFML\Window\Keyboard.hpp"
+//#include "SFML\Window\Mouse.hpp"
+
 
 enum EMouseButton
 {
@@ -14,11 +17,18 @@ enum EMouseButton
     ButtonCount ///< Keep last -- the total number of mouse buttons
 };
 
-class Keyboard
+/*
+namespace sf
+{
+	class Keyboard;
+	class Mouse;
+}*/
+
+class KeyboardObject// : public sf::Keyboard
 {
 	friend class Engine;
 public:
-	Keyboard();
+	KeyboardObject();
 
 	bool IsDown(int _key) const;
 	bool IsDownOnce(int _key) const;
@@ -29,11 +39,11 @@ private:
 	bool previous[256];
 };
 
-class Mouse
+class MouseObject// : public sf::Mouse
 {
 	friend class Engine;
 public:
-	Mouse();
+	MouseObject();
 
 	int GetX() const;
 	int GetY() const;
@@ -47,5 +57,4 @@ private:
 	bool previous[ButtonCount];
 
 	int x,y;
-	
 };

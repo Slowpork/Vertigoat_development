@@ -6,6 +6,7 @@
 namespace sf
 {
 	class RenderWindow;
+	class View;
 	class Clock;
 };
 
@@ -33,11 +34,12 @@ private:
 	float m_ticks;
 
 	sf::RenderWindow* m_window;
+	sf::View* m_view;
 	sf::Clock* m_clock;
 
 	FileManager* m_file_manager;
 	//SoundManager* m_sound_manager;
 
-	Keyboard* m_keyboard;
-	Mouse* m_mouse;
+	KeyboardObject* m_keyboard;
+	MouseObject* m_mouse;
 };
