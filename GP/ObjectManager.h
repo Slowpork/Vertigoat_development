@@ -31,13 +31,19 @@ public:
 	void Cleanup();
 
 	void Add(GameObject* _object, int _depth);
+	
+	bool setActiveDepth(int _min, int _max);
+
 	void Draw(sf::RenderWindow* _window);
 
 	void CheckCollision(GameObject* _object, sf::Vector2f& _offset);
+
+	
 private:
 	std::vector<Objects*> m_objects;
 
 	int m_max_z;
+	int m_min_z;
 
 private:
 };

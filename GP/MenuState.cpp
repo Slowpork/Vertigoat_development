@@ -1,6 +1,7 @@
 //MenuState.cpp
 
 #include "stdafx.h"
+#include "MenuState.h"
 
 MenuState::MenuState(System* _system)
 {

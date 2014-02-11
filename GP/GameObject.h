@@ -31,6 +31,8 @@ protected:
 	sf::Sprite* m_sprite;
 	Collider* m_collider;
 
+	float m_friction;
+
 	sf::Vector2f m_pos;
-	sf::Vector2f m_speed;
+	sf::Vector2f m_vel;
 };

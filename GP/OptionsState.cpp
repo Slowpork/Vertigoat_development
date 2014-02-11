@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 #include "OptionsState.h"
-#include <iostream>
 
 OptionsState::OptionsState(System* _system){
 	m_system = _system;

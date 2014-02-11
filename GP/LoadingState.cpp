@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 #include "LoadingState.h"
-#include <iostream>
 
 LoadingState::LoadingState(System* _system){
 	m_system = _system;

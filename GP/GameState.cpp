@@ -4,12 +4,14 @@
 
 #include "stdafx.h"
 #include "Gamestate.h"
-#include <iostream>
 
 GameState::GameState(System* _system){
 	m_system = _system;
 
 	object_manager = new ObjectManager();
+
+	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse);
+	player->setPosition(sf::Vector2f(1280/2,720/2));
 
 	std::cout << "GameState::GameState" << std::endl;
 }
@@ -23,16 +25,34 @@ void GameState::Exit(){
 	std::cout << "GameState::Exit" << std::endl;
 }
 
-bool GameState::Update(float deltatime){
-	std::cout << "GameState::Update" << std::endl;
+bool GameState::Update(float _deltatime){
+	//std::cout << "GameState::Update" << std::endl;
 
-	return false;
+	player->Update(_deltatime);
+
+	return true;
 }
 
 void GameState::Draw(){
-	std::cout << "GameState::Draw" << std::endl;
+	//std::cout << "GameState::Draw" << std::endl;
 
-	object_manager->Draw(m_system->m_window);
+	sf::CircleShape shape(10);
+
+	// set the shape color to green
+	if (m_system->m_mouse->IsDown(Middle))
+		shape.setFillColor(sf::Color::Red);
+	else if (m_system->m_mouse->IsDown(Right))
+		shape.setFillColor(sf::Color::Blue);
+	else
+		shape.setFillColor(sf::Color::White);
+	shape.setOrigin(10,10);
+	//shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(*m_system->m_window).x, sf::Mouse::getPosition(*m_system->m_window).y));
+	shape.setPosition(player->getPosition());
+	m_system->m_window->draw(shape);
+
+	//m_system->m_window->draw(*player->getSprite());
+
+	//object_manager->Draw(m_system->m_window);
 }
 
 std::string GameState::Next(){

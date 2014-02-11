@@ -26,6 +26,8 @@
 #include "GameObject.h"
 #include "Collider.h"
 
+#include "PlayerObject.h"
+
 #include "State.h"
 #include "LoadingState.h"
 #include "MenuState.h"

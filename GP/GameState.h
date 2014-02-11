@@ -7,6 +7,7 @@
 
 class System;
 class ObjectManager;
+class PlayerObject;
 
 class GameState : public State {
 public:
@@ -25,4 +26,6 @@ private:
 	System* m_system;
 
 	ObjectManager* object_manager;
+
+	PlayerObject* player;
 };

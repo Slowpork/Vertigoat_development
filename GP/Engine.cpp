@@ -24,7 +24,7 @@ bool Engine::Init()
 	state_manager.Attach(new LoadingState(m_system));
 	state_manager.Attach(new OptionsState(m_system));
 	state_manager.Attach(new GameState(m_system));
-	state_manager.SetState("MenuState");
+	state_manager.SetState("GameState");
 
 	m_running = true;
 	return true;
@@ -65,7 +65,7 @@ void Engine::updateDeltatime()
 
 	// FPS
 	m_fps = 1.f / m_deltatime;
-	std::cout << m_fps << std::endl;
+	//std::cout << m_fps << std::endl;
 }
 
 void Engine::updateEvents()

@@ -5,6 +5,7 @@
 
 ObjectManager::ObjectManager()
 {
+	m_min_z = 0;
 	m_max_z = 0;
 }
 
@@ -27,9 +28,20 @@ void ObjectManager::Add(GameObject* _object, int _depth)
 	m_objects.push_back(&object);
 }
 
+bool ObjectManager::setActiveDepth(int _min, int _max)
+{
+	if ( _min < _max)
+		return false;
+	else
+	{
+		m_min_z = _min;
+		m_max_z = _max;
+	}
+}
+
 void ObjectManager::Draw(sf::RenderWindow* _window)
 {
-	for(int z = 0; z < m_max_z; z++)
+	for(int z = m_min_z; z < m_max_z; z++)
 	{
 		for(auto object: m_objects)
 		{
