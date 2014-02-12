@@ -14,6 +14,7 @@ System::System()
 	m_clock = nullptr;
 
 	m_file_manager = nullptr;
+	m_sprite_manager = nullptr;
 	//m_sound_manager = nullptr;
 
 	m_keyboard = nullptr;
@@ -43,6 +44,11 @@ bool System::Init()
 	m_clock = new sf::Clock();
 
 	m_file_manager = new FileManager();
+	m_sprite_manager = new SpriteManager("../data/sprites/");
+
+	// LOAD ALL THE TEXTURES
+	m_sprite_manager->addTexture("player.png");
+
 	//m_sound_manager = new SoundManager();
 
 	m_keyboard = new KeyboardObject();

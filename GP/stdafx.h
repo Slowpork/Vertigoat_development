@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include <stdio.h>
 #include <tchar.h>
@@ -17,6 +18,7 @@
 #include "Random.h"
 
 #include "ObjectManager.h"
+#include "SpriteManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
 #include "StateManager.h"

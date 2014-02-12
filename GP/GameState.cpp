@@ -16,6 +16,9 @@ GameState::GameState(System* _system){
 	tex_player->loadFromFile("../data/sprites/player.png");
 	sprite->setTexture(*tex_player);*/
 
+	sf::Sprite* sprite = m_system->m_sprite_manager->addSprite(
+		"player.png",0,0,128,128);
+
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
 
@@ -45,7 +48,7 @@ bool GameState::Update(float _deltatime){
 void GameState::Draw(){
 	//std::cout << "GameState::Draw" << std::endl;
 
-	
+	/*
 	sf::CircleShape shape(10);
 
 	// set the shape color to green
@@ -58,9 +61,9 @@ void GameState::Draw(){
 	shape.setOrigin(10,10);
 	//shape.setPosition(sf::Vector2f(sf::Mouse::getPosition(*m_system->m_window).x, sf::Mouse::getPosition(*m_system->m_window).y));
 	shape.setPosition(player->getPosition());
-	m_system->m_window->draw(shape);
+	m_system->m_window->draw(shape);*/
 
-	//m_system->m_window->draw(*player->getSprite());
+	m_system->m_window->draw(*player->getSprite());
 
 	//object_manager->Draw(m_system->m_window);
 }
