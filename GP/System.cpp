@@ -40,6 +40,7 @@ bool System::Init()
 	// SETTINGS
 	//m_window->setVerticalSyncEnabled(true);
 	m_window->setFramerateLimit(60);
+	m_window->setMouseCursorVisible(false);
 
 	m_clock = new sf::Clock();
 

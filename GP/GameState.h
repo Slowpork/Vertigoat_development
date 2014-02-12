@@ -29,7 +29,7 @@ private:
 	std::string m_next_state;
 	System* m_system;
 
-	ObjectManager* object_manager;
+	ObjectManager* m_object_manager;
 	//LightSystem* light_system;
 
 	PlayerObject* player;

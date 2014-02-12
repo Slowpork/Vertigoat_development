@@ -8,7 +8,7 @@
 GameState::GameState(System* _system){
 	m_system = _system;
 
-	object_manager = new ObjectManager();
+	m_object_manager = new ObjectManager();
 
 	//light_system = new LightSystem(m_system->m_window);
 
@@ -43,9 +43,6 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
-	// MOVE VIEW
-	m_system->m_view->setCenter(player->getPosition());
-	m_system->m_window->setView(*m_system->m_view);
 	spr_cursor->setPosition(m_system->m_mouse->GetX(), m_system->m_mouse->GetY());
 
 	return true;
@@ -54,13 +51,19 @@ bool GameState::Update(float _deltatime){
 void GameState::Draw(){
 	//std::cout << "GameState::Draw" << std::endl;
 
+	// MOVE VIEW
+	m_system->m_view->setCenter(player->getPosition());
+	m_system->m_window->setView(*m_system->m_view);
+
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
 	// PLAYER
 	m_system->m_window->draw(*player->getSprite());
 
-	// INTERFACE #################################### 
+	m_object_manager->Draw(m_system->m_window);
+
+	// INTERFACE ##################################
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
 
 	// CURSOR
