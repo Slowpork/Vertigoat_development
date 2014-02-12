@@ -1,4 +1,4 @@
-// PlayerObject
+// PlayerObject.cpp
 
 #include "stdafx.h"
 #include "PlayerObject.h"
@@ -15,7 +15,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 	m_friction = 0.98f;
 
-	m_sprite->setOrigin(m_sprite->getLocalBounds().width/2,m_sprite->getLocalBounds().height/2);
+	m_sprite->setOrigin(m_sprite->getLocalBounds().width/3,m_sprite->getLocalBounds().height/2);
 }
 
 void PlayerObject::turnToCursor()
@@ -85,6 +85,8 @@ void PlayerObject::Update(float _deltatime)
 	/*if ( hasCollider())
 		m_collider->m_pos = m_pos;*/
 
-	if ( hasSprite())
-		m_sprite->setPosition(m_pos);
+	/*if ( hasSprite())
+		m_sprite->setPosition(m_pos);*/
+
+	setPosition(m_pos);
 }

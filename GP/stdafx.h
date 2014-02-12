@@ -30,6 +30,7 @@
 #include "GameObject.h"
 #include "Collider.h"
 
+#include "Wall.h"
 #include "PlayerObject.h"
 
 #include "State.h"

@@ -30,8 +30,10 @@ private:
 	System* m_system;
 
 	ObjectManager* m_object_manager;
+	CollisionManager* m_collision_manager;
 	//LightSystem* light_system;
 
 	PlayerObject* player;
 	sf::Sprite* spr_cursor;
+	sf::Sprite* spr_darkness;
 };

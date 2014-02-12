@@ -24,11 +24,13 @@ bool LoadingState::Update(float deltatime){
 void LoadingState::Draw(){
 	std::cout << "LoadingState::Draw" << std::endl;
 
+	m_system->m_window->clear(sf::Color::Black);
+
 	object_manager->Draw(m_system->m_window);
 }
 std::string LoadingState::Next(){
 	std::cout << "LoadingState::Next" << std::endl;
-	return "MenuState";
+	return "GameState";
 }
 bool LoadingState::IsType(const std::string &type){
 	return type.compare("LoadingState") == 0;

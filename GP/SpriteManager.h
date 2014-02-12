@@ -24,6 +24,7 @@ public:
 
 	sf::Sprite* addSprite(const std::string& _filename, int _x, int _y, int _w, int _h);
 	void addTexture(const std::string& _filename);
+	sf::Texture* getTexture(const std::string& _name);
 	
 	void Cleanup();
 

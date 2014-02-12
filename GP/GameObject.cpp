@@ -17,6 +17,12 @@ const sf::Vector2f& GameObject::getPosition() const
 void GameObject::setPosition(sf::Vector2f& _pos)
 {
 	m_pos = _pos;
+
+	if (hasSprite())
+		m_sprite->setPosition(m_pos);
+
+	if ( hasCollider())
+		m_collider->m_pos = m_pos;
 }
 
 bool GameObject::hasSprite()

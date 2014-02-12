@@ -32,6 +32,8 @@ private:
 	int m_height, m_width;
 	float m_ticks;
 
+	bool m_fullscreen;
+
 	sf::RenderWindow* m_window;
 	sf::View* m_view;
 	sf::Clock* m_clock;

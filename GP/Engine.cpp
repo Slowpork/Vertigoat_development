@@ -24,7 +24,7 @@ bool Engine::Init()
 	state_manager.Attach(new LoadingState(m_system));
 	state_manager.Attach(new OptionsState(m_system));
 	state_manager.Attach(new GameState(m_system));
-	state_manager.SetState("GameState");
+	state_manager.SetState("LoadingState");
 
 	m_running = true;
 	return true;
@@ -44,7 +44,7 @@ void Engine::Run()
 			m_running = false;
 
 		// DRAW 
-		m_system->m_window->clear(sf::Color::Green);
+		m_system->m_window->clear(sf::Color(44,29,23)/*sf::Color::Red*/);
 		state_manager.Draw();
 		m_system->m_window->display();
 
@@ -75,9 +75,16 @@ void Engine::updateEvents()
 	while(m_system->m_window->pollEvent(event))
 	{
 		// PRESS CLOSE TO QUIT
-		if(event.type == event.Closed){
+		if (event.type == event.Closed){
 			m_system->m_window->close();
 			m_running = false;
+		}
+
+		if (event.type == event.Resized)
+		{
+			m_system->m_view = new sf::View();
+
+			m_system->m_view->setSize(sf::Vector2f(event.size.width,event.size.height));
 		}
 
 		// KEYBOARD
@@ -120,6 +127,20 @@ void Engine::updateEvents()
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
 		m_system->m_window->close();
 		m_running = false;
+	}
+
+	// TOGGLE FULLSREEN
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11))
+	{
+		m_system->m_fullscreen = !m_system->m_fullscreen;
+
+		m_system->m_window->close();
+		delete m_system->m_window;
+
+		if (m_system->m_fullscreen)
+		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Fullscreen);
+		else
+		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Default);
 	}
 }
  

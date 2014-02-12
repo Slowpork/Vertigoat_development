@@ -3,6 +3,7 @@
 #pragma once
 #include "stdafx.h"
 #include "SFML/System/Vector2.hpp"
+#include "GameObject.h"
 
 namespace sf
 {
@@ -13,13 +14,15 @@ class GameObject;
 
 struct Objects
 {
-	GameObject* obj;
+	GameObject obj;
 	int depth;
 };
 
 class ObjectManager
 {
 	friend class State;
+
+	friend class CollisionManager;
 
 	friend class GameState;
 	friend class LoadingState;
@@ -30,7 +33,7 @@ public:
 
 	void Cleanup();
 
-	void Add(GameObject* _object, int _depth);
+	void Add(GameObject& _object, int _depth);
 	
 	bool setActiveDepth(int _min, int _max);
 
@@ -40,7 +43,7 @@ public:
 
 	
 private:
-	std::vector<Objects*> m_objects;
+	std::vector<Objects> m_objects;
 
 	int m_max_z;
 	int m_min_z;

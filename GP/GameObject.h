@@ -13,6 +13,7 @@ class Collider;
 
 class GameObject
 {
+	friend class CollisionManager;
 public:
 
 	GameObject(sf::Sprite *_sprite = nullptr, Collider *_collider = nullptr);

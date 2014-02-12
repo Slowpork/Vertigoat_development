@@ -8,6 +8,8 @@ System::System()
 	m_width = 1280;
 	m_height = 720;
 
+	m_fullscreen = false;
+
 	m_ticks = 0.f;
 
 	m_window = nullptr;
@@ -33,7 +35,7 @@ bool System::Init()
 		return false;
 
 	// VIEW
-	m_view = new sf::View(sf::FloatRect(0,0,1280,720));
+	m_view = new sf::View(sf::FloatRect(0,0,m_width,m_height));
 	m_view->setViewport(sf::FloatRect(0,0,1,1));
 	//m_window->setView(*m_view);
 
@@ -49,7 +51,14 @@ bool System::Init()
 
 	// LOAD ALL THE TEXTURES
 	m_sprite_manager->addTexture("player.png");
+	sf::Texture* tex_player = m_sprite_manager->getTexture("player.png");
+	tex_player->setSmooth(true);
+
 	m_sprite_manager->addTexture("curs.png");
+	m_sprite_manager->addTexture("darkness.png");
+	m_sprite_manager->addTexture("wall.png");
+	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
+	tex_wall->setSmooth(true);
 
 	//m_sound_manager = new SoundManager();
 

@@ -21,6 +21,15 @@ void SpriteManager::addTexture(const std::string& _filename)
 		std::cout << "------------\n ERROR: Texture already exists. \n-------------";
 }
 
+sf::Texture* SpriteManager::getTexture(const std::string& _name)
+{
+	std::map<std::string,sf::Texture>::iterator it = m_textures.find(_name);
+	if (it == m_textures.end())
+		return nullptr;
+	else
+	return &it->second;
+}
+
 sf::Sprite* SpriteManager::addSprite(const std::string& _filename, int _x, int _y, int _w, int _h)
 {
 	sf::Sprite* sprite = new sf::Sprite();
