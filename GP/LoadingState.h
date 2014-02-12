@@ -1,8 +1,9 @@
 //LoadingState.h
 
 #pragma once
-#include "State.h"
 #include "stdafx.h"
+#include "State.h"
+
 
 class System;
 
