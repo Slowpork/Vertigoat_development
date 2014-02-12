@@ -35,6 +35,8 @@ MouseObject::MouseObject()
 	x = 0;
 	y = 0;
 
+	m_pos = sf::Vector2f(0.f,0.f);
+
 	for(int i = 0; i < ButtonCount; i++)
 	{
 		current[i] = false;
@@ -50,6 +52,11 @@ int MouseObject::GetX() const
 int MouseObject::GetY() const
 {
 	return y;
+}
+
+sf::Vector2f MouseObject::getPos() const
+{
+	return m_pos;
 }
 
 bool MouseObject::IsDown(EMouseButton _button) const

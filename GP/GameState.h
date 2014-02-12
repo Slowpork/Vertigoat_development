@@ -4,6 +4,11 @@
 #include "stdafx.h"
 #include "State.h"
 
+namespace sf
+{
+	class Sprite;
+};
+
 class System;
 class ObjectManager;
 class PlayerObject;
@@ -28,4 +33,5 @@ private:
 	//LightSystem* light_system;
 
 	PlayerObject* player;
+	sf::Sprite* spr_cursor;
 };

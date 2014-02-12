@@ -100,9 +100,19 @@ void Engine::updateEvents()
 		{
 			m_system->m_mouse->x = event.mouseMove.x;
 			m_system->m_mouse->y = event.mouseMove.y;
+			
+			/*if ( m_system->m_mouse->GetX() != m_system->m_mouse->getPos().x && 
+				 m_system->m_mouse->GetY() != m_system->m_mouse->getPos().y)
+			std::cout << "Mouse Pix X: " << m_system->m_mouse->GetX()
+				<< " Y: " << m_system->m_mouse->GetY() << " Pos X: " 
+				<< m_system->m_mouse->getPos().x << " Y: " 
+				<< m_system->m_mouse->getPos().y << std::endl;*/
 		}
-		
 	}
+
+	// GLOBAL MOUSE COORDINATES
+	m_system->m_window->setView(*m_system->m_view);
+	m_system->m_mouse->m_pos = m_system->m_window->mapPixelToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
 
 	// ESCAPE TO QUIT
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){

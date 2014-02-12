@@ -48,6 +48,7 @@ bool System::Init()
 
 	// LOAD ALL THE TEXTURES
 	m_sprite_manager->addTexture("player.png");
+	m_sprite_manager->addTexture("curs.png");
 
 	//m_sound_manager = new SoundManager();
 

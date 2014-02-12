@@ -20,7 +20,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 void PlayerObject::turnToCursor()
 {
-	const sf::Vector2f point = sf::Vector2f(m_mouse->GetX(), m_mouse->GetY());
+	const sf::Vector2f point = m_mouse->getPos();//sf::Vector2f(m_mouse->GetX(), m_mouse->GetY());
 	float angle = atan2(point.y - m_pos.y,
 						point.x - m_pos.x);
 	m_sprite->setRotation(angle * (180/Math::PI));
