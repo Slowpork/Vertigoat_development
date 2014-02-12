@@ -14,6 +14,8 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_max_vel = sf::Vector2f(256.f,256.f);
 
 	m_friction = 0.98f;
+
+	m_sprite->setOrigin(m_sprite->getLocalBounds().width/2,m_sprite->getLocalBounds().height/2);
 }
 
 void PlayerObject::turnToCursor()
@@ -57,6 +59,8 @@ void PlayerObject::Update(float _deltatime)
 	m_vel.x *= m_friction;
 	m_vel.y *= m_friction;
 
+	turnToCursor();
+
 	/*
 	if ( m_vel.x > m_max_vel.x || m_vel.x < m_max_vel.x*-1)
 	{
@@ -80,4 +84,7 @@ void PlayerObject::Update(float _deltatime)
 
 	/*if ( hasCollider())
 		m_collider->m_pos = m_pos;*/
+
+	if ( hasSprite())
+		m_sprite->setPosition(m_pos);
 }

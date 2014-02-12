@@ -37,6 +37,8 @@ bool ObjectManager::setActiveDepth(int _min, int _max)
 		m_min_z = _min;
 		m_max_z = _max;
 	}
+
+	return true;
 }
 
 void ObjectManager::Draw(sf::RenderWindow* _window)

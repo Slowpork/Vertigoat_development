@@ -1,7 +1,8 @@
 // LightSystem.h
 
-#include <vector>
-
+#pragma once
+#include "stdafx.h"
+//#include <vector>
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/VertexArray.hpp"
 
@@ -14,6 +15,7 @@ namespace sf
 	class VertexArray;
 	class Font;
 	class RenderWindow;
+	class Vertex;
 }
 
 // This struct stores an edge or a segment
@@ -41,6 +43,8 @@ struct Points
 	sf::Vector2f point3;
 	sf::Vector2f point4;
 };
+
+class State;
 
 class LightSystem
 {

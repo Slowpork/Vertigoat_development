@@ -35,7 +35,7 @@ bool System::Init()
 	// VIEW
 	m_view = new sf::View(sf::FloatRect(0,0,1280,720));
 	m_view->setViewport(sf::FloatRect(0,0,1,1));
-	m_window->setView(*m_view);
+	//m_window->setView(*m_view);
 
 	// SETTINGS
 	//m_window->setVerticalSyncEnabled(true);

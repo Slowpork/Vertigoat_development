@@ -32,6 +32,7 @@ bool Engine::Init()
 
 void Engine::Run()
 {
+	
 	while(m_running)
 	{
 		// UPDATE
@@ -43,7 +44,7 @@ void Engine::Run()
 			m_running = false;
 
 		// DRAW 
-		m_system->m_window->clear(sf::Color::Black);
+		m_system->m_window->clear(sf::Color::Green);
 		state_manager.Draw();
 		m_system->m_window->display();
 

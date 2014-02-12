@@ -13,7 +13,5 @@ int _tmain(int argc, _TCHAR* argv[])
 		engine.Cleanup();
 	}
 
-	
-
 	return 0;
 }

@@ -33,7 +33,6 @@ void StateManager::Draw(){
 	m_current->Draw();
 }
 
-
 void StateManager::SetState(const std::string &type) {
 	std::cout << "StateManager::SetState" << std::endl;
 	for(unsigned int i = 0; i < m_states.size(); i++) {

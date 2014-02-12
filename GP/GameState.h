@@ -1,7 +1,6 @@
 //GameState.h
 
 #pragma once
-
 #include "stdafx.h"
 #include "State.h"
 
@@ -26,6 +25,7 @@ private:
 	System* m_system;
 
 	ObjectManager* object_manager;
+	//LightSystem* light_system;
 
 	PlayerObject* player;
 };

@@ -5,7 +5,8 @@
 
 GameObject::GameObject(sf::Sprite *_sprite, Collider *_collider)
 {
-
+	m_sprite = _sprite;
+	m_collider = _collider;
 }
 
 const sf::Vector2f& GameObject::getPosition() const

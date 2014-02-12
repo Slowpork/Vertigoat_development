@@ -10,16 +10,12 @@ GameState::GameState(System* _system){
 
 	object_manager = new ObjectManager();
 
-	/*sf::Sprite* sprite = new sf::Sprite();
-	sf::Texture*  tex_player = new sf::Texture();
-
-	tex_player->loadFromFile("../data/sprites/player.png");
-	sprite->setTexture(*tex_player);*/
+	//light_system = new LightSystem(m_system->m_window);
 
 	sf::Sprite* sprite = m_system->m_sprite_manager->addSprite(
 		"player.png",0,0,128,128);
 
-	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse);
+	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, sprite);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
 
 	std::cout << "GameState::GameState" << std::endl;
@@ -27,6 +23,7 @@ GameState::GameState(System* _system){
 
 bool GameState::Enter(){
 	std::cout << "GameState::Enter" << std::endl;
+
 	return true;
 }
 
@@ -39,8 +36,8 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
-	m_system->m_view->setCenter(player->getPosition());
-	m_system->m_window->setView(*m_system->m_view);
+	//m_system->m_view->setCenter(player->getPosition());
+	//m_system->m_window->setView(*m_system->m_view);
 
 	return true;
 }

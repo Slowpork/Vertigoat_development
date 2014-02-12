@@ -17,6 +17,8 @@
 #include "Math.h"
 #include "Random.h"
 
+//#include "LightSystem.h"
+
 #include "ObjectManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
@@ -38,7 +40,6 @@
 
 #include "Engine.h"
 #include "System.h"
-
 
 #pragma warning(disable:4099)
 #define SFML_STATIC
