@@ -12,6 +12,10 @@ public:
 
 	void Update(float _deltatime);
 	void setVelocity(sf::Vector2f _vel);
+	void doFriction();
+
+	float getHealth();
+	float getStamina();
 private:
 
 	void turnToCursor();
@@ -21,4 +25,6 @@ private:
 	MouseObject* m_mouse;
 
 	sf::Vector2f m_max_vel;
+	float m_health;
+	float m_stamina;
 };

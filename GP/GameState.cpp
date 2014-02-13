@@ -16,6 +16,8 @@ GameState::GameState(System* _system)
 
 	//light_system = new LightSystem(m_system->m_window);
 
+	m_view_beat = Math::PI_HALF;
+
 	// PLAYER
 	sf::Sprite* spr_player = m_system->m_sprite_manager->addSprite(
 		"player.png",0,0,128,128);
@@ -44,7 +46,6 @@ GameState::GameState(System* _system)
 	Wall wall1(spr_wall1,col_wall1);
 	wall1.setPosition(sf::Vector2f(128,0));
 	m_object_manager->Add(wall1,5);
-
 	
 	sf::Sprite* spr_wall2 = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
@@ -75,6 +76,32 @@ void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
 }
 
+void GameState::viewBeat(float _deltatime)
+{
+	float tracking = player->getStamina();
+	//system("cls");
+	//std::cout << "\n  Stamina: " << tracking;
+	if (tracking < 100)
+	{
+		m_view_beat += (_deltatime/10) * (100 - tracking);
+		float scaleFactor = .85 + (sin(m_view_beat)+2)*.05;
+		m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scaleFactor,m_system->m_height*scaleFactor));
+	}
+	else if (m_system->m_view->getSize().x < m_system->m_width)
+	{
+		float scaleValue =_deltatime/10 * 200;
+		float ratio = m_system->m_width/m_system->m_height;
+
+		m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x + scaleValue*ratio,m_system->m_view->getSize().y + scaleValue));
+	}
+	else
+	{
+		m_view_beat = Math::PI_HALF;
+		m_system->m_view->setSize(sf::Vector2f(m_system->m_width,m_system->m_height));
+	}
+	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;
+}
+
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 	
@@ -88,6 +115,8 @@ bool GameState::Update(float _deltatime){
 	player->Update(_deltatime);
 
 	spr_cursor->setPosition(m_system->m_mouse->GetX(), m_system->m_mouse->GetY());
+
+	viewBeat(_deltatime);
 
 	return true;
 }

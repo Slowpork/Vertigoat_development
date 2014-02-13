@@ -12,7 +12,7 @@ namespace sf
 {
 	class RectangleShape;
 	class ConvexShape;
-	class VertexArray;
+	//class VertexArray;
 	class Font;
 	class RenderWindow;
 	class Vertex;

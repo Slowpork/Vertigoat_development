@@ -45,6 +45,10 @@ bool System::Init()
 	m_window->setFramerateLimit(60);
 	m_window->setMouseCursorVisible(false);
 
+	// BLACK INTITIAL SCREEN
+	m_window->clear(sf::Color::Black);
+	m_window->display();
+
 	m_clock = new sf::Clock();
 
 	m_file_manager = new FileManager();
