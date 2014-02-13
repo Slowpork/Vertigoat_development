@@ -82,11 +82,14 @@ void PlayerObject::Update(float _deltatime)
 
 	m_pos += m_vel;
 
-	/*if ( hasCollider())
-		m_collider->m_pos = m_pos;*/
-
 	/*if ( hasSprite())
 		m_sprite->setPosition(m_pos);*/
 
 	setPosition(m_pos);
+
+	if ( hasCollider())
+	{
+		m_collider->m_pos.x -= m_collider->m_ext.x/2;
+		m_collider->m_pos.y -= m_collider->m_ext.y/2;
+	}
 }

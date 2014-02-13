@@ -21,7 +21,7 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 		float P = _other->m_ext.y * 0.5f;
 		float Z = (_object->m_pos.y + Q) - (_other->m_pos.y + P);
 
-		if ( fabs(Z) < Q + P)
+		if ( fabs(Z) <= Q + P)
 		{
 			float dx = fabs(C) - (A + B);
 			float dy = fabs(Z) - (Q + P);
@@ -43,7 +43,7 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 				}
 				_offset.y = dy;
 				_object->m_pos.y += dy;
-			}	
+			}
 
 			return true;
 		}
@@ -66,14 +66,35 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 
 bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset)
 {
-	std::cout << m_object_manager->m_objects.size() << std::endl;
+	int count = 0;
+	//std::cout << m_object_manager->m_objects.size() << std::endl;
 	for(auto object: m_object_manager->m_objects)
 	{
-		std::cout << object.obj.getCollider() << std::endl;
+		//std::cout << object.obj.getCollider() << std::endl;
 		//std::cout << object.obj.m_collider->m_type << std::endl;
-		if (_object->m_type == Rect && object.obj.m_collider->m_type == Rect)
-			return RectvsRect(_object, object.obj.m_collider, _offset);
+		if (object.obj.getCollider())
+		{
+			sf::Vector2f _off;
+			if (_object->m_type == Rect && object.obj.m_collider->m_type == Rect)
+			{
+				if ( RectvsRect(_object, object.obj.m_collider, _off))
+				{
+					_offset += _off;
+					count++;
+				}
+			}
+		}
 		//else if (_object->m_type == Circle)
+	}
+
+	if (count > 0)
+	{
+		_offset /= (float)count;
+
+		_offset.x = floorf(_offset.x);
+		_offset.y = floorf(_offset.y);
+
+		return true;
 	}
 
 	return false;

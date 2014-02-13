@@ -3,11 +3,12 @@
 #include "stdafx.h"
 #include "OptionsState.h"
 
-OptionsState::OptionsState(System* _system){
+OptionsState::OptionsState(System* _system)
+{
+	std::cout << "Created OptionsState" << std::endl;
+
 	m_system = _system;
 	object_manager = new ObjectManager();
-
-	std::cout << "OptionsState::OptionsState" << std::endl;
 }
 
 bool OptionsState::Enter(){
@@ -18,10 +19,8 @@ void OptionsState::Exit(){
 	std::cout << "OptionsState::Exit" << std::endl;
 }
 bool OptionsState::Update(float deltatime){
-	std::cout << "OptionsState::Update" << std::endl;
-	std::cout << "here be dragons, press anything pls " << std::endl;
-	std::cin.ignore(1024, '\n');
-	std::cin.get();
+	//std::cout << "OptionsState::Update" << std::endl;
+
 	return false;
 }
 void OptionsState::Draw(){

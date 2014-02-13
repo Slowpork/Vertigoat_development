@@ -51,7 +51,7 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 			{
 				//std::cout << object.depth << std::endl;
 				_window->draw(*object.obj.getSprite());
-
+				/*
 				sf::RectangleShape shape;
 				shape.setOutlineColor(sf::Color::Red);
 				shape.setOutlineThickness(2);
@@ -60,7 +60,7 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 
 				shape.setPosition(object.obj.getCollider()->m_pos);
 
-				_window->draw(shape);
+				_window->draw(shape);*/
 			}
 		}
 	}

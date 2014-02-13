@@ -32,7 +32,6 @@ bool Engine::Init()
 
 void Engine::Run()
 {
-	
 	while(m_running)
 	{
 		// UPDATE
@@ -129,6 +128,7 @@ void Engine::updateEvents()
 		m_running = false;
 	}
 
+	/*
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11))
 	{
@@ -141,6 +141,6 @@ void Engine::updateEvents()
 		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Fullscreen);
 		else
 		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Default);
-	}
+	}*/
 }
  

@@ -5,7 +5,10 @@
 #include "stdafx.h"
 #include "Gamestate.h"
 
-GameState::GameState(System* _system){
+GameState::GameState(System* _system)
+{
+	std::cout << "Created GameState" << std::endl;
+
 	m_system = _system;
 
 	m_object_manager = new ObjectManager();
@@ -42,12 +45,13 @@ GameState::GameState(System* _system){
 	wall1.setPosition(sf::Vector2f(128,0));
 	m_object_manager->Add(wall1,5);
 
+	/*
 	sf::Sprite* spr_wall2 = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
 	Collider* col_wall2 = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall wall2(spr_wall2,col_wall2);
 	wall2.setPosition(sf::Vector2f(256,0));
-	m_object_manager->Add(wall2,5);
+	m_object_manager->Add(wall2,5);*/
 
 	sf::Sprite* spr_wall3 = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
@@ -55,24 +59,21 @@ GameState::GameState(System* _system){
 	Wall wall3(spr_wall3,col_wall3);
 	wall3.setPosition(sf::Vector2f(512,0));
 	m_object_manager->Add(wall3,5);
-	
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	//player->setPosition(sf::Vector2f(1280/2,720/2));
 
 	//sf::Sprite
-
-	std::cout << "GameState::GameState" << std::endl;
 }
 
 bool GameState::Enter(){
-	std::cout << "GameState::Enter" << std::endl;
+	std::cout << "GameState" << std::endl;
 
 	return true;
 }
 
 void GameState::Exit(){
-	std::cout << "GameState::Exit" << std::endl;
+	std::cout << "GameState->";
 }
 
 bool GameState::Update(float _deltatime){
@@ -80,7 +81,10 @@ bool GameState::Update(float _deltatime){
 	
 	sf::Vector2f offset;
 	if (m_collision_manager->checkCollision(player->getCollider(),offset))
-		std::cout << _deltatime << std::endl;
+	{
+		//std::cout << _deltatime << std::endl;
+		player->setPosition(player->getPosition() + offset);
+	}
 
 	player->Update(_deltatime);
 
@@ -102,6 +106,7 @@ void GameState::Draw(){
 	// PLAYER
 	m_system->m_window->draw(*player->getSprite());
 
+	/*
 	sf::RectangleShape shape;
 	shape.setOutlineColor(sf::Color::Red);
 	shape.setOutlineThickness(2);
@@ -110,7 +115,7 @@ void GameState::Draw(){
 
 	shape.setPosition(player->getCollider()->m_pos);
 
-	m_system->m_window->draw(shape);
+	m_system->m_window->draw(shape);*/
 
 	m_object_manager->setActiveDepth(5,5);
 	m_object_manager->Draw(m_system->m_window);
@@ -127,7 +132,7 @@ void GameState::Draw(){
 }
 
 std::string GameState::Next(){
-	std::cout << "GameState::next" << std::endl;
+	//std::cout << "Goto MenuState\n--" << std::endl;
 	return "MenuState";
 }
 
