@@ -26,7 +26,13 @@ public:
 
 	bool hasCollider();
 	Collider* getCollider();
+
 protected:
+
+	void turnToPoint(sf::Vector2f _point);
+
+protected:
+
 
 	sf::Sprite* m_sprite;
 	Collider* m_collider;

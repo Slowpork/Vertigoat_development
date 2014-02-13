@@ -22,8 +22,6 @@ public:
 	float getStamina();
 private:
 
-	void turnToCursor();
-
 private:
 	KeyboardObject* m_keyboard;
 	MouseObject* m_mouse;

@@ -29,6 +29,9 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 LightSystem::LightSystem(sf::RenderWindow* _window)
 {
 	mWindow = _window;
+
+	mapPos = sf::Vector2f(0.f,0.f);
+	mapSize = sf::Vector2f(1024.f,1024.f);
 	
 	// Create the lightsource of the guard
 	light_pos = sf::Vector2f(0.f,0.f);
@@ -47,21 +50,6 @@ void LightSystem::logic()
 	sweep();
 	
 }
-
-/*
-bool LightSystem::cursorInside(sf::Vector2f pos, sf::Vector2f size)
-{
-	sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(*mWindow).x, sf::Mouse::getPosition(*mWindow).y);
-	if ( mouse_pos.x > pos.x && mouse_pos.x < pos.x + size.x )
-	{
-		if ( mouse_pos.y > pos.y && mouse_pos.y < pos.y + size.y)
-		{
-			return true;
-		}
-	}
-	
-	return false;
-}*/
 
 void LightSystem::Draw()
 {
@@ -128,18 +116,19 @@ void LightSystem::Draw()
 
 void LightSystem::setBounds(sf::Vector2f position, sf::Vector2f size)
 {
+	mapPos = position;
+	mapSize = size;
 	addSegment(position.x, position.y, position.x + size.x, position.y); // Upper left to upper right
 	addSegment(position.x + size.x, position.y, position.x + size.x, position.y + size.y); // Upper right to lower right
 	addSegment(position.x + size.x, position.y + size.y, position.x, position.y + size.y); // Lower right to lower left
 	addSegment(position.x, position.y + size.y, position.x, position.y); // Lower left to upper left
 }
 
-void LightSystem::loadMap(sf::Vector2f position, sf::Vector2f size)
+void LightSystem::update()
 {
 	segments.clear();
 	endPoints.clear();
-	//setBounds(sf::Vector2f(50.f, 50.f), sf::Vector2f(700.f, 500.f)); // Whole window
-	setBounds(position, size); // Whole window
+	setBounds(mapPos, mapSize);
 	for (auto point : points)
 	{
 		addSegment(point->point1.x , point->point1.y , point->point2.x , point->point2.y ); // Upper left to upper right

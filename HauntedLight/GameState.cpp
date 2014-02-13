@@ -25,6 +25,8 @@
 
 #include "Collider.h"
 
+void addWall(sf::Vector2f _pos);
+
 GameState::GameState(System* _system)
 {
 	m_name = "GameState";
@@ -45,6 +47,9 @@ GameState::GameState(System* _system)
 		"player.png",0,0,128,128);
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
+	spr_floor = m_system->m_sprite_manager->addSprite(
+		"floor.png",0,0,400,400);
+
 	// CURSOR
 	spr_cursor = m_system->m_sprite_manager->addSprite(
 		"curs.png",0,0,16,16);
@@ -55,42 +60,18 @@ GameState::GameState(System* _system)
 		"darkness.png",0,0,1280,720);
 
 	// WALLS
-	sf::Sprite* spr_wall = m_system->m_sprite_manager->addSprite(
-		"wall.png",0,0,128,128);
-	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Wall wall(spr_wall,col_wall);
-	wall.setPosition(sf::Vector2f(0,0));
-	m_object_manager->Add(wall,5);
-	m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
-
-	sf::Sprite* spr_wall1 = m_system->m_sprite_manager->addSprite(
-		"wall.png",0,0,128,128);
-	Collider* col_wall1 = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Wall wall1(spr_wall1,col_wall1);
-	wall1.setPosition(sf::Vector2f(128,0));
-	m_object_manager->Add(wall1,5);
-	m_light_system->addWall(wall1.getPosition(),sf::Vector2f(wall1.getSprite()->getLocalBounds().width,wall1.getSprite()->getLocalBounds().width));
-	
-	sf::Sprite* spr_wall2 = m_system->m_sprite_manager->addSprite(
-		"wall.png",0,0,128,128);
-	Collider* col_wall2 = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Wall wall2(spr_wall2,col_wall2);
-	wall2.setPosition(sf::Vector2f(512,-128));
-	m_object_manager->Add(wall2,5);
-	m_light_system->addWall(wall2.getPosition(),sf::Vector2f(wall2.getSprite()->getLocalBounds().width,wall2.getSprite()->getLocalBounds().width));
-
-	sf::Sprite* spr_wall3 = m_system->m_sprite_manager->addSprite(
-		"wall.png",0,0,128,128);
-	Collider* col_wall3 = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Wall wall3(spr_wall3,col_wall3);
-	wall3.setPosition(sf::Vector2f(512,0));
-	m_object_manager->Add(wall3,5);
-	m_light_system->addWall(wall3.getPosition(),sf::Vector2f(wall3.getSprite()->getLocalBounds().width,wall3.getSprite()->getLocalBounds().width));
+	addWall(sf::Vector2f(0,0));
+	addWall(sf::Vector2f(128,0));
+	addWall(sf::Vector2f(128,128));
+	addWall(sf::Vector2f(512,0));
+	addWall(sf::Vector2f(512,128));
+	addWall(sf::Vector2f(512,-128));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	//player->setPosition(sf::Vector2f(1280/2,720/2));
 
-	m_light_system->loadMap(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
+	m_light_system->setBounds(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
+	m_light_system->update();
 
 	//sf::Sprite
 }
@@ -102,6 +83,17 @@ bool GameState::Enter(){
 
 void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
+}
+
+void GameState::addWall(sf::Vector2f _pos)
+{
+	sf::Sprite* spr_wall = m_system->m_sprite_manager->addSprite(
+		"wall.png",0,0,128,128);
+	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	Wall wall(spr_wall,col_wall);
+	wall.setPosition(_pos);
+	m_object_manager->Add(wall,5);
+	m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 
 void GameState::viewBeat(float _deltatime)
@@ -132,6 +124,32 @@ void GameState::viewBeat(float _deltatime)
 	//m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x*2,m_system->m_view->getSize().y*2));
 }
 
+void GameState::drawFloor()
+{
+	sf::Vector2f view_pos = sf::Vector2f(
+		m_system->m_view->getCenter().x - m_system->m_view->getSize().x/2,
+		m_system->m_view->getCenter().y - m_system->m_view->getSize().y/2);
+
+	sf::Vector2f mod_view_pos = sf::Vector2f(
+		view_pos.x - (float)((int)view_pos.x % 400),
+		view_pos.y - (float)((int)view_pos.y % 400));
+
+	view_pos = mod_view_pos;
+	view_pos.x -= 400.f;
+	view_pos.y -= 400.f;
+
+	for(float X = view_pos.x; X < view_pos.x + m_system->m_view->getSize().x + 400.f; X += 400.f)
+	{
+		for(float Y = view_pos.y; Y < view_pos.y + m_system->m_view->getSize().y + 400.f; Y += 400.f)
+		{
+			spr_floor->setPosition(
+				X,
+				Y);
+			m_system->m_window->draw(*spr_floor);
+		}
+	}
+}
+
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 	
@@ -155,6 +173,20 @@ bool GameState::Update(float _deltatime){
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
 
+	if (m_system->m_mouse->IsDownOnce(Left))
+	{
+		addWall(m_system->m_mouse->getPos());
+		m_light_system->update();
+	}
+	else if (m_system->m_mouse->IsDownOnce(Right))
+	{
+		Objects* obj = m_object_manager->atPosition(m_system->m_mouse->getPos());
+		if ( obj != nullptr)
+		{
+			m_object_manager->destroy(obj);
+		}
+	}
+
 	return true;
 }
 
@@ -162,6 +194,9 @@ void GameState::Draw()
 {
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
+
+	// FLOOR
+	drawFloor();
 	
 	// DYNAMIC LIGHTING
 	m_light_system->Draw();

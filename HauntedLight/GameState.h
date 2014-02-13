@@ -4,6 +4,8 @@
 #include "State.h"
 #include <string>
 
+#include "SFML\System\Vector2.hpp";
+
 namespace sf
 {
 	class Sprite;
@@ -27,7 +29,10 @@ public:
 	bool IsType(const std::string &type);
 
 private:
+
+	void addWall(sf::Vector2f _pos);
 	void viewBeat(float _deltatime);
+	void drawFloor();
 
 private:
 
@@ -46,6 +51,7 @@ private:
 	PlayerObject* player;
 	sf::Sprite* spr_cursor;
 	sf::Sprite* spr_darkness;
+	sf::Sprite* spr_floor;
 
 	// VARIABLES
 	bool m_done;

@@ -69,6 +69,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("curs.png");
 	m_sprite_manager->addTexture("darkness.png");
 	m_sprite_manager->addTexture("wall.png");
+	m_sprite_manager->addTexture("floor.png");
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
 	tex_wall->setSmooth(true);
 

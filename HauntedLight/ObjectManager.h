@@ -42,7 +42,10 @@ public:
 
 	void CheckCollision(GameObject* _object, sf::Vector2f& _offset);
 
-	
+	Objects* atPosition(sf::Vector2f _pos);
+
+	void destroy(Objects* _obj);
+
 private:
 	std::vector<Objects> m_objects;
 

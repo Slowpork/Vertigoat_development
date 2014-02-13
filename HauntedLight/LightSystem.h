@@ -55,8 +55,11 @@ public:
 	void logic();
 	void Draw();
 
-	// Load whole map with walls and map edge
-	void loadMap(sf::Vector2f position, sf::Vector2f size);
+	// Updates all the lists
+	void update();
+
+	// Load the edges of the outside perimeter
+	void setBounds(sf::Vector2f position, sf::Vector2f size);
 
 	// Set location of guard
 	// Segment and EndPoint data can't be processed until the guard location is known
@@ -70,9 +73,6 @@ public:
 
 private:
 
-	// Load the edges of the outside perimeter
-	void setBounds(sf::Vector2f position, sf::Vector2f size);
-
 	bool _segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo);
 	bool leftOf(Segment* a, sf::Vector2f point);
 	void sweep();
@@ -84,6 +84,9 @@ private:
 private:
 
 	sf::Vector2f light_pos;
+
+	sf::Vector2f mapPos;
+	sf::Vector2f mapSize;
 
 	std::vector<Points*> points;
 

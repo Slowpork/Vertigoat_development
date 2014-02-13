@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "SFML\Graphics\Sprite.hpp"
 #include "Collider.h"
+#include "Math.h"
 
 GameObject::GameObject(sf::Sprite *_sprite, Collider *_collider)
 {
@@ -24,6 +25,13 @@ void GameObject::setPosition(sf::Vector2f& _pos)
 
 	if ( hasCollider())
 		m_collider->m_pos = m_pos;
+}
+
+void GameObject::turnToPoint(sf::Vector2f _point)
+{
+	float angle = atan2(_point.y - m_pos.y,
+						_point.x - m_pos.x);
+	m_sprite->setRotation(angle * (180/Math::PI));
 }
 
 bool GameObject::hasSprite()

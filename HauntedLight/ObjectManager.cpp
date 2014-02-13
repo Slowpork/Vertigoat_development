@@ -1,6 +1,7 @@
 // ObjectManager.cpp
 
 #include "ObjectManager.h"
+#include <algorithm>
 
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\Sprite.hpp"
@@ -28,6 +29,26 @@ void ObjectManager::Add(GameObject& _object, int _depth)
 	object.depth = _depth;
 
 	m_objects.push_back(object);
+}
+
+void ObjectManager::destroy(Objects* _obj)
+{
+	/*std::vector<Objects>::iterator pos = std::find(m_objects.begin(), m_objects.end(),_obj);
+	m_objects.erase(pos);*/
+}
+
+Objects* ObjectManager::atPosition(sf::Vector2f _pos)
+{
+	/*
+	for(auto object: m_objects)
+	{
+		if ( object.obj.getPosition() == _pos)
+		{
+			return object;
+		}
+	}*/
+
+	return nullptr;
 }
 
 bool ObjectManager::setActiveDepth(int _min, int _max)

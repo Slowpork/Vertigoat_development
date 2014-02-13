@@ -1,7 +1,6 @@
 // PlayerObject.cpp
 
 #include "PlayerObject.h"
-#include "Math.h"
 
 #include "SFML\Window\Keyboard.hpp"
 #include "SFML\Graphics\Sprite.hpp"
@@ -25,14 +24,6 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 	m_health = 100.f;
 	m_stamina = 100.f;
-}
-
-void PlayerObject::turnToCursor()
-{
-	const sf::Vector2f point = m_mouse->getPos();//sf::Vector2f(m_mouse->GetX(), m_mouse->GetY());
-	float angle = atan2(point.y - m_pos.y,
-						point.x - m_pos.x);
-	m_sprite->setRotation(angle * (180/Math::PI));
 }
 
 void PlayerObject::setVelocity(sf::Vector2f _vel)
@@ -59,17 +50,9 @@ void PlayerObject::Update(float _deltatime)
 {
 	const float speed = 32.f;
 
-	if ( m_keyboard->IsDownOnce(sf::Keyboard::Up))
-	{
-		m_health += 10;
-	}
-	else if ( m_keyboard->IsDownOnce(sf::Keyboard::Down))
-	{
-		m_health -= 10;
-	}
-
 	bool moving = false;
 
+	// MOVE
 	if (m_keyboard->IsDown(sf::Keyboard::A))
 	{
 		moving = true;
@@ -91,6 +74,7 @@ void PlayerObject::Update(float _deltatime)
 		m_vel.y += speed * _deltatime;
 	}
 
+	// RUN
 	if (m_stamina > 0.f)
 	{
 		if (m_keyboard->IsDown(sf::Keyboard::LShift))
@@ -112,33 +96,12 @@ void PlayerObject::Update(float _deltatime)
 		m_stamina = 100.f;
 	}
 
+	// UPDATE
 	doFriction();
 
-	turnToCursor();
-
-	/*
-	if ( m_vel.x > m_max_vel.x || m_vel.x < m_max_vel.x*-1)
-	{
-		if (m_vel.x < 0)
-			m_vel.x = m_max_vel.x*-1;
-		else
-			m_vel.x = m_max_vel.y;
-	}
-
-	if ( m_vel.y > m_max_vel.y || m_vel.y < m_max_vel.y*-1)
-	{
-		if (m_vel.y < 0)
-			m_vel.y = m_max_vel.y*-1;
-		else
-			m_vel.y = m_max_vel.y;
-	}*/
-
-	//std::cout << "Vel X: " << m_vel.x << " Y: " << m_vel.y << std::endl;
+	turnToPoint(m_mouse->getPos());
 
 	m_pos += m_vel;
-
-	/*if ( hasSprite())
-		m_sprite->setPosition(m_pos);*/
 
 	setPosition(m_pos);
 
