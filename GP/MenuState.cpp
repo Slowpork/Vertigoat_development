@@ -5,7 +5,9 @@
 
 MenuState::MenuState(System* _system)
 {
-	std::cout << "Created MenuState" << std::endl;
+	m_name = "MenuState";
+	m_next = "LoadingState";
+	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
 	object_manager = new ObjectManager();
@@ -15,14 +17,14 @@ MenuState::MenuState(System* _system)
 	pos = sf::Vector2f(1280/2,720/2);
 }
 
-bool MenuState::Enter(){
-	
-	std::cout << "MenuState" << std::endl;
+bool MenuState::Enter()
+{
+	std::cout << m_name << std::endl;
 	return true;
 }
 
 void MenuState::Exit(){
-	std::cout << "MenuState->";
+	std::cout << "  " << m_name << "->";
 }
 
 bool MenuState::Update(float _deltatime){
@@ -36,13 +38,13 @@ void MenuState::Draw(){
 }
 
 std::string MenuState::Next(){
-	std::cout << "MenuState::next" << std::endl;
-	return m_next_state;
+	//std::cout << "MenuState::next" << std::endl;
+	return m_next;
 }
 
 bool MenuState::IsType(const std::string &type) {
 
 	//std::cout << "MenuState::IsType" << std::endl;
 
-	return type.compare("MenuState") == 0;
+	return type.compare(m_name) == 0;
 }

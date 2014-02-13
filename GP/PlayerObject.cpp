@@ -26,6 +26,11 @@ void PlayerObject::turnToCursor()
 	m_sprite->setRotation(angle * (180/Math::PI));
 }
 
+void PlayerObject::setVelocity(sf::Vector2f _vel)
+{
+	m_vel = _vel;
+}
+
 void PlayerObject::Update(float _deltatime)
 {
 	const float speed = 32.f;

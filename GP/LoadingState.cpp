@@ -5,18 +5,20 @@
 
 LoadingState::LoadingState(System* _system)
 {
-	std::cout << "Created LoadingState" << std::endl;
+	m_name = "LoadingState";
+	m_next = "GameState";
+	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
 	object_manager = new ObjectManager();
 }
 
 bool LoadingState::Enter(){
-	std::cout << "LoadingState" << std::endl;
+	std::cout << m_name << std::endl;
 	return true;
 }
 void LoadingState::Exit(){
-	std::cout << "LoadingState->";
+	std::cout << "  " << m_name << "->";
 }
 bool LoadingState::Update(float deltatime){
 	//std::cout << "LoadingState::Update" << std::endl;
@@ -32,8 +34,8 @@ void LoadingState::Draw(){
 }
 std::string LoadingState::Next(){
 	//std::cout << "Goto GameState\n--" << std::endl;
-	return "GameState";
+	return m_next;
 }
 bool LoadingState::IsType(const std::string &type){
-	return type.compare("LoadingState") == 0;
+	return type.compare(m_name) == 0;
 }

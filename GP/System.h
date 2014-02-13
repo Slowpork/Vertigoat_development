@@ -33,6 +33,7 @@ private:
 	float m_ticks;
 
 	bool m_fullscreen;
+	bool m_debug;
 
 	sf::RenderWindow* m_window;
 	sf::View* m_view;

@@ -51,13 +51,13 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 			{
 				//std::cout << object.depth << std::endl;
 				_window->draw(*object.obj.getSprite());
+				
 				/*
 				sf::RectangleShape shape;
-				shape.setOutlineColor(sf::Color::Red);
-				shape.setOutlineThickness(2);
+				shape.setOutlineColor(sf::Color(255,0,0,128));
+				shape.setOutlineThickness(1);
 				shape.setSize(sf::Vector2f(128,128));
 				shape.setFillColor(sf::Color(0,0,0,0));
-
 				shape.setPosition(object.obj.getCollider()->m_pos);
 
 				_window->draw(shape);*/

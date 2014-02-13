@@ -25,8 +25,12 @@ public:
 	bool IsType(const std::string &type);
 
 private:
+
+	std::string m_name;
+	std::string m_next;
+
 	bool m_done;
-	std::string m_next_state;
+	
 	System* m_system;
 
 	ObjectManager* m_object_manager;

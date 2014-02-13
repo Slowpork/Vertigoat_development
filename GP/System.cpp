@@ -9,6 +9,7 @@ System::System()
 	m_height = 720;
 
 	m_fullscreen = false;
+	m_debug = false;
 
 	m_ticks = 0.f;
 

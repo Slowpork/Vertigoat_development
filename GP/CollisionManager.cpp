@@ -15,7 +15,7 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 	float B = _other->m_ext.x * 0.5f;
 	float C = (_object->m_pos.x + A) - (_other->m_pos.x + B);
 
-	if ( fabs(C) < A + B)
+	if ( fabs(C) <= A + B)
 	{
 		float Q = _object->m_ext.y * 0.5f;
 		float P = _other->m_ext.y * 0.5f;

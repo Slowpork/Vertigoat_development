@@ -1,13 +1,13 @@
 //GameState.cpp
 
-//MenuState.cpp
-
 #include "stdafx.h"
 #include "Gamestate.h"
 
 GameState::GameState(System* _system)
 {
-	std::cout << "Created GameState" << std::endl;
+	m_name = "GameState";
+	m_next = "MenuState";
+	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
 
@@ -45,13 +45,13 @@ GameState::GameState(System* _system)
 	wall1.setPosition(sf::Vector2f(128,0));
 	m_object_manager->Add(wall1,5);
 
-	/*
+	
 	sf::Sprite* spr_wall2 = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
 	Collider* col_wall2 = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall wall2(spr_wall2,col_wall2);
-	wall2.setPosition(sf::Vector2f(256,0));
-	m_object_manager->Add(wall2,5);*/
+	wall2.setPosition(sf::Vector2f(512,-128));
+	m_object_manager->Add(wall2,5);
 
 	sf::Sprite* spr_wall3 = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
@@ -67,13 +67,12 @@ GameState::GameState(System* _system)
 }
 
 bool GameState::Enter(){
-	std::cout << "GameState" << std::endl;
-
+	std::cout << m_name << std::endl;
 	return true;
 }
 
 void GameState::Exit(){
-	std::cout << "GameState->";
+	std::cout << "  " << m_name << "->";
 }
 
 bool GameState::Update(float _deltatime){
@@ -106,16 +105,17 @@ void GameState::Draw(){
 	// PLAYER
 	m_system->m_window->draw(*player->getSprite());
 
-	/*
-	sf::RectangleShape shape;
-	shape.setOutlineColor(sf::Color::Red);
-	shape.setOutlineThickness(2);
-	shape.setSize(sf::Vector2f(128,128));
-	shape.setFillColor(sf::Color(0,0,0,0));
+	if (m_system->m_debug)
+	{
+		sf::RectangleShape shape;
+		shape.setOutlineColor(sf::Color(255,0,0,128));
+		shape.setOutlineThickness(1);
+		shape.setSize(sf::Vector2f(128,128));
+		shape.setFillColor(sf::Color(0,0,0,0));
+		shape.setPosition(player->getCollider()->m_pos);
 
-	shape.setPosition(player->getCollider()->m_pos);
-
-	m_system->m_window->draw(shape);*/
+		m_system->m_window->draw(shape);
+	}
 
 	m_object_manager->setActiveDepth(5,5);
 	m_object_manager->Draw(m_system->m_window);
@@ -133,9 +133,9 @@ void GameState::Draw(){
 
 std::string GameState::Next(){
 	//std::cout << "Goto MenuState\n--" << std::endl;
-	return "MenuState";
+	return m_next;
 }
 
 bool GameState::IsType(const std::string &type) {
-	return type.compare("GameState") == 0;
+	return type.compare(m_name) == 0;
 }

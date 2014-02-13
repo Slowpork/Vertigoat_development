@@ -19,6 +19,9 @@ public:
 	bool IsType(const std::string &type);
 
 private:
+	std::string m_name;
+	std::string m_next;
+
 	System* m_system;
 
 	ObjectManager* object_manager;

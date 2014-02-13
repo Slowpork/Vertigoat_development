@@ -128,6 +128,12 @@ void Engine::updateEvents()
 		m_running = false;
 	}
 
+	// TOGGLE DEBUG
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
+	{
+		m_system->m_debug = !m_system->m_debug;
+	}
+
 	/*
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11))

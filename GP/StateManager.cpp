@@ -8,7 +8,7 @@
 
 StateManager::StateManager() 
 {
-	std::cout << "\n  Created StateManager\n  ------------------\n" << std::endl;
+	std::cout << "\n  Created StateManager\n  --------------------\n" << std::endl;
 
 	m_current = nullptr;
 }
@@ -37,7 +37,7 @@ void StateManager::Draw(){
 }
 
 void StateManager::SetState(const std::string &type) {
-	std::cout << "\n  Setting State -> " << type << std::endl << std::endl;
+	std::cout << "\n  Initial State = " << type << std::endl << std::endl;
 	for(unsigned int i = 0; i < m_states.size(); i++) {
 		if(m_states[i]->IsType(type)) {
 			m_current = m_states[i];
