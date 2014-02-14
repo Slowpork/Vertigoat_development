@@ -121,7 +121,7 @@ void GameState::viewBeat(float _deltatime)
 	}
 	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;
 
-	//m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x*2,m_system->m_view->getSize().y*2));
+	m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x*1.5,m_system->m_view->getSize().y*1.5));
 }
 
 void GameState::drawFloor()
@@ -138,9 +138,9 @@ void GameState::drawFloor()
 	view_pos.x -= 400.f;
 	view_pos.y -= 400.f;
 
-	for(float X = view_pos.x; X < view_pos.x + m_system->m_view->getSize().x + 400.f; X += 400.f)
+	for(float X = view_pos.x; X < view_pos.x + m_system->m_view->getSize().x + 800.f; X += 400.f)
 	{
-		for(float Y = view_pos.y; Y < view_pos.y + m_system->m_view->getSize().y + 400.f; Y += 400.f)
+		for(float Y = view_pos.y; Y < view_pos.y + m_system->m_view->getSize().y + 800.f; Y += 400.f)
 		{
 			spr_floor->setPosition(
 				X,
