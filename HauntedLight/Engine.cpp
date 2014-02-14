@@ -148,7 +148,8 @@ void Engine::updateEvents()
 
 	
 	// TOGGLE FULLSREEN
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11))
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11) 
+		|| (m_system->m_keyboard->IsDown(sf::Keyboard::LAlt) && m_system->m_keyboard->IsDownOnce(sf::Keyboard::Return)) )
 	{
 		m_system->m_fullscreen = !m_system->m_fullscreen;
 
