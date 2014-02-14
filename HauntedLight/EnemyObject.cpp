@@ -9,7 +9,12 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 EnemyObject::EnemyObject(AnimatedSprite* _sprite, Collider* _collider) : GameObject()
+=======
+EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) 
+	: GameObject(_sprite, _collider)
+>>>>>>> cf91b77fdaac23df56d3a90d3acef55bb7740f3f
 =======
 EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) 
 	: GameObject(_sprite, _collider)
