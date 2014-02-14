@@ -15,13 +15,13 @@ public:
 	void Update(float _deltatime);
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
+	void setHealth(float _health);
+	void setDistance(float _maxDistance, sf::Vector2f _obj1, sf::Vector2f _obj2);
 
-	float getHealth();
 	sf::Vector2f getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2);
 private:
 
 private:
-	sf::Vector2f m_max_vel;
 	float m_health;
 };
 
