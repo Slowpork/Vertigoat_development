@@ -3,33 +3,15 @@
 #pragma region Includes
 #include "EnemyObject.h"
 
-#include <SFML\Graphics\Sprite.hpp>
+#include "AnimatedSprite.h"
 #include "Collider.h"
 #pragma endregion
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-EnemyObject::EnemyObject(AnimatedSprite* _sprite, Collider* _collider) : GameObject()
-=======
-EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) 
+EnemyObject::EnemyObject(AnimatedSprite* _sprite, Collider* _collider) 
 	: GameObject(_sprite, _collider)
->>>>>>> cf91b77fdaac23df56d3a90d3acef55bb7740f3f
-=======
-EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) 
-	: GameObject(_sprite, _collider)
->>>>>>> cf91b77fdaac23df56d3a90d3acef55bb7740f3f
-=======
-EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) 
-	: GameObject(_sprite, _collider)
->>>>>>> cf91b77fdaac23df56d3a90d3acef55bb7740f3f
 {
-	m_vel = sf::Vector2f(0.f,0.f);
-
-	m_friction = 0.98f;
-
-	m_sprite->setOrigin(m_sprite->getLocalBounds().width/2,
-		m_sprite->getLocalBounds().height/2);
+	m_sprite = _sprite;
+	m_collider = _collider;
 }
 
 void EnemyObject::Update(float _deltatime)
