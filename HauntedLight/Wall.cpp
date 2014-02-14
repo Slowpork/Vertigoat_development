@@ -2,7 +2,7 @@
 
 #include "Wall.h"
 
-Wall::Wall(sf::Sprite* _sprite, Collider* _collider)
+Wall::Wall(AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
 	

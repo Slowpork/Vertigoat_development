@@ -7,7 +7,7 @@
 #include "Collider.h"
 #pragma endregion
 
-EnemyObject::EnemyObject(sf::Sprite* _sprite, Collider* _collider) : GameObject()
+EnemyObject::EnemyObject(AnimatedSprite* _sprite, Collider* _collider) : GameObject()
 {
 
 }

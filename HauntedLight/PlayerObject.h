@@ -12,7 +12,7 @@ class PlayerObject : public GameObject
 {
 public:
 	PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse, 
-		sf::Sprite* _sprite = nullptr, Collider* _collider = nullptr);
+		AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
 
 	void Update(float _deltatime);
 	void setVelocity(sf::Vector2f _vel);

@@ -4,7 +4,8 @@
 #include <algorithm>
 
 #include "SFML\Graphics\RenderWindow.hpp"
-#include "SFML\Graphics\Sprite.hpp"
+
+#include "AnimatedSprite.h"
 
 ObjectManager::ObjectManager()
 {

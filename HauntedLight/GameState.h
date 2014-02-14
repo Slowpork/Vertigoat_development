@@ -6,16 +6,12 @@
 
 #include "SFML\System\Vector2.hpp";
 
-namespace sf
-{
-	class Sprite;
-};
-
 class System;
 class ObjectManager;
 class PlayerObject;
 class CollisionManager;
 class LightSystem;
+class AnimatedSprite;
 
 class GameState : public State {
 public:
@@ -49,9 +45,9 @@ private:
 
 	// OBJECTS
 	PlayerObject* player;
-	sf::Sprite* spr_cursor;
-	sf::Sprite* spr_darkness;
-	sf::Sprite* spr_floor;
+	AnimatedSprite* spr_cursor;
+	AnimatedSprite* spr_darkness;
+	AnimatedSprite* spr_floor;
 
 	// VARIABLES
 	bool m_done;

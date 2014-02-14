@@ -9,20 +9,21 @@ namespace sf
 };
 
 class Collider;
+class AnimatedSprite;
 
 class GameObject
 {
 	friend class CollisionManager;
 public:
 
-	GameObject(sf::Sprite* _sprite = nullptr, Collider* _collider = nullptr);
+	GameObject(AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
 
 	const sf::Vector2f& getPosition() const;
 	
 	void setPosition(sf::Vector2f& _pos);
 
 	bool hasSprite();
-	sf::Sprite* getSprite();
+	AnimatedSprite* getSprite();
 
 	bool hasCollider();
 	Collider* getCollider();
@@ -34,7 +35,7 @@ protected:
 protected:
 
 
-	sf::Sprite* m_sprite;
+	AnimatedSprite* m_sprite;
 	Collider* m_collider;
 
 	float m_friction;

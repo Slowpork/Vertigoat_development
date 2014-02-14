@@ -23,6 +23,7 @@
 #include "Wall.h"
 #include "PlayerObject.h"
 
+#include "AnimatedSprite.h"
 #include "Collider.h"
 
 void addWall(sf::Vector2f _pos);
@@ -43,8 +44,12 @@ GameState::GameState(System* _system)
 	m_view_beat = Math::PI_HALF;
 
 	// PLAYER
-	sf::Sprite* spr_player = m_system->m_sprite_manager->addSprite(
-		"player.png",0,0,128,128);
+	//AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
+	//	"player.png",0,0,128,128);
+
+	AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
+		"player_anim.png",0,0,155,155,7);
+
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
 	spr_floor = m_system->m_sprite_manager->addSprite(
@@ -87,7 +92,7 @@ void GameState::Exit(){
 
 void GameState::addWall(sf::Vector2f _pos)
 {
-	sf::Sprite* spr_wall = m_system->m_sprite_manager->addSprite(
+	AnimatedSprite* spr_wall = m_system->m_sprite_manager->addSprite(
 		"wall.png",0,0,128,128);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall wall(spr_wall,col_wall);

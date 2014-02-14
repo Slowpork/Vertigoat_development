@@ -55,10 +55,10 @@
     <Filter Include="Header Files\SubSystems\Sound">
       <UniqueIdentifier>{b193b421-dc6e-47bf-87ca-13c11877933a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Enemies">
+    <Filter Include="Header Files\Objects\Enemies">
       <UniqueIdentifier>{4f9822d0-88d9-4594-80fc-8b15f4a63681}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Enemies">
+    <Filter Include="Source Files\Objects\Enemies">
       <UniqueIdentifier>{d164f19d-f6a1-48bb-a553-6f256bde617f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -130,13 +130,13 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Crawler.cpp">
-      <Filter>Source Files\Enemies</Filter>
+      <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Critter.cpp">
-      <Filter>Source Files\Enemies</Filter>
+      <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Waller.cpp">
-      <Filter>Source Files\Enemies</Filter>
+      <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyObject.cpp">
       <Filter>Source Files\Objects</Filter>
@@ -219,13 +219,13 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Critter.h">
-      <Filter>Header Files\Enemies</Filter>
+      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Crawler.h">
-      <Filter>Header Files\Enemies</Filter>
+      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Waller.h">
-      <Filter>Header Files\Enemies</Filter>
+      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files\SubSystems</Filter>

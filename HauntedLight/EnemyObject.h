@@ -10,7 +10,7 @@
 class EnemyObject : public GameObject
 {
 public:
-	EnemyObject(sf::Sprite* _sprite = nullptr, Collider* _collider = nullptr);
+	EnemyObject(AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
 
 	void Update(float _deltatime);
 	void setVelocity(sf::Vector2f _vel);

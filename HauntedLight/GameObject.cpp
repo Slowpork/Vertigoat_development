@@ -1,11 +1,11 @@
 // GameObject.h
 
 #include "GameObject.h"
-#include "SFML\Graphics\Sprite.hpp"
+#include "AnimatedSprite.h"
 #include "Collider.h"
 #include "Math.h"
 
-GameObject::GameObject(sf::Sprite *_sprite, Collider *_collider)
+GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
 	m_sprite = _sprite;
 	m_collider = _collider;
@@ -39,7 +39,7 @@ bool GameObject::hasSprite()
 	return m_sprite != nullptr;
 }
 
-sf::Sprite* GameObject::getSprite()
+AnimatedSprite* GameObject::getSprite()
 {
 	return m_sprite;
 }

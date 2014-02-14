@@ -11,7 +11,7 @@ namespace sf
 class Wall : public GameObject
 {
 public:
-	Wall(sf::Sprite* _sprite, Collider* _collider = nullptr);
+	Wall(AnimatedSprite* _sprite, Collider* _collider = nullptr);
 private:
 
 private:

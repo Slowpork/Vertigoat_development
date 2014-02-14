@@ -3,13 +3,13 @@
 #include "PlayerObject.h"
 
 #include "SFML\Window\Keyboard.hpp"
-#include "SFML\Graphics\Sprite.hpp"
+#include "AnimatedSprite.h"
 
 #include "InputManager.h"
 #include "Collider.h"
 
 PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
-	sf::Sprite* _sprite, Collider* _collider)
+	AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
 	m_keyboard = _keyboard;
@@ -94,6 +94,11 @@ void PlayerObject::Update(float _deltatime)
 			m_stamina += _deltatime*(5.f + (5.f*!moving));
 		else
 		m_stamina = 100.f;
+	}
+
+	if (moving)
+	{
+		m_sprite->play(_deltatime);
 	}
 
 	// UPDATE
