@@ -38,6 +38,11 @@ void AnimatedSprite::setSpeed(float _speed)
 	m_global_speed = _speed;
 }
 
+sf::Vector2f AnimatedSprite::getSize()
+{
+	return sf::Vector2f(m_width,m_height);
+}
+
 void AnimatedSprite::setFrame(int _frame)
 {
 	//std::cout << "  X: " << _frame * m_width << " Y: " << m_y << " W: " << m_width << " H: " << m_height << std::endl;

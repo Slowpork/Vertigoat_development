@@ -2,6 +2,7 @@
 
 #pragma once
 #include <SFML\Graphics\Sprite.hpp>
+#include <SFML\System\Vector2.hpp>
 
 class AnimatedSprite : public sf::Sprite
 {
@@ -11,6 +12,8 @@ public:
 
 	void setFrame(int _frame);
 	void play(float _deltatime);
+
+	sf::Vector2f getSize();
 
 	void setSpeed(float _speed);
 	void setStart(int _start);

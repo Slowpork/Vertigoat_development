@@ -20,7 +20,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 	m_friction = 0.98f;
 
-	m_sprite->setOrigin(m_sprite->getLocalBounds().width/3,m_sprite->getLocalBounds().height/2);
+	m_sprite->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 
 	m_health = 100.f;
 	m_stamina = 100.f;
