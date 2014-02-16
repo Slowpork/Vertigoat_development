@@ -48,7 +48,7 @@ GameState::GameState(System* _system)
 	//	"player.png",0,0,128,128);
 
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
-		"player_anim.png",0,0,155,155,7);
+		"player_walk.png",0,0,128,128,7);
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
