@@ -42,6 +42,7 @@ GameState::GameState(System* _system)
 	m_light_system = new LightSystem(m_system->m_window);
 
 	m_view_beat = Math::PI_HALF;
+	m_view_beat = 0.f;
 
 	// PLAYER
 	//AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
@@ -77,8 +78,8 @@ GameState::GameState(System* _system)
 		{1,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{1,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -100,7 +101,7 @@ GameState::GameState(System* _system)
 		}
 	}
 
-	std::cout << " " << count;
+	std::cout << "  " << count;
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
@@ -133,9 +134,25 @@ void GameState::addWall(sf::Vector2f _pos)
 
 void GameState::viewBeat(float _deltatime)
 {
-	float tracking = player->getStamina();
+	float tracking = player->getSpeed();
 	//system("cls");
 	//std::cout << "\n  Stamina: " << tracking;
+
+	if (tracking == 0.95f)
+	{
+		if (m_view_beat < 1) 
+		m_view_beat += _deltatime;
+		else
+			m_view_beat == 1.f;
+	}
+	else
+	{
+		if (m_view_beat > 0) 
+		m_view_beat -= _deltatime*2;
+		else
+			m_view_beat == 0.f;
+	}
+
 	/*
 	if (tracking < 100)
 	{
@@ -158,7 +175,9 @@ void GameState::viewBeat(float _deltatime)
 	}
 	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;*/
 
-	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*1.5,m_system->m_height*1.5));
+	float scalefactor = 1.25 + m_view_beat*.5;
+
+	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
 
 void GameState::drawFloor()
@@ -252,6 +271,13 @@ void GameState::Draw()
 	
 	// DARKNESS
 	m_system->m_window->draw(*spr_darkness);
+
+	/*sf::RectangleShape rect(sf::Vector2f( 
+			m_system->m_width, 
+			m_system->m_height));
+		rect.setFillColor(sf::Color(0,0,0,255*m_view_beat));
+
+	m_system->m_window->draw(rect);*/
 
 	// CURSOR
 	m_system->m_window->draw(*spr_cursor);

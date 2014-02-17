@@ -298,9 +298,9 @@ void LightSystem::addTriangle(float angle1, float angle2, Segment* segment)
 	p2.y = center.y + Math::sin(angle2);
 	sf::Vector2f pEnd = LinesIntersection(p3, p4, p1, p2);
 
-	sf::Vertex middle(p1, sf::Color(255,146,38, 60));
-	sf::Vertex begin(pBegin, sf::Color(255,146,38, 60));
-	sf::Vertex end(pEnd, sf::Color(255,146,38, 60));
+	sf::Vertex middle(p1, sf::Color(206,133,34, 96));
+	sf::Vertex begin(pBegin, sf::Color(206,133,34, 96));
+	sf::Vertex end(pEnd, sf::Color(206,133,34, 96));
 
 	sf::Transform inverse;
 	sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);

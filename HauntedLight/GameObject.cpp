@@ -63,5 +63,5 @@ sf::Vector2f GameObject::getVelocity()
 
 float GameObject::getSpeed()
 {
-	return 0;
+	return m_friction;
 }

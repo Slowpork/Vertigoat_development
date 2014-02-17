@@ -98,6 +98,9 @@ void PlayerObject::Update(float _deltatime)
 
 	if (moving)
 	{
+		if ( m_friction == 0.95f)
+		m_sprite->play(_deltatime*1.3);
+		else
 		m_sprite->play(_deltatime);
 	}
 
