@@ -28,6 +28,9 @@ public:
 	bool hasCollider();
 	Collider* getCollider();
 
+	sf::Vector2f getVelocity();
+	float getSpeed();
+
 protected:
 
 	void turnToPoint(sf::Vector2f _point);

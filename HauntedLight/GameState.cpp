@@ -65,15 +65,45 @@ GameState::GameState(System* _system)
 		"darkness.png",0,0,1280,720);
 
 	// WALLS
-	addWall(sf::Vector2f(0,0));
-	addWall(sf::Vector2f(128,0));
-	addWall(sf::Vector2f(128,128));
-	addWall(sf::Vector2f(512,0));
-	addWall(sf::Vector2f(512,128));
-	addWall(sf::Vector2f(512,-128));
+	const float SIZE = 128;
+
+	bool map[15][25] = 
+	{
+		{1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	};
+
+	int count = 0;
+
+	for(int Y = 0; Y < 15; Y++)
+	{
+		for(int X = 0; X < 15; X++)
+		{
+			if (map[X][Y] /*&& count < 25*/)
+			{
+				addWall(sf::Vector2f(SIZE*X,SIZE*Y));
+				count++;
+			}
+		}
+	}
+
+	std::cout << " " << count;
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	//player->setPosition(sf::Vector2f(1280/2,720/2));
+	player->setPosition(sf::Vector2f(1280/2,720/2));
 
 	m_light_system->setBounds(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
 	m_light_system->update();
@@ -106,8 +136,10 @@ void GameState::viewBeat(float _deltatime)
 	float tracking = player->getStamina();
 	//system("cls");
 	//std::cout << "\n  Stamina: " << tracking;
+	/*
 	if (tracking < 100)
 	{
+
 		m_view_beat += (_deltatime/10) * (100 - tracking);
 		float scaleFactor = .85 + (sin(m_view_beat)+2)*.05;
 		m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scaleFactor,m_system->m_height*scaleFactor));
@@ -124,9 +156,9 @@ void GameState::viewBeat(float _deltatime)
 		m_view_beat = Math::PI_HALF;
 		m_system->m_view->setSize(sf::Vector2f(m_system->m_width,m_system->m_height));
 	}
-	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;
+	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;*/
 
-	m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x*1.5,m_system->m_view->getSize().y*1.5));
+	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*1.5,m_system->m_height*1.5));
 }
 
 void GameState::drawFloor()
@@ -181,7 +213,9 @@ bool GameState::Update(float _deltatime){
 
 	if (m_system->m_mouse->IsDownOnce(Left))
 	{
-		addWall(m_system->m_mouse->getPos());
+		addWall(sf::Vector2f(
+			m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128),
+			m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
 		m_light_system->update();
 	}
 	else if (m_system->m_mouse->IsDownOnce(Right))

@@ -5,6 +5,8 @@
 #include "Collider.h"
 #include "Math.h"
 
+#include <math.h>
+
 GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
 	m_sprite = _sprite;
@@ -52,4 +54,14 @@ bool GameObject::hasCollider()
 Collider* GameObject::getCollider()
 {
 	return m_collider;
+}
+
+sf::Vector2f GameObject::getVelocity()
+{
+	return m_vel;
+}
+
+float GameObject::getSpeed()
+{
+	return 0;
 }
