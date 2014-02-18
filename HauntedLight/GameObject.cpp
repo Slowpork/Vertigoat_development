@@ -13,6 +13,21 @@ GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 	m_collider = _collider;
 }
 
+GameObject::~GameObject()
+{
+	if (hasCollider())
+	{
+		m_collider = nullptr;
+		delete m_collider;
+	}
+
+	if (hasSprite())
+	{
+		m_sprite = nullptr;
+		delete m_sprite;
+	}
+}
+
 const sf::Vector2f& GameObject::getPosition() const
 {
 	return m_pos;

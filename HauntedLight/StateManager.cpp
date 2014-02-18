@@ -40,7 +40,8 @@ void StateManager::Attach(State *state)
 	m_states.push_back(state);
 }
 
-void StateManager::Update(float deltatime){
+void StateManager::Update(float deltatime)
+{
 	if(m_current == nullptr) { return; }
 	if(!m_current->Update(deltatime)) {
 		ChangeState();

@@ -17,6 +17,7 @@ class GameObject
 public:
 
 	GameObject(AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
+	~GameObject();
 
 	const sf::Vector2f& getPosition() const;
 	

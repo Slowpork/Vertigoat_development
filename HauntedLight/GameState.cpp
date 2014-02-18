@@ -136,9 +136,15 @@ void GameState::Exit(){
 	player = nullptr;
 	delete player;
 
+	m_collision_manager = nullptr;
+	delete m_collision_manager;
 
+	m_light_system = nullptr;
+	delete m_light_system;
 
 	m_object_manager->Cleanup();
+	m_object_manager = nullptr;
+	delete m_object_manager;
 }
 
 void GameState::addWall(sf::Vector2f _pos)
