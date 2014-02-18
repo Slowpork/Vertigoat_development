@@ -105,12 +105,10 @@
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="MusicClip.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="OptionsState.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="Random.cpp" />
-    <ClCompile Include="SoundClip.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -134,12 +132,10 @@
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MenuState.h" />
-    <ClInclude Include="MusicClip.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="OptionsState.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="Random.h" />
-    <ClInclude Include="SoundClip.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="State.h" />

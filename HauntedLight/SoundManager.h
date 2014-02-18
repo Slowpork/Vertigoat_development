@@ -1,22 +1,37 @@
 // SoundManager.h
 
 #pragma once
+#include <string>
+#include <vector>
+#include <map>
+#include <SFML\Audio\Sound.hpp>
 
+namespace sf
+{
+	class Sound;
+	class Music;
+}
 
-class MusicClip;
-class SoundClip;
 
 class SoundManager
 {
 public:
-	SoundManager();
+	SoundManager(std::string _dir);
 	~SoundManager();
 
-	MusicClip *CreateMusic(std::string _path);
-	SoundClip *CreateSound(std::string _path);
+
+
+
+
+	void addSound(const std::string& _filename);
+	sf::SoundBuffer* getSound(const std::string& _name);
+	
+	void Cleanup();
+
 private:
-	//std::map<std::string, Mix_Music*> Music;
-	//std::map<std::string, Mix_Chunk*> Sounds;
-	std::vector<MusicClip*> MusicClips;
-	std::vector<SoundClip*> SoundClips;
+
+private:
+	std::string m_dir;
+	std::map<std::string,sf::SoundBuffer> m_soundBuffer;
+
 };

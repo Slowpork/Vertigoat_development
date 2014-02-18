@@ -11,12 +11,17 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
+
 #include "System.h"
 
 #include "ObjectManager.h"
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 #include "LightSystem.h"
 

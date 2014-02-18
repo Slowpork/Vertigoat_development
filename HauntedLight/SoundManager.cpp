@@ -1,104 +1,39 @@
-// SoundManager
+// SoundManager.cpp
 
-#pragma once
-
-
-/*
 #include "SoundManager.h"
-#include "MusicClip.h"
-#include "SoundClip.h"
-
-#pragma comment(lib,"sdl2_mixer.lib")
-
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
 
 
-SoundManager::SoundManager()
+#include <iostream>
+
+SoundManager::SoundManager(std::string _dir)
 {
-	if (Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,2,2048) < 0)
-	{
-		printf(" SDL_mixer :: Msx_OpenAudio %s\n", Mix_GetError());
-	}
+	m_dir = _dir;
 }
 
-SoundManager::~SoundManager()
+void SoundManager::addSound(const std::string& _filename)
 {
-	for(int i = 0; i < SoundClips.size(); i++)
-	{
-		delete SoundClips[i];
-		SoundClips[i] = nullptr;
-	}
-	SoundClips.clear();
+	std::string path = m_dir + _filename;
+	sf::SoundBuffer soundBuffer;
+	soundBuffer.loadFromFile(path);
 
-	for(int i = 0; i < MusicClips.size(); i++)
-	{
-		delete MusicClips[i];
-		MusicClips[i] = nullptr;
-	}
-	MusicClips.clear();
-
-	{
-		std::map<std::string, Mix_Chunk*>::iterator it = Sounds.begin();
-		while( it != Sounds.end())
-		{
-			Mix_FreeChunk(it->second);
-			it->second = nullptr;
-			it++;
-		}
-		Sounds.clear();
-	}
-
-	{
-		std::map<std::string, Mix_Music*>::iterator it = Music.begin();
-		while( it != Music.end())
-		{
-			Mix_FreeMusic(it->second);
-			it->second = nullptr;
-			it++;
-		}
-		Music.clear();
-	}
-}
-
-MusicClip *SoundManager::CreateMusic(std::string _path)
-{
-	MusicClip *Ret = nullptr;
-
-	std::map<std::string, Mix_Music*>::iterator it = Music.find(_path);
-
-	if ( it == Music.end())
-	{
-		Mix_Music *Music = Mix_LoadMUS(_path.c_str());
-		std::pair<std::string, Mix_Music*> Pair;
-		Pair = std::make_pair(_path, Music);
-		Ret = new MusicClip(Music);
-	}
+	std::map<std::string, sf::SoundBuffer>::iterator it = m_soundBuffer.find(_filename);
+	if (it == m_soundBuffer.end())
+		m_soundBuffer.insert( std::pair<std::string, sf::SoundBuffer>(_filename, soundBuffer));
 	else
-		Ret = new MusicClip(it->second);
-
-	MusicClips.push_back(Ret);
-
-	return Ret;
+		std::cout << "  ------------\n ERROR: soundBuffer already exists. \n  -------------";
 }
 
-SoundClip *SoundManager::CreateSound(std::string _path)
+sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
 {
-	SoundClip *Ret = nullptr;
-
-	std::map<std::string, Mix_Chunk*>::iterator it = Sounds.find(_path);
-
-	if ( it == Sounds.end())
-	{
-		Mix_Chunk *Sound = Mix_LoadWAV(_path.c_str());
-		std::pair<std::string, Mix_Chunk*> Pair;
-		Pair = std::make_pair(_path, Sound);
-		Ret = new SoundClip(Sound);
-	}
+	std::map<std::string,sf::SoundBuffer>::iterator it = m_soundBuffer.find(_name);
+	if (it == m_soundBuffer.end())
+		return nullptr;
 	else
-		Ret = new SoundClip(it->second);
-
-	SoundClips.push_back(Ret);
-
-	return Ret;
+	return &it->second;
 }
 
-*/
+
+

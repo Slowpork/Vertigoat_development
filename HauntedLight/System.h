@@ -13,6 +13,7 @@ class SpriteManager;
 class KeyboardObject;
 class MouseObject;
 class FileManager;
+class SoundManager;
 
 class System
 {
@@ -45,7 +46,7 @@ private:
 
 	FileManager* m_file_manager;
 	SpriteManager* m_sprite_manager;
-	//SoundManager* m_sound_manager;
+	SoundManager* m_sound_manager;
 
 	KeyboardObject* m_keyboard;
 	MouseObject* m_mouse;
