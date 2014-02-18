@@ -19,6 +19,8 @@
 #include "SpriteManager.h"
 #include "InputManager.h"
 
+#include "SFML\Window\Keyboard.hpp"
+
 #include "Wall.h"
 #include "PlayerObject.h"
 
@@ -48,12 +50,27 @@ void MenuState::Exit(){
 
 bool MenuState::Update(float _deltatime){
 	//std::cout << "MenuState::Update" << std::endl;
-	
+
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::E))
+	m_done = true;
+	else
+		m_done = false;
+
 	return !m_done;
 }
 
 void MenuState::Draw(){
 	//std::cout << "MenuState::Draw" << std::endl;
+
+	sf::RectangleShape rect(sf::Vector2f( 
+		128, 
+		128));
+	rect.setOutlineColor(sf::Color::Red);
+	rect.setPosition(m_system->m_view->getCenter());
+	rect.setOutlineThickness(2.f);
+	rect.setFillColor(sf::Color(40,60,80,128));
+
+	m_system->m_window->draw(rect);
 }
 
 std::string MenuState::Next(){

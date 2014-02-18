@@ -6,6 +6,7 @@
 class System;
 
 class State {
+	friend class StateManager;
 public:
 	virtual ~State() {};
 

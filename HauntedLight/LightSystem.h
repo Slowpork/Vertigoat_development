@@ -6,6 +6,8 @@
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/VertexArray.hpp"
 
+#include "clipper.hpp"
+
 struct Segment;
 
 namespace sf
@@ -14,6 +16,7 @@ namespace sf
 	class ConvexShape;
 	class Font;
 	class RenderWindow;
+	class View;
 	class Vertex;
 }
 
@@ -44,12 +47,13 @@ struct Points
 };
 
 class State;
+class System;
 
 class LightSystem
 {
 public:
 
-	LightSystem(sf::RenderWindow* _window);
+	LightSystem(sf::RenderWindow* _window, sf::View* _view);
 	~LightSystem();
 
 	void logic();
@@ -94,10 +98,16 @@ private:
 	std::vector<Segment*> open;
 	std::vector<EndPoint*> endPoints;
 
+	// Inverted
+	ClipperLib::Path lightPoly;
+	std::vector<sf::Vertex> light;
+
 	sf::Vector2f center; // Light center
 	sf::VertexArray field_of_view;
 
-	std::vector<sf::Vertex> light;
+	//std::vector<sf::Vertex> light;
 
 	sf::RenderWindow* mWindow;
+
+	sf::View* m_view;
 };

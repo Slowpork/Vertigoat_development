@@ -32,11 +32,12 @@ bool Engine::Init()
 	FileManager file_manager;
 	file_manager.Write("../bin/Awesome.txt", "#Yolo");
 
-	state_manager.Attach(new MenuState(m_system));
-	state_manager.Attach(new LoadingState(m_system));
-	state_manager.Attach(new OptionsState(m_system));
-	state_manager.Attach(new GameState(m_system));
-	state_manager.SetState("LoadingState");
+	m_state_manager.Attach(new GameState(m_system));
+	m_state_manager.Attach(new MenuState(m_system));
+	m_state_manager.Attach(new LoadingState(m_system));
+	m_state_manager.Attach(new OptionsState(m_system));
+	m_state_manager.SetState("LoadingState");
+	m_state_manager.setMain("GameState");
 
 	m_running = true;
 	return true;
@@ -49,14 +50,15 @@ void Engine::Run()
 		// UPDATE
 		updateDeltatime();
 		updateEvents();
-		state_manager.Update(m_deltatime);
+		m_state_manager.Update(m_deltatime);
 
-		if ( !state_manager.IsRunning())
+		if ( !m_state_manager.IsRunning())
 			m_running = false;
 
 		// DRAW 
 		m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
-		state_manager.Draw();
+		m_state_manager.Draw();
+
 		m_system->m_window->display();
 
 		m_system->m_keyboard->PostUpdate();
@@ -118,8 +120,6 @@ void Engine::updateEvents()
 		{
 			m_system->m_mouse->x = event.mouseMove.x;
 			m_system->m_mouse->y = event.mouseMove.y;
-			
-			
 		}
 	}
 

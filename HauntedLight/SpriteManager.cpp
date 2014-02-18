@@ -52,21 +52,3 @@ AnimatedSprite* SpriteManager::addSprite(const std::string& _filename,
 
 	return sprite;
 }
-
-/*
-sf::Sprite* SpriteManager::addSprite(const std::string& _filename, int _x, int _y, int _w, int _h)
-{
-	sf::Sprite* sprite = new sf::Sprite();
-
-	std::map<std::string, sf::Texture>::iterator it = m_textures.find(_filename);
-	if (it == m_textures.end())
-	{
-		std::cout << "------------\n ERROR: Texture does not exist. \n-------------";
-		return nullptr;
-	}
-
-	sprite->setTexture(it->second);
-	sprite->setTextureRect(sf::IntRect(sf::Vector2i(_x,_y),sf::Vector2i(_w,_h)));
-
-	return sprite;
-}*/

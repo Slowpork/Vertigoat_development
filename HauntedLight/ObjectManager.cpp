@@ -18,7 +18,7 @@ void ObjectManager::Cleanup()
 	for(auto object: m_objects)
 	{
 		object.obj = nullptr;
-		//delete object.obj;
+		delete &object.obj;
 	}
 }
 

@@ -11,6 +11,8 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 
+#include "SFML\Window\Keyboard.hpp"
+
 #include "System.h"
 
 #include "ObjectManager.h"
@@ -35,11 +37,18 @@ GameState::GameState(System* _system)
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
-
 	m_object_manager = new ObjectManager();
+
+	//sf::Sprite
+}
+
+bool GameState::Enter()
+{
+	std::cout << m_name << std::endl;
+
 	m_collision_manager = new CollisionManager(m_object_manager);
 
-	m_light_system = new LightSystem(m_system->m_window);
+	m_light_system = new LightSystem(m_system->m_window, m_system->m_view);
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
@@ -109,16 +118,18 @@ GameState::GameState(System* _system)
 	m_light_system->setBounds(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
 	m_light_system->update();
 
-	//sf::Sprite
-}
-
-bool GameState::Enter(){
-	std::cout << m_name << std::endl;
 	return true;
 }
 
 void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
+
+	player = nullptr;
+	delete player;
+
+
+
+	m_object_manager->Cleanup();
 }
 
 void GameState::addWall(sf::Vector2f _pos)
@@ -246,7 +257,10 @@ bool GameState::Update(float _deltatime){
 		}
 	}
 
+	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	return true;
+	else
+	return false;
 }
 
 void GameState::Draw()
@@ -255,7 +269,7 @@ void GameState::Draw()
 	m_system->m_window->setView(*m_system->m_view);
 
 	// FLOOR
-	//drawFloor();
+	drawFloor();
 	
 	// DYNAMIC LIGHTING
 	m_light_system->Draw();

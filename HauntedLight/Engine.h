@@ -23,7 +23,7 @@ protected:
 	void updateDeltatime();
 
 	System* m_system;
-	StateManager state_manager;
+	StateManager m_state_manager;
 
 	bool m_running;
 	float m_deltatime;

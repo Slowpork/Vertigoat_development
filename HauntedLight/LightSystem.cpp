@@ -13,6 +13,8 @@
 #include "Random.h"
 #include "Math.h"
 
+#include "clipper.hpp"
+
 void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 {
 	Points *point = new Points();
@@ -26,9 +28,10 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 	//loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
 }
 
-LightSystem::LightSystem(sf::RenderWindow* _window)
+LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view)
 {
 	mWindow = _window;
+	m_view = _view;
 
 	mapPos = sf::Vector2f(0.f,0.f);
 	mapSize = sf::Vector2f(1024.f,1024.f);
@@ -208,6 +211,7 @@ void LightSystem::sweep()
 	std::sort(endPoints.begin(), endPoints.end(), sortEndPoints);
 
 	field_of_view.clear(); // Clear all vertex becuase we will have new ones from our addTriangle();
+	lightPoly.clear();
 	open.clear();
 	float startingAngle = 0.0f;
 
@@ -250,8 +254,62 @@ void LightSystem::sweep()
 		}
 	}
 
-	//light.clear();
-	//light.emplace_back(light_pos, sf::Color(44,29,23, 255));
+	// INVERT TO SHADOWS
+
+	/*
+
+	ClipperLib::Path maskPoly;
+	maskPoly.clear();
+
+	sf::Vector2f p1(m_view->getCenter().x - m_view->getSize().x-2,
+					m_view->getCenter().y - m_view->getSize().y-2);
+
+	sf::Vector2f p2(m_view->getCenter().x + m_view->getSize().x-2,
+					m_view->getCenter().y - m_view->getSize().y-2);
+
+	sf::Vector2f p3(m_view->getCenter().x - m_view->getSize().x-2,
+					m_view->getCenter().y + m_view->getSize().y-2);
+
+	sf::Vector2f p4(m_view->getCenter().x + m_view->getSize().x-2,
+					m_view->getCenter().y + m_view->getSize().y-2);
+
+	maskPoly.emplace_back(p1.x,p1.y);
+	maskPoly.emplace_back(p2.x,p2.y);
+	maskPoly.emplace_back(p3.x,p3.y);
+	maskPoly.emplace_back(p4.x,p4.y);
+
+	for(auto point: light)
+	{
+		lightPoly.emplace_back(point.position.x,point.position.y);
+	}
+
+	ClipperLib::Clipper clipper;
+	clipper.AddPath(maskPoly,ClipperLib::ptSubject, true);
+	clipper.AddPath(lightPoly,ClipperLib::ptClip, true);
+
+	ClipperLib::Paths output;
+	clipper.Execute(ClipperLib::ctDifference, output, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
+
+	light.clear();
+	light.emplace_back(light_pos, sf::Color(44,29,23, 255));
+
+	if ( !output.empty())
+	{
+		ClipperLib::Path &path = output[0];
+
+		for (ClipperLib::IntPoint &point : path)
+		{
+			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
+			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
+		}
+		{
+			ClipperLib::IntPoint &point = path[0];
+			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
+			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
+		}
+	}
+
+	*/
 }
 
 bool LightSystem::_segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo)
@@ -302,8 +360,8 @@ void LightSystem::addTriangle(float angle1, float angle2, Segment* segment)
 	sf::Vertex begin(pBegin, sf::Color(206,133,34, 96));
 	sf::Vertex end(pEnd, sf::Color(206,133,34, 96));
 
-	sf::Transform inverse;
-	sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);
+	//sf::Transform inverse;
+	//sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);
 
 	field_of_view.append(middle);
 	field_of_view.append(begin);

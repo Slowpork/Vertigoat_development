@@ -144,6 +144,9 @@
     <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
+    <ClCompile Include="clipper.cpp">
+      <Filter>Source Files\SubSystems\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files\SubSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="clipper.hpp">
+      <Filter>Header Files\SubSystems\Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
