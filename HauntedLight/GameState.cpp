@@ -49,7 +49,7 @@ GameState::GameState(System* _system)
 	//	"player.png",0,0,128,128);
 
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
-		"player_walk.png",0,0,128,128,7);
+		"spr_player_walk.png",0,0,128,128,8);
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
@@ -140,17 +140,17 @@ void GameState::viewBeat(float _deltatime)
 
 	if (tracking == 0.95f)
 	{
-		if (m_view_beat < 1) 
-		m_view_beat += _deltatime;
-		else
-			m_view_beat == 1.f;
-	}
-	else
-	{
 		if (m_view_beat > 0) 
 		m_view_beat -= _deltatime*2;
 		else
 			m_view_beat == 0.f;
+	}
+	else
+	{
+		if (m_view_beat < 1)
+		m_view_beat += _deltatime;
+		else
+			m_view_beat == 1.f;
 	}
 
 	/*
@@ -175,7 +175,7 @@ void GameState::viewBeat(float _deltatime)
 	}
 	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;*/
 
-	float scalefactor = 1.25 + m_view_beat*.5;
+	float scalefactor = 1 + m_view_beat*.5;
 
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
@@ -255,7 +255,7 @@ void GameState::Draw()
 	m_system->m_window->setView(*m_system->m_view);
 
 	// FLOOR
-	drawFloor();
+	//drawFloor();
 	
 	// DYNAMIC LIGHTING
 	m_light_system->Draw();
