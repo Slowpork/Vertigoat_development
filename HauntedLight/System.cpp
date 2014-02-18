@@ -8,7 +8,9 @@
 #include "InputManager.h"
 
 #include "SpriteManager.h"
+#include "SoundManager.h"
 #include "FileManager.h"
+
 
 System::System()
 {
@@ -78,7 +80,10 @@ bool System::Init()
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
 	tex_wall->setSmooth(true);
 
-	//m_sound_manager = new SoundManager();
+	m_sound_manager = new SoundManager("../data/sounds/");
+
+	//LOAD ALL THE SOUNDS
+//	m_sound_manager->addSound();
 
 	m_keyboard = new KeyboardObject();
 	m_mouse = new MouseObject();

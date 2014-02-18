@@ -78,12 +78,6 @@
     <ClCompile Include="LightSystem.cpp">
       <Filter>Source Files\SubSystems\Light</Filter>
     </ClCompile>
-    <ClCompile Include="MusicClip.cpp">
-      <Filter>Source Files\SubSystems\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundClip.cpp">
-      <Filter>Source Files\SubSystems\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -163,12 +157,6 @@
     </ClInclude>
     <ClInclude Include="LightSystem.h">
       <Filter>Header Files\SubSystems\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="MusicClip.h">
-      <Filter>Header Files\SubSystems\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundClip.h">
-      <Filter>Header Files\SubSystems\Sound</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Header Files\States</Filter>

@@ -11,7 +11,13 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 
+<<<<<<< HEAD
 #include "SFML\Window\Keyboard.hpp"
+=======
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
+>>>>>>> 782129b32e158e50b944dacf5c2d664b06964ec2
 
 #include "System.h"
 
@@ -19,6 +25,7 @@
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 #include "LightSystem.h"
 
