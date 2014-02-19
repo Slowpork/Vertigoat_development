@@ -10,6 +10,7 @@
 #include "SFML\Graphics\View.hpp"
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
+#include "SFML\Graphics\Text.hpp"
 
 #include "SFML\Window\Keyboard.hpp"
 
@@ -28,6 +29,7 @@
 #include "SpriteManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
+#include "FontManager.h"
 
 #include "LightSystem.h"
 
@@ -68,22 +70,17 @@ bool GameState::Enter()
 
 	//snd_thud = m_system->m_sound_manager->getSound("thud.wav");
 
-	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite(
-		"spr_player_walk.png",0,0,128,128,8);
+	// FONTS
+	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
 
-	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	// SPRITES
+	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
+	spr_floor = m_system->m_sprite_manager->getSprite("floor.png",0,0,400,400);
 
-	spr_floor = m_system->m_sprite_manager->getSprite(
-		"floor.png",0,0,400,400);
-
-	// CURSOR
-	spr_cursor = m_system->m_sprite_manager->getSprite(
-		"curs.png",0,0,16,16);
+	spr_cursor = m_system->m_sprite_manager->getSprite("curs.png",0,0,16,16);
 	spr_cursor->setOrigin(8,8);
 
-	// DARKNESS
-	spr_darkness = m_system->m_sprite_manager->getSprite(
-		"darkness.png",0,0,1280,720);
+	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 
 	// WALLS
 	const float SIZE = 128;
@@ -123,6 +120,8 @@ bool GameState::Enter()
 
 	std::cout << "  " << count;
 
+	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
 
@@ -156,7 +155,7 @@ void GameState::addWall(sf::Vector2f _pos)
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall wall(spr_wall,col_wall);
 	wall.setPosition(_pos);
-	m_object_manager->Add(wall,5);
+	m_object_manager->Add(&wall,5);
 	m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 
@@ -257,7 +256,7 @@ bool GameState::Update(float _deltatime){
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
-
+	
 	if (m_system->m_mouse->IsDownOnce(Left))
 	{
 		addWall(sf::Vector2f(
@@ -267,11 +266,13 @@ bool GameState::Update(float _deltatime){
 	}
 	else if (m_system->m_mouse->IsDownOnce(Right))
 	{
-		Objects* obj = m_object_manager->atPosition(m_system->m_mouse->getPos());
-		if ( obj != nullptr)
+		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
+		if ( ID != -1)
 		{
-			m_object_manager->destroy(obj);
+			//std::cout << "  at";
+			m_object_manager->destroy(ID);
 		}
+		m_light_system->update();
 	}
 
 	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
@@ -312,7 +313,17 @@ void GameState::Draw()
 
 	// CURSOR
 	m_system->m_window->draw(*spr_cursor);
-	
+
+	sf::Text txt_hello;
+
+	txt_hello.setFont(*fnt_small);
+
+	txt_hello.setString("Hello World");
+	txt_hello.setPosition(0,0);
+	txt_hello.setColor(sf::Color::Red);
+	txt_hello.setScale(2,2);
+
+	m_system->m_window->draw(txt_hello);
 }
 
 std::string GameState::Next(){

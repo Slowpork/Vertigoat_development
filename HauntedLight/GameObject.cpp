@@ -11,6 +11,7 @@ GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
 	m_sprite = _sprite;
 	m_collider = _collider;
+	m_depth = 0.f;
 }
 
 GameObject::~GameObject()
@@ -42,6 +43,16 @@ void GameObject::setPosition(sf::Vector2f& _pos)
 
 	if ( hasCollider())
 		m_collider->m_pos = m_pos;
+}
+
+const float& GameObject::getDepth()
+{
+	return m_depth;
+}
+
+void GameObject::setDepth(int _depth)
+{
+	m_depth = _depth;
 }
 
 void GameObject::turnToPoint(sf::Vector2f _point)

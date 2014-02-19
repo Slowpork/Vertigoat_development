@@ -7,6 +7,8 @@
 
 #include "AnimatedSprite.h"
 
+int ObjectManager::ID = 0;
+
 ObjectManager::ObjectManager()
 {
 	m_min_z = 0;
@@ -17,39 +19,46 @@ void ObjectManager::Cleanup()
 {
 	for(auto object: m_objects)
 	{
-		object.obj = nullptr;
-		delete &object.obj;
+		object.second = nullptr;
+		delete &object;
 	}
 }
 
-void ObjectManager::Add(GameObject& _object, int _depth)
+void ObjectManager::Add(GameObject* _object, int _depth)
 {
-	Objects object;
-
-	object.obj = _object;
-	object.depth = _depth;
-
-	m_objects.push_back(object);
+	_object->setDepth(_depth);
+	ID++;
+	m_objects.insert( std::pair<int, GameObject>(ID, *_object));
 }
 
-void ObjectManager::destroy(Objects* _obj)
+void ObjectManager::destroy(int _ID)
 {
-	/*std::vector<Objects>::iterator pos = std::find(m_objects.begin(), m_objects.end(),_obj);
-	m_objects.erase(pos);*/
+	std::map<int, GameObject>::iterator pos = m_objects.find(_ID);
+	m_objects.erase(pos);
 }
 
-Objects* ObjectManager::atPosition(sf::Vector2f _pos)
+int ObjectManager::getObjects()
 {
-	/*
+	return m_objects.size();
+}
+
+int ObjectManager::atPosition(sf::Vector2f _pos)
+{
 	for(auto object: m_objects)
 	{
-		if ( object.obj.getPosition() == _pos)
-		{
-			return object;
-		}
-	}*/
+		sf::Vector2f pos = object.second.getPosition();
+		sf::Vector2f size = object.second.getSprite()->getSize();
 
-	return nullptr;
+		if ( _pos.x > pos.x && _pos.x < pos.x + size.x )
+		{
+			if ( _pos.y > pos.y && _pos.y < pos.y + size.y)
+			{
+				return object.first;
+			}
+		}
+	}
+
+	return -1;
 }
 
 bool ObjectManager::setActiveDepth(int _min, int _max)
@@ -71,10 +80,10 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 	{
 		for(auto object: m_objects)
 		{
-			if (object.depth == z && object.obj.hasSprite())
+			if (object.second.getDepth() == z && object.second.hasSprite())
 			{
 				//std::cout << object.depth << std::endl;
-				_window->draw(*object.obj.getSprite());
+				_window->draw(*object.second.getSprite());
 				
 				/*
 				sf::RectangleShape shape;

@@ -99,6 +99,7 @@
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="InputManager.h" />

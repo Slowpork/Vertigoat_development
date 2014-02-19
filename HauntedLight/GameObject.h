@@ -20,8 +20,10 @@ public:
 	~GameObject();
 
 	const sf::Vector2f& getPosition() const;
-	
 	void setPosition(sf::Vector2f& _pos);
+
+	const float& getDepth();
+	void setDepth(int _depth);
 
 	bool hasSprite();
 	AnimatedSprite* getSprite();
@@ -43,7 +45,10 @@ protected:
 	Collider* m_collider;
 
 	float m_friction;
+	float m_min_friction;
+	float m_max_friction;
 
 	sf::Vector2f m_pos;
 	sf::Vector2f m_vel;
+	float m_depth;
 };

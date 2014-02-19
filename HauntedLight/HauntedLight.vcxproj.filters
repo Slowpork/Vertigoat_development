@@ -141,6 +141,9 @@
     <ClCompile Include="clipper.cpp">
       <Filter>Source Files\SubSystems\Light</Filter>
     </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="clipper.hpp">
       <Filter>Header Files\SubSystems\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,9 +16,10 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_mouse = _mouse;
 
 	m_vel = sf::Vector2f(0.f,0.f);
-	m_max_vel = sf::Vector2f(256.f,256.f);
 
-	m_friction = 0.98f;
+	m_min_friction = 0.92f;
+	m_max_friction = 0.88f;
+	m_friction = m_max_friction;
 
 	m_sprite->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 
@@ -48,7 +49,7 @@ void PlayerObject::doFriction()
 
 void PlayerObject::Update(float _deltatime)
 {
-	const float speed = 32.f;
+	const float speed = 44.f;
 
 	bool moving = false;
 
@@ -79,7 +80,7 @@ void PlayerObject::Update(float _deltatime)
 	{
 		if (m_keyboard->IsDown(sf::Keyboard::LShift))
 		{
-			m_friction = 0.95f;
+			m_friction = m_min_friction;
 			if ( moving)
 				m_stamina -= _deltatime*25.f;
 		}
@@ -89,7 +90,7 @@ void PlayerObject::Update(float _deltatime)
 
 	if (!moving || !m_keyboard->IsDown(sf::Keyboard::LShift))
 	{
-		m_friction = 0.9f;
+		m_friction = m_max_friction;
 		if (m_stamina < 100.f)
 			m_stamina += _deltatime*(5.f + (5.f*!moving));
 		else
@@ -98,7 +99,7 @@ void PlayerObject::Update(float _deltatime)
 
 	if (moving)
 	{
-		if ( m_friction == 0.95f)
+		if ( m_friction == m_min_friction)
 		m_sprite->play(_deltatime*1.3);
 		else
 		m_sprite->play(_deltatime);

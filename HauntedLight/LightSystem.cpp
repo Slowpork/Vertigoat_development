@@ -51,7 +51,6 @@ LightSystem::~LightSystem()
 void LightSystem::logic()
 {
 	sweep();
-	
 }
 
 void LightSystem::Draw()

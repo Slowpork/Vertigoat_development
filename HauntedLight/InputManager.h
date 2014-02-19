@@ -48,6 +48,7 @@ public:
 
 	int GetX() const;
 	int GetY() const;
+
 	sf::Vector2f getPos() const;
 	bool IsDown(EMouseButton _button) const;
 	bool IsDownOnce(EMouseButton _button) const;

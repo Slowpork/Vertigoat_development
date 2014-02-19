@@ -18,6 +18,7 @@ namespace sf
 {
 	class SoundBuffer;
 	class Music;
+	class Font;
 };
 
 class GameState : public State {
@@ -58,6 +59,9 @@ private:
 
 	// SOUNDS
 	sf::SoundBuffer* snd_thud;
+
+	// FONTS
+	sf::Font* fnt_small;
 
 	// VARIABLES
 	bool m_done;
