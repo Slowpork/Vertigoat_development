@@ -68,21 +68,21 @@ bool GameState::Enter()
 
 	//snd_thud = m_system->m_sound_manager->getSound("thud.wav");
 
-	AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
+	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite(
 		"spr_player_walk.png",0,0,128,128,8);
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
-	spr_floor = m_system->m_sprite_manager->addSprite(
+	spr_floor = m_system->m_sprite_manager->getSprite(
 		"floor.png",0,0,400,400);
 
 	// CURSOR
-	spr_cursor = m_system->m_sprite_manager->addSprite(
+	spr_cursor = m_system->m_sprite_manager->getSprite(
 		"curs.png",0,0,16,16);
 	spr_cursor->setOrigin(8,8);
 
 	// DARKNESS
-	spr_darkness = m_system->m_sprite_manager->addSprite(
+	spr_darkness = m_system->m_sprite_manager->getSprite(
 		"darkness.png",0,0,1280,720);
 
 	// WALLS
@@ -151,7 +151,7 @@ void GameState::Exit(){
 
 void GameState::addWall(sf::Vector2f _pos)
 {
-	AnimatedSprite* spr_wall = m_system->m_sprite_manager->addSprite(
+	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
 		"wall.png",0,0,128,128);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall wall(spr_wall,col_wall);

@@ -19,10 +19,8 @@ public:
 	void addTexture(const std::string& _filename);
 	sf::Texture* getTexture(const std::string& _name);
 
-	AnimatedSprite* addSprite(
+	AnimatedSprite* getSprite(
 		const std::string& _filename, int _x, int _y, int _w, int _h, int _frames = 1);
-
-	//sf::Sprite* addSprite(const std::string& _filename, int _x, int _y, int _w, int _h);
 	
 	void Cleanup();
 

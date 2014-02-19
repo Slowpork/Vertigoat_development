@@ -35,7 +35,7 @@ sf::Texture* SpriteManager::getTexture(const std::string& _name)
 	return &it->second;
 }
 
-AnimatedSprite* SpriteManager::addSprite(const std::string& _filename, 
+AnimatedSprite* SpriteManager::getSprite(const std::string& _filename, 
 										 int _x, int _y, int _w, int _h, int _frames)
 {
 	AnimatedSprite* sprite = new AnimatedSprite(_frames, _w, _h);
