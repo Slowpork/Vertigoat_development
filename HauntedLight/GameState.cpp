@@ -66,6 +66,8 @@ bool GameState::Enter()
 	//AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
 	//	"player.png",0,0,128,128);
 
+	//snd_thud = m_system->m_sound_manager->getSound("thud.wav");
+
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
 		"spr_player_walk.png",0,0,128,128,8);
 

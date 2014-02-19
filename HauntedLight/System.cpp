@@ -77,6 +77,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("player_walk.png");
 	m_sprite_manager->addTexture("spr_player_walk.png");
 
+	//m_sound_manager->addSound("thud.wav");
+
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
 	tex_wall->setSmooth(true);
 

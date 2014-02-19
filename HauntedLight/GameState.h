@@ -13,6 +13,13 @@ class CollisionManager;
 class LightSystem;
 class AnimatedSprite;
 
+
+namespace sf
+{
+	class SoundBuffer;
+	class Music;
+};
+
 class GameState : public State {
 public:
 	GameState(System* _system);
@@ -48,6 +55,9 @@ private:
 	AnimatedSprite* spr_cursor;
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;
+
+	// SOUNDS
+	sf::SoundBuffer* snd_thud;
 
 	// VARIABLES
 	bool m_done;

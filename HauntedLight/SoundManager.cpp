@@ -34,6 +34,3 @@ sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
 	else
 	return &it->second;
 }
-
-
-
