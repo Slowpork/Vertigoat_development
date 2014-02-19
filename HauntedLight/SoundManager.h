@@ -19,8 +19,9 @@ public:
 	SoundManager(std::string _dir);
 	~SoundManager();
 
-	void addSound(const std::string& _filename);
-	sf::SoundBuffer* getSound(const std::string& _name);
+	void addSoundBuffer(const std::string& _filename);
+//	sf::SoundBuffer* getSound(const std::string& _name);
+	void addMusic(const std::string&_filename);
 	
 	void Cleanup();
 
@@ -29,5 +30,6 @@ private:
 private:
 	std::string m_dir;
 	std::map<std::string,sf::SoundBuffer> m_soundBuffer;
+	std::map<std::string,sf::Music> m_music;
 
 };
