@@ -318,10 +318,10 @@ void GameState::Draw()
 
 	txt_hello.setFont(*fnt_small);
 
-	txt_hello.setString("Hello World");
+	txt_hello.setString("You Dead");
 	txt_hello.setPosition(0,0);
 	txt_hello.setColor(sf::Color::Red);
-	txt_hello.setScale(2,2);
+	txt_hello.setCharacterSize(480);
 
 	m_system->m_window->draw(txt_hello);
 }

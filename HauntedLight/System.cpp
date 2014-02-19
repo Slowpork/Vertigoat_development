@@ -30,7 +30,7 @@ System::System()
 	m_file_manager = nullptr;
 	m_sprite_manager = nullptr;
 	m_font_manager = nullptr;
-	//m_sound_manager = nullptr;
+	m_sound_manager = nullptr;
 
 	m_keyboard = nullptr;
 	m_mouse = nullptr;
@@ -48,7 +48,7 @@ bool System::Init()
 		return false;
 
 	// VIEW
-	m_view = new sf::View(sf::FloatRect(0,0,m_width,m_height));
+	m_view = new sf::View(sf::FloatRect(0,0,(float)m_width,(float)m_height));
 	m_view->setViewport(sf::FloatRect(0,0,1,1));
 	//m_window->setView(*m_view);
 

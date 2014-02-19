@@ -20,8 +20,6 @@ void FontManager::addFont(const std::string _filename)
 		m_fonts.insert( std::pair<std::string, sf::Font>(_filename, font));
 	else
 		std::cout << "  ------------\n ERROR: Font already exists. \n  -------------";
-
-	std::cout << "added font";
 }
 
 sf::Font* FontManager::getFont(const std::string _filename)
@@ -32,8 +30,6 @@ sf::Font* FontManager::getFont(const std::string _filename)
 		std::cout << "  ------------\n ERROR: Font does not exist. \n  -------------";
 		return nullptr;
 	}
-
-	std::cout << "got font";
 
 	return &it->second;
 }

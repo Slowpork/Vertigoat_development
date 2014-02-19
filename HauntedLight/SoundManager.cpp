@@ -5,7 +5,6 @@
 #include "SFML\Audio\SoundBuffer.hpp"
 #include "SFML\Audio\Music.hpp"
 
-
 #include <iostream>
 
 SoundManager::SoundManager(std::string _dir)
@@ -26,6 +25,7 @@ void SoundManager::addSoundBuffer(const std::string& _filename)
 		std::cout << "  ------------\n ERROR: soundBuffer already exists. \n  -------------";
 }
 
+/*
 void SoundManager::addMusic(const std::string&_filename) 
 {
 	std::string path = m_dir + _filename;
@@ -37,9 +37,7 @@ void SoundManager::addMusic(const std::string&_filename)
 		m_music.insert( std::pair<std::string, sf::Music>(_filename, music));
 	else
 		std::cout << "  ------------\n ERROR: Music already exists. \n  -------------";
-
-
-}
+}*/
 
 /*
 sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
