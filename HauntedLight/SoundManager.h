@@ -20,8 +20,9 @@ public:
 	~SoundManager();
 
 	void addSoundBuffer(const std::string& _filename);
-//	sf::SoundBuffer* getSound(const std::string& _name);
 	void addMusic(const std::string&_filename);
+	sf::Sound* GetSound(const std::string& _filename);
+	sf::Music* GetMusic(const std::string& _filename);
 	
 	void Cleanup();
 
