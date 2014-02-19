@@ -13,7 +13,7 @@ SoundManager::SoundManager(std::string _dir)
 	m_dir = _dir;
 }
 
-void SoundManager::addSound(const std::string& _filename)
+void SoundManager::addSoundBuffer(const std::string& _filename)
 {
 	std::string path = m_dir + _filename;
 	sf::SoundBuffer soundBuffer;
@@ -26,6 +26,22 @@ void SoundManager::addSound(const std::string& _filename)
 		std::cout << "  ------------\n ERROR: soundBuffer already exists. \n  -------------";
 }
 
+void SoundManager::addMusic(const std::string&_filename) 
+{
+	std::string path = m_dir + _filename;
+	sf::Music music;
+	music.openFromFile(path);
+
+	std::map<std::string, sf::Music>::iterator it = m_music.find(_filename);
+	if (it == m_music.end())
+		m_music.insert( std::pair<std::string, sf::Music>(_filename, music));
+	else
+		std::cout << "  ------------\n ERROR: Music already exists. \n  -------------";
+
+
+}
+
+/*
 sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
 {
 	std::map<std::string,sf::SoundBuffer>::iterator it = m_soundBuffer.find(_name);
@@ -34,3 +50,5 @@ sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
 	else
 	return &it->second;
 }
+*/
+

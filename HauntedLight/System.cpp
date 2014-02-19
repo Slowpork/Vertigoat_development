@@ -85,7 +85,7 @@ bool System::Init()
 	m_sound_manager = new SoundManager("../data/sounds/");
 
 	//LOAD ALL THE SOUNDS
-//	m_sound_manager->addSound();
+	m_sound_manager->addSoundBuffer("cow_bell.wav");
 
 	m_keyboard = new KeyboardObject();
 	m_mouse = new MouseObject();
