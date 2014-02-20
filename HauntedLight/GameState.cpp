@@ -229,7 +229,7 @@ void GameState::drawFloor()
 			spr_floor->setPosition(
 				X,
 				Y);
-			m_system->m_window->draw(*spr_floor);
+			m_system->m_window->draw(*spr_floor, sf::BlendMultiply);
 		}
 	}
 }
@@ -286,15 +286,27 @@ void GameState::Draw()
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
-	// FLOOR
-	drawFloor();
+	
 	
 	// DYNAMIC LIGHTING
+	sf::RectangleShape rect(sf::Vector2f( 
+			m_system->m_width*2, 
+			m_system->m_height*2));
+	rect.setFillColor(sf::Color(0,0,0,255));
+	rect.setPosition(m_system->m_view->getCenter().x - m_system->m_view->getSize().x,
+					m_system->m_view->getCenter().y - m_system->m_view->getSize().y);
+
+	m_system->m_window->draw(rect);
+
 	m_light_system->Draw();
+	
+	// FLOOR
+	drawFloor();
 
 	// PLAYER
 	m_system->m_window->draw(*player->getSprite());
 
+	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);
 	m_object_manager->Draw(m_system->m_window);
 
@@ -303,13 +315,6 @@ void GameState::Draw()
 	
 	// DARKNESS
 	m_system->m_window->draw(*spr_darkness);
-
-	/*sf::RectangleShape rect(sf::Vector2f( 
-			m_system->m_width, 
-			m_system->m_height));
-		rect.setFillColor(sf::Color(0,0,0,255*m_view_beat));
-
-	m_system->m_window->draw(rect);*/
 
 	// CURSOR
 	m_system->m_window->draw(*spr_cursor);
@@ -323,7 +328,7 @@ void GameState::Draw()
 	txt_hello.setColor(sf::Color::Red);
 	txt_hello.setCharacterSize(480);
 
-	m_system->m_window->draw(txt_hello);
+	//m_system->m_window->draw(txt_hello);
 }
 
 std::string GameState::Next(){

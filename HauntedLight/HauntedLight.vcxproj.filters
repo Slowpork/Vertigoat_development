@@ -138,9 +138,6 @@
     <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
-    <ClCompile Include="clipper.cpp">
-      <Filter>Source Files\SubSystems\Light</Filter>
-    </ClCompile>
     <ClCompile Include="FontManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -223,9 +220,6 @@
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files\SubSystems</Filter>
-    </ClInclude>
-    <ClInclude Include="clipper.hpp">
-      <Filter>Header Files\SubSystems\Light</Filter>
     </ClInclude>
     <ClInclude Include="FontManager.h">
       <Filter>Header Files\Managers</Filter>

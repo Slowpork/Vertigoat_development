@@ -6,8 +6,6 @@
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/VertexArray.hpp"
 
-#include "clipper.hpp"
-
 struct Segment;
 
 namespace sf
@@ -99,13 +97,11 @@ private:
 	std::vector<EndPoint*> endPoints;
 
 	// Inverted
-	ClipperLib::Path lightPoly;
-	std::vector<sf::Vertex> light;
+	//ClipperLib::Path lightPoly;
+	//std::vector<sf::Vertex> light;
 
 	sf::Vector2f center; // Light center
 	sf::VertexArray field_of_view;
-
-	//std::vector<sf::Vertex> light;
 
 	sf::RenderWindow* mWindow;
 

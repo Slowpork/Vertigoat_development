@@ -13,21 +13,6 @@
 #include "Random.h"
 #include "Math.h"
 
-#include "clipper.hpp"
-
-void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
-{
-	Points *point = new Points();
-	point->point1 = sf::Vector2f(pos.x, pos.y);
-	point->point2 = sf::Vector2f(pos.x + size.x, pos.y);
-	point->point3 = sf::Vector2f(pos.x + size.x, pos.y + size.y);
-	point->point4 = sf::Vector2f(pos.x, pos.y + size.y);
-
-	points.push_back(point);
-
-	//loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
-}
-
 LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view)
 {
 	mWindow = _window;
@@ -46,6 +31,19 @@ LightSystem::~LightSystem()
 		point = nullptr;
 
 	delete &points;
+}
+
+void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
+{
+	Points *point = new Points();
+	point->point1 = sf::Vector2f(pos.x, pos.y);
+	point->point2 = sf::Vector2f(pos.x + size.x, pos.y);
+	point->point3 = sf::Vector2f(pos.x + size.x, pos.y + size.y);
+	point->point4 = sf::Vector2f(pos.x, pos.y + size.y);
+
+	points.push_back(point);
+
+	//loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
 }
 
 void LightSystem::logic()
@@ -73,35 +71,8 @@ void LightSystem::Draw()
 	}
 
 	field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
-	mWindow->draw(field_of_view); // Draw the light itself
+	mWindow->draw(field_of_view,sf::BlendAlpha); // Draw the light itself
 	//mWindow->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
-	
-	/*
-	int counter = 0;
-	for (int i = 0; i < endPoints.size(); i++)
-	{
-		if (endPoints.at(i)->visualize)
-		{
-			counter++;
-			
-			sf::CircleShape point;
-			point.setRadius(3.f);
-			point.setPosition(sf::Vector2f(endPoints.at(i)->x, endPoints.at(i)->y));
-			point.setFillColor(sf::Color(255, 100, 0));
-			point.setOrigin(3.f, 3.f);
-			mWindow->draw(point);
-			
-			/*
-			sf::Text text;
-			text.setFont(font);
-			text.setString(sf::String(std::to_string(counter)));
-			text.setColor(sf::Color::Red);
-			text.setPosition(sf::Vector2f(endPoints.at(i)->x, endPoints.at(i)->y));
-			text.setCharacterSize(12);
-			mWindow->draw(text);
-		}
-	}
-	*/
 
 	/*
 	for (auto segment : segments)
@@ -210,7 +181,6 @@ void LightSystem::sweep()
 	std::sort(endPoints.begin(), endPoints.end(), sortEndPoints);
 
 	field_of_view.clear(); // Clear all vertex becuase we will have new ones from our addTriangle();
-	lightPoly.clear();
 	open.clear();
 	float startingAngle = 0.0f;
 
@@ -252,73 +222,16 @@ void LightSystem::sweep()
 			}
 		}
 	}
-
-	// INVERT TO SHADOWS
-
-	/*
-
-	ClipperLib::Path maskPoly;
-	maskPoly.clear();
-
-	sf::Vector2f p1(m_view->getCenter().x - m_view->getSize().x-2,
-					m_view->getCenter().y - m_view->getSize().y-2);
-
-	sf::Vector2f p2(m_view->getCenter().x + m_view->getSize().x-2,
-					m_view->getCenter().y - m_view->getSize().y-2);
-
-	sf::Vector2f p3(m_view->getCenter().x - m_view->getSize().x-2,
-					m_view->getCenter().y + m_view->getSize().y-2);
-
-	sf::Vector2f p4(m_view->getCenter().x + m_view->getSize().x-2,
-					m_view->getCenter().y + m_view->getSize().y-2);
-
-	maskPoly.emplace_back(p1.x,p1.y);
-	maskPoly.emplace_back(p2.x,p2.y);
-	maskPoly.emplace_back(p3.x,p3.y);
-	maskPoly.emplace_back(p4.x,p4.y);
-
-	for(auto point: light)
-	{
-		lightPoly.emplace_back(point.position.x,point.position.y);
-	}
-
-	ClipperLib::Clipper clipper;
-	clipper.AddPath(maskPoly,ClipperLib::ptSubject, true);
-	clipper.AddPath(lightPoly,ClipperLib::ptClip, true);
-
-	ClipperLib::Paths output;
-	clipper.Execute(ClipperLib::ctDifference, output, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
-
-	light.clear();
-	light.emplace_back(light_pos, sf::Color(44,29,23, 255));
-
-	if ( !output.empty())
-	{
-		ClipperLib::Path &path = output[0];
-
-		for (ClipperLib::IntPoint &point : path)
-		{
-			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
-			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
-		}
-		{
-			ClipperLib::IntPoint &point = path[0];
-			sf::Vector2f tp(static_cast<float>(point.X) / 1000.f, static_cast<float>(point.Y) / 1000.f);
-			light.emplace_back(tp, sf::Color(255, 255, 128, 192));
-		}
-	}
-
-	*/
 }
 
 bool LightSystem::_segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo)
 {
-	bool A1 = leftOf(a, interpolate(sf::Vector2f(b->a->x, b->a->y), sf::Vector2f(b->b->x, b->b->y), 0.01));
-	bool A2 = leftOf(a, interpolate(sf::Vector2f(b->b->x, b->b->y), sf::Vector2f(b->a->x, b->a->y), 0.01));
+	bool A1 = leftOf(a, interpolate(sf::Vector2f(b->a->x, b->a->y), sf::Vector2f(b->b->x, b->b->y), 0.01f));
+	bool A2 = leftOf(a, interpolate(sf::Vector2f(b->b->x, b->b->y), sf::Vector2f(b->a->x, b->a->y), 0.01f));
 	bool A3 = leftOf(a, relativeTo); 
 	
-	bool B1 = leftOf(b, interpolate(sf::Vector2f(a->a->x, a->a->y), sf::Vector2f(a->b->x, a->b->y), 0.01));
-	bool B2 = leftOf(b, interpolate(sf::Vector2f(a->b->x, a->b->y), sf::Vector2f(a->a->x, a->a->y), 0.01));
+	bool B1 = leftOf(b, interpolate(sf::Vector2f(a->a->x, a->a->y), sf::Vector2f(a->b->x, a->b->y), 0.01f));
+	bool B2 = leftOf(b, interpolate(sf::Vector2f(a->b->x, a->b->y), sf::Vector2f(a->a->x, a->a->y), 0.01f));
 	bool B3 = leftOf(b, relativeTo);
 
 	if (B1 == B2 && B2 != B3) return true;
@@ -355,9 +268,9 @@ void LightSystem::addTriangle(float angle1, float angle2, Segment* segment)
 	p2.y = center.y + Math::sin(angle2);
 	sf::Vector2f pEnd = LinesIntersection(p3, p4, p1, p2);
 
-	sf::Vertex middle(p1, sf::Color(206,133,34, 96));
-	sf::Vertex begin(pBegin, sf::Color(206,133,34, 96));
-	sf::Vertex end(pEnd, sf::Color(206,133,34, 96));
+	sf::Vertex middle(p1, sf::Color(255,255,255, 255));
+	sf::Vertex begin(pBegin, sf::Color(255,255,255, 255));
+	sf::Vertex end(pEnd, sf::Color(255,255,255, 255));
 
 	//sf::Transform inverse;
 	//sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);
