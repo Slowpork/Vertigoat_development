@@ -4,7 +4,7 @@
 #include "State.h"
 #include <string>
 
-#include "SFML\System\Vector2.hpp";
+#include "SFML\System\Vector2.hpp"
 
 class System;
 class ObjectManager;
@@ -16,7 +16,7 @@ class AnimatedSprite;
 
 namespace sf
 {
-	class SoundBuffer;
+	class Sound;
 	class Music;
 	class Font;
 };
@@ -58,7 +58,8 @@ private:
 	AnimatedSprite* spr_floor;
 
 	// SOUNDS
-	sf::SoundBuffer* snd_thud;
+	sf::Sound* snd_thud;
+	sf::Music* music_main;
 
 	// FONTS
 	sf::Font* fnt_small;

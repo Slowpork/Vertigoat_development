@@ -30,13 +30,16 @@ public:
 	~System();
 
 	bool Init();
+	int getFps();
 
 private:
+	void setFps(int _fps);
 	
 private:
 
 	int m_height, m_width;
 	float m_ticks;
+	int m_fps;
 
 	bool m_fullscreen;
 	bool m_debug;

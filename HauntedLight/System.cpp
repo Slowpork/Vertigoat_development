@@ -23,6 +23,7 @@ System::System()
 	m_debug = false;
 
 	m_ticks = 0.f;
+	m_fps = 0;
 
 	m_window = nullptr;
 	m_clock = nullptr;
@@ -79,8 +80,6 @@ bool System::Init()
 	m_sprite_manager->addTexture("monster.png");
 	m_sprite_manager->addTexture("spr_player_walk.png");
 
-	//m_sound_manager->addSound("thud.wav");
-
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
 	tex_wall->setSmooth(true);
 
@@ -91,9 +90,20 @@ bool System::Init()
 
 	//LOAD ALL THE SOUNDS
 	m_sound_manager->addSoundBuffer("cow_bell.wav");
+	m_sound_manager->addSoundBuffer("thud.wav");
 
 	m_keyboard = new KeyboardObject();
 	m_mouse = new MouseObject();
 
 	return true;
+}
+
+void System::setFps(int _fps)
+{
+	m_fps = _fps;
+}
+
+int System::getFps()
+{
+	return m_fps;
 }

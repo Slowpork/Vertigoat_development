@@ -6,6 +6,7 @@
 
 class StateManager;
 class System;
+class AnimatedSprite;
 
 class Engine
 {
@@ -18,12 +19,14 @@ public:
 	void Run();
 	void Cleanup();
 
-protected:
+private:
 	void updateEvents();
 	void updateDeltatime();
 
 	System* m_system;
 	StateManager m_state_manager;
+
+	AnimatedSprite* spr_cursor;
 
 	bool m_running;
 	float m_deltatime;

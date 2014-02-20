@@ -12,11 +12,15 @@
 
 #include "Random.h"
 #include "Math.h"
+#include "ObjectManager.h"
+#include "GameObject.h"
+#include "AnimatedSprite.h"
 
 LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager)
 {
 	mWindow = _window;
 	m_view = _view;
+	m_object_manager = _object_manager;
 
 	mapPos = sf::Vector2f(0.f,0.f);
 	mapSize = sf::Vector2f(1024.f,1024.f);
@@ -102,6 +106,24 @@ void LightSystem::update()
 	segments.clear();
 	endPoints.clear();
 	setBounds(mapPos, mapSize);
+	
+	for(auto object: m_object_manager->m_objects)
+	{
+		
+		sf::Vector2f point1(object.second.getPosition().x, object.second.getPosition().y);
+		sf::Vector2f point2(object.second.getPosition().x + object.second.getSprite()->getSize().x, object.second.getPosition().y);
+		sf::Vector2f point3(object.second.getPosition().x + object.second.getSprite()->getSize().x, object.second.getPosition().y + object.second.getSprite()->getSize().y);
+		sf::Vector2f point4(object.second.getPosition().x, object.second.getPosition().y + object.second.getSprite()->getSize().y);
+	
+		addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
+		addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right
+		addSegment(point3.x , point3.y , point4.x , point4.y ); // Lower right to lower left
+		addSegment(point4.x , point4.y , point1.x , point1.y ); // Lower left to upper left
+
+		//std::cout << "woo";
+	}
+	
+	/*
 	for (auto point : points)
 	{
 		addSegment(point->point1.x , point->point1.y , point->point2.x , point->point2.y ); // Upper left to upper right
@@ -109,6 +131,7 @@ void LightSystem::update()
 		addSegment(point->point3.x , point->point3.y , point->point4.x , point->point4.y ); // Lower right to lower left
 		addSegment(point->point4.x , point->point4.y , point->point1.x , point->point1.y ); // Lower left to upper left
 	}
+	*/
 }
 
 void LightSystem::addSegment(float x1, float y1, float x2, float y2)

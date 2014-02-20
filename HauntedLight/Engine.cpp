@@ -4,16 +4,18 @@
 #include "Engine.h"
 #include "System.h"
 
+#include "SFML\Graphics.hpp"
+
 #include "FileManager.h"
+#include "SpriteManager.h"
+#include "InputManager.h"
 
 #include "MenuState.h"
 #include "LoadingState.h"
 #include "OptionsState.h"
 #include "GameState.h"
 
-#include "InputManager.h"
-
-#include "SFML\Graphics.hpp"
+#include "AnimatedSprite.h"
 
 Engine::Engine()
 {
@@ -28,6 +30,10 @@ bool Engine::Init()
 
 	if (!m_system->Init())
 		return false;
+
+	// LOAD CURSOR
+	spr_cursor = m_system->m_sprite_manager->getSprite("curs.png",0,0,16,16);
+	spr_cursor->setOrigin(8,8);
 
 	FileManager file_manager;
 	file_manager.Write("../bin/Awesome.txt", "#Yolo");
@@ -49,8 +55,10 @@ void Engine::Run()
 	{
 		// UPDATE
 		updateDeltatime();
+		m_system->setFps(m_fps);
 		updateEvents();
 		m_state_manager.Update(m_deltatime);
+		spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
 
 		if ( !m_state_manager.IsRunning())
 			m_running = false;
@@ -58,6 +66,9 @@ void Engine::Run()
 		// DRAW 
 		m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
 		m_state_manager.Draw();
+
+		// Cursor
+		m_system->m_window->draw(*spr_cursor);
 
 		m_system->m_window->display();
 
@@ -97,7 +108,7 @@ void Engine::updateEvents()
 		{
 			m_system->m_view = new sf::View();
 
-			m_system->m_view->setSize(sf::Vector2f(event.size.width,event.size.height));
+			m_system->m_view->setSize(sf::Vector2f((float)event.size.width,(float)event.size.height));
 		}
 
 		// KEYBOARD

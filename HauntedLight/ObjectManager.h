@@ -19,8 +19,9 @@ class ObjectManager
 	friend class State;
 
 	friend class CollisionManager;
+	friend class LightSystem;
 
-	//friend class GameState;
+	friend class GameState;
 	friend class LoadingState;
 	friend class MenuState;
 	friend class OptionsState;

@@ -56,7 +56,7 @@ sf::SoundBuffer* SoundManager::getSound(const std::string& _name)
 
 }
 */
-sf::Sound* SoundManager::GetSound(const std::string& _filename)
+sf::Sound* SoundManager::getSound(const std::string& _filename)
 {
 	sf::Sound* sound = new sf::Sound();
 	
@@ -70,12 +70,17 @@ sf::Sound* SoundManager::GetSound(const std::string& _filename)
 	sound->setBuffer(it->second);
 	
 	return sound;
-
 }
-/*
-sf::Music* SoundManager::GetMusic(const std::string& _filename)
+
+sf::Music* SoundManager::getMusic(const std::string& _filename)
 {
+	sf::Music* music = new sf::Music();
+	
+	if ( !music->openFromFile(m_dir + _filename))
+	{
+		std::cout << "  ------------\n ERROR: Music could not be opened. \n  -------------";
+		return nullptr;
+	}
 
-
+	return music;
 }
-*/

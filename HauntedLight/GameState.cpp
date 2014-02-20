@@ -68,7 +68,14 @@ bool GameState::Enter()
 	//AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
 	//	"player.png",0,0,128,128);
 
-	//snd_thud = m_system->m_sound_manager->getSound("thud.wav");
+	// SOUNDS
+	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
+	snd_thud->setVolume(25.f);
+
+	music_main = m_system->m_sound_manager->getMusic("music.wav");
+	music_main->setVolume(25.f);
+	music_main->setLoop(true);
+	music_main->play();
 
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
@@ -77,14 +84,12 @@ bool GameState::Enter()
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
 	spr_floor = m_system->m_sprite_manager->getSprite("floor.png",0,0,400,400);
 
-	spr_cursor = m_system->m_sprite_manager->getSprite("curs.png",0,0,16,16);
-	spr_cursor->setOrigin(8,8);
-
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
-	spr_darkness->setPosition(m_system->m_width/2,m_system->m_height/2);
+	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
 
+	/*
 	// WALLS
 	const float SIZE = 128;
 
@@ -113,7 +118,7 @@ bool GameState::Enter()
 	{
 		for(int X = 0; X < 15; X++)
 		{
-			if (map[X][Y] /*&& count < 25*/)
+			if (map[X][Y] )
 			{
 				addWall(sf::Vector2f(SIZE*X,SIZE*Y));
 				count++;
@@ -122,6 +127,7 @@ bool GameState::Enter()
 	}
 
 	std::cout << "  " << count;
+	*/
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
@@ -159,7 +165,7 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall wall(spr_wall,col_wall);
 	wall.setPosition(_pos);
 	m_object_manager->Add(&wall,5);
-	m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
+	//m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 
 void GameState::viewBeat(float _deltatime)
@@ -205,7 +211,7 @@ void GameState::viewBeat(float _deltatime)
 	}
 	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;*/
 
-	float scalefactor = 1 + m_view_beat*.5;
+	float scalefactor = 1.f + m_view_beat*.5f;
 
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
@@ -249,8 +255,6 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
-	spr_cursor->setPosition(m_system->m_mouse->GetX(), m_system->m_mouse->GetY());
-
 	viewBeat(_deltatime);
 
 	m_light_system->setLightLocation(player->getPosition().x,player->getPosition().y);
@@ -262,6 +266,7 @@ bool GameState::Update(float _deltatime){
 	
 	if (m_system->m_mouse->IsDownOnce(Left))
 	{
+		snd_thud->play();
 		addWall(sf::Vector2f(
 			m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128),
 			m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
@@ -289,17 +294,15 @@ void GameState::Draw()
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
-	
-	
 	// DYNAMIC LIGHTING
-	sf::RectangleShape rect(sf::Vector2f( 
-			m_system->m_width*2, 
-			m_system->m_height*2));
-	rect.setFillColor(sf::Color(0,0,0,255));
-	rect.setPosition(m_system->m_view->getCenter().x - m_system->m_view->getSize().x,
+	sf::RectangleShape rect_shadow_mask(sf::Vector2f( 
+			m_system->m_width*2.f, 
+			m_system->m_height*2.f));
+	rect_shadow_mask.setFillColor(sf::Color(0,0,0,255));
+	rect_shadow_mask.setPosition(m_system->m_view->getCenter().x - m_system->m_view->getSize().x,
 					m_system->m_view->getCenter().y - m_system->m_view->getSize().y);
 
-	m_system->m_window->draw(rect);
+	m_system->m_window->draw(rect_shadow_mask);
 
 	m_light_system->Draw();
 	
@@ -319,19 +322,21 @@ void GameState::Draw()
 	// DARKNESS
 	m_system->m_window->draw(*spr_darkness);
 
-	// CURSOR
-	m_system->m_window->draw(*spr_cursor);
-
 	sf::Text txt_hello;
 
 	txt_hello.setFont(*fnt_small);
 
-	txt_hello.setString("You Dead");
-	txt_hello.setPosition(0,0);
-	txt_hello.setColor(sf::Color::Red);
-	txt_hello.setCharacterSize(480);
+	std::string txt = "FPS: " + std::to_string(m_system->getFps()) + "\n " + 
+		std::to_string(m_object_manager->getObjects()) + " walls";
 
-	//m_system->m_window->draw(txt_hello);
+	sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
+
+	txt_hello.setString(txt);
+	txt_hello.setPosition(16,0);
+	txt_hello.setColor(col);
+	txt_hello.setCharacterSize(32);
+
+	m_system->m_window->draw(txt_hello);
 }
 
 std::string GameState::Next(){

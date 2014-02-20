@@ -21,8 +21,8 @@ public:
 
 	void addSoundBuffer(const std::string& _filename);
 	void addMusic(const std::string&_filename);
-	sf::Sound* GetSound(const std::string& _filename);
-	sf::Music* GetMusic(const std::string& _filename);
+	sf::Sound* getSound(const std::string& _filename);
+	sf::Music* getMusic(const std::string& _filename);
 	
 	void Cleanup();
 
