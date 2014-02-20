@@ -8,6 +8,8 @@
 #include "InputManager.h"
 #include "Collider.h"
 
+#include <string>
+
 PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
@@ -21,10 +23,23 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_max_friction = 0.88f;
 	m_friction = m_max_friction;
 
+	m_running = false;
+
 	m_sprite->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 
 	m_health = 100.f;
 	m_stamina = 100.f;
+}
+
+void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
+{
+	m_spr_run = _run;
+	m_spr_idle = m_sprite;
+	m_spr_walk = m_sprite;
+
+	m_spr_walk->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
+	m_spr_run->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
+	m_spr_idle->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 }
 
 void PlayerObject::setVelocity(sf::Vector2f _vel)
@@ -45,6 +60,22 @@ float PlayerObject::getStamina()
 void PlayerObject::doFriction()
 {
 	m_vel *= m_friction;
+}
+
+void PlayerObject::setState(std::string _state)
+{
+	if (_state == "idle")
+	{
+		m_sprite = m_spr_idle;
+	}
+	else if (_state == "walk" )
+	{
+		m_sprite = m_spr_walk;
+	}
+	else if (_state == "run")
+	{
+		m_sprite = m_spr_run;
+	}
 }
 
 void PlayerObject::Update(float _deltatime)
@@ -82,14 +113,21 @@ void PlayerObject::Update(float _deltatime)
 		{
 			m_friction = m_min_friction;
 			if ( moving)
-				m_stamina -= _deltatime*25.f;
+			{
+				m_running = true;
+				//m_stamina -= _deltatime*25.f;
+			}
 		}
 	}
 	else
+	{
+		m_running = false;
 		m_stamina = 0.f;
+	}
 
 	if (!moving || !m_keyboard->IsDown(sf::Keyboard::LShift))
 	{
+		m_running = false;
 		m_friction = m_max_friction;
 		if (m_stamina < 100.f)
 			m_stamina += _deltatime*(5.f + (5.f*!moving));
@@ -97,12 +135,24 @@ void PlayerObject::Update(float _deltatime)
 		m_stamina = 100.f;
 	}
 
+	// ANIMATE
 	if (moving)
 	{
-		if ( m_friction == m_min_friction)
-		m_sprite->play(_deltatime*1.3);
+		if ( m_running)
+		{
+			setState("walk");
+			m_sprite->play(_deltatime*1.3);
+		}
 		else
-		m_sprite->play(_deltatime);
+		{
+			setState("walk");
+			m_sprite->play(_deltatime);
+		}
+	}
+	else
+	{
+		setState("idle");
+		//m_sprite->play(_deltatime);
 	}
 
 	// UPDATE

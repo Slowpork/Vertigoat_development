@@ -69,16 +69,19 @@ bool System::Init()
 	m_font_manager = new FontManager("../data/fonts/");
 
 	// LOAD ALL THE TEXTURES
-	m_sprite_manager->addTexture("player.png");
-	sf::Texture* tex_player = m_sprite_manager->getTexture("player.png");
-	tex_player->setSmooth(true);
-
 	m_sprite_manager->addTexture("curs.png");
 	m_sprite_manager->addTexture("darkness.png");
 	m_sprite_manager->addTexture("wall.png");
-	m_sprite_manager->addTexture("floor.png");
-	m_sprite_manager->addTexture("monster.png");
+	m_sprite_manager->addTexture("spr_floor.png");
+
 	m_sprite_manager->addTexture("spr_player_walk.png");
+	sf::Texture* tex_player = m_sprite_manager->getTexture("spr_player_walk.png");
+	tex_player->setSmooth(true);
+
+	m_sprite_manager->addTexture("spr_player_run.png");
+	sf::Texture* tex_player_run = m_sprite_manager->getTexture("spr_player_run.png");
+	tex_player->setSmooth(true);
+
 
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
 	tex_wall->setSmooth(true);

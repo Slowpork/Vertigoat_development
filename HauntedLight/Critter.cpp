@@ -1,4 +1,4 @@
-//Critter.cpp
+// Critter.cpp
 
 #include "Critter.h"
 

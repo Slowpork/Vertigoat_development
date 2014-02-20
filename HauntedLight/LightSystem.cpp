@@ -75,7 +75,7 @@ void LightSystem::Draw()
 	}
 
 	field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
-	mWindow->draw(field_of_view,sf::BlendAlpha); // Draw the light itself
+	mWindow->draw(field_of_view ,sf::BlendAlpha); // Draw the light itself
 	//mWindow->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
 
 	/*

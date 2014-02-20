@@ -11,6 +11,7 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 #include "SFML\Graphics\Text.hpp"
+#include "SFML\Graphics\CircleShape.hpp"
 
 #include "SFML\Window\Keyboard.hpp"
 
@@ -33,6 +34,8 @@
 
 #include "LightSystem.h"
 
+#include "Random.h"
+
 #include "Wall.h"
 #include "PlayerObject.h"
 
@@ -49,8 +52,6 @@ GameState::GameState(System* _system)
 
 	m_system = _system;
 	m_object_manager = new ObjectManager();
-
-	//sf::Sprite
 }
 
 bool GameState::Enter()
@@ -60,6 +61,8 @@ bool GameState::Enter()
 	m_collision_manager = new CollisionManager(m_object_manager);
 
 	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
+
+	m_timer = 0.f;
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
@@ -82,14 +85,15 @@ bool GameState::Enter()
 
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
-	spr_floor = m_system->m_sprite_manager->getSprite("floor.png",0,0,400,400);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,128,128,12);
+	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
 
-	/*
+	
 	// WALLS
 	const float SIZE = 128;
 
@@ -127,12 +131,13 @@ bool GameState::Enter()
 	}
 
 	std::cout << "  " << count;
-	*/
+	
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
+	player->setSprites(spr_player_run, spr_player_run);
 
 	m_light_system->setBounds(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
 	m_light_system->update();
@@ -216,6 +221,28 @@ void GameState::viewBeat(float _deltatime)
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
 
+void GameState::FlickerLight(float _deltatime)
+{
+	m_timer += _deltatime*5;
+
+	if (Random::between(0,10) == 0)
+	{
+		m_timer = 0.f;
+	}
+
+	float factor = abs(sin(m_timer));
+
+	m_light_system->setLightLocation(
+		player->getPosition().x - 5.f*factor + 10.f*factor,
+		player->getPosition().y - 5.f*factor + 10.f*factor);
+
+	/*
+	m_light_system->setLightLocation(
+		player->getPosition().x - 5.f*factor + Random::betweenf(0.f,10.f*factor),
+		player->getPosition().y - 5.f*factor + Random::betweenf(0.f,10.f*factor));
+	*/
+}
+
 void GameState::drawFloor()
 {
 	const int floor_size = 400;
@@ -257,7 +284,7 @@ bool GameState::Update(float _deltatime){
 
 	viewBeat(_deltatime);
 
-	m_light_system->setLightLocation(player->getPosition().x,player->getPosition().y);
+	FlickerLight(_deltatime);
 	m_light_system->logic();
 	
 	// MOVE VIEW
@@ -322,21 +349,20 @@ void GameState::Draw()
 	// DARKNESS
 	m_system->m_window->draw(*spr_darkness);
 
-	sf::Text txt_hello;
+	if (m_system->m_debug)
+	{
+		sf::Text txt_hello;
+		txt_hello.setFont(*fnt_small);
+		std::string txt = "FPS: " + std::to_string(m_system->getFps()) + "\n " + 
+			std::to_string(m_object_manager->getObjects()) + " walls";
+		sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
+		txt_hello.setString(txt);
+		txt_hello.setPosition(16,0);
+		txt_hello.setColor(col);
+		txt_hello.setCharacterSize(32);
 
-	txt_hello.setFont(*fnt_small);
-
-	std::string txt = "FPS: " + std::to_string(m_system->getFps()) + "\n " + 
-		std::to_string(m_object_manager->getObjects()) + " walls";
-
-	sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
-
-	txt_hello.setString(txt);
-	txt_hello.setPosition(16,0);
-	txt_hello.setColor(col);
-	txt_hello.setCharacterSize(32);
-
-	m_system->m_window->draw(txt_hello);
+		m_system->m_window->draw(txt_hello);
+	}
 }
 
 std::string GameState::Next(){

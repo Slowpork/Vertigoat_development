@@ -152,7 +152,7 @@ void Engine::updateEvents()
 	}
 
 	// TOGGLE DEBUG
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F1))
 	{
 		m_system->m_debug = !m_system->m_debug;
 	}
