@@ -13,7 +13,7 @@
 #include "Random.h"
 #include "Math.h"
 
-LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view)
+LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager)
 {
 	mWindow = _window;
 	m_view = _view;

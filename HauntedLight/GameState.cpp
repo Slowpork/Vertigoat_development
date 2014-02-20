@@ -59,7 +59,7 @@ bool GameState::Enter()
 
 	m_collision_manager = new CollisionManager(m_object_manager);
 
-	m_light_system = new LightSystem(m_system->m_window, m_system->m_view);
+	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
@@ -81,6 +81,9 @@ bool GameState::Enter()
 	spr_cursor->setOrigin(8,8);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
+	spr_darkness->setOrigin(1280/2,720/2);
+	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+	spr_darkness->setPosition(m_system->m_width/2,m_system->m_height/2);
 
 	// WALLS
 	const float SIZE = 128;
@@ -165,19 +168,19 @@ void GameState::viewBeat(float _deltatime)
 	//system("cls");
 	//std::cout << "\n  Stamina: " << tracking;
 
-	if (tracking == 0.95f)
+	if (tracking == 0.92f)
 	{
 		if (m_view_beat > 0) 
-		m_view_beat -= _deltatime*2;
+		m_view_beat -= _deltatime/2;
 		else
-			m_view_beat == 0.f;
+			m_view_beat = 0.f;
 	}
 	else
 	{
 		if (m_view_beat < 1)
 		m_view_beat += _deltatime;
 		else
-			m_view_beat == 1.f;
+			m_view_beat = 1.f;
 	}
 
 	/*

@@ -46,12 +46,13 @@ struct Points
 
 class State;
 class System;
+class ObjectManager;
 
 class LightSystem
 {
 public:
 
-	LightSystem(sf::RenderWindow* _window, sf::View* _view);
+	LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager);
 	~LightSystem();
 
 	void logic();
@@ -104,6 +105,7 @@ private:
 	sf::VertexArray field_of_view;
 
 	sf::RenderWindow* mWindow;
+	ObjectManager* m_object_manager;
 
 	sf::View* m_view;
 };
