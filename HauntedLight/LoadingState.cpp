@@ -41,6 +41,17 @@ bool LoadingState::Enter(){
 void LoadingState::Exit(){
 	std::cout << "  " << m_name << "->";
 }
+
+void LoadingState::Pause()
+{
+
+}
+
+void LoadingState::Resume()
+{
+
+}
+
 bool LoadingState::Update(float deltatime){
 	//std::cout << "LoadingState::Update" << std::endl;
 

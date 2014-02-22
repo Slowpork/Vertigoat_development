@@ -32,9 +32,10 @@ LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManag
 LightSystem::~LightSystem()
 {
 	for(auto point: points)
+	{
+		delete point;
 		point = nullptr;
-
-	delete &points;
+	}
 }
 
 void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)

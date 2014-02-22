@@ -40,6 +40,17 @@ bool OptionsState::Enter(){
 void OptionsState::Exit(){
 	std::cout << "  " << m_name << "->";
 }
+
+void OptionsState::Pause()
+{
+
+}
+
+void OptionsState::Resume()
+{
+
+}
+
 bool OptionsState::Update(float deltatime){
 	//std::cout << "OptionsState::Update" << std::endl;
 

@@ -1,6 +1,7 @@
 // System.h
 
 #pragma once
+#include "SFML\System\Vector2.hpp"
 
 namespace sf
 {
@@ -31,6 +32,9 @@ public:
 
 	bool Init();
 	int getFps();
+
+	void drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size);
+	void setDebug(bool _mode);
 
 private:
 	void setFps(int _fps);

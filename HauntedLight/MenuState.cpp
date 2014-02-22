@@ -48,6 +48,16 @@ void MenuState::Exit(){
 	std::cout << "  " << m_name << "->";
 }
 
+void MenuState::Pause()
+{
+
+}
+
+void MenuState::Resume()
+{
+
+}
+
 bool MenuState::Update(float _deltatime){
 	//std::cout << "MenuState::Update" << std::endl;
 

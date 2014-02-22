@@ -18,6 +18,7 @@ StateManager::~StateManager(){
 	auto it = m_states.begin();
 	while(it != m_states.end()) {
 		delete (*it);
+		//*it = nullptr;
 		it++;
 	}
 }

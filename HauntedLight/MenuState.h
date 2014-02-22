@@ -14,6 +14,8 @@ public:
 
 	bool Enter();
 	void Exit();
+	void Pause();
+	void Resume();
 	bool Update(float _deltatime);
 	void Draw();
 	std::string Next();

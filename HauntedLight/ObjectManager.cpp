@@ -19,8 +19,8 @@ void ObjectManager::Cleanup()
 {
 	for(auto object: m_objects)
 	{
-		object.second = nullptr;
 		delete &object;
+		object.second = nullptr;
 	}
 }
 

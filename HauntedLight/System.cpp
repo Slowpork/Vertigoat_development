@@ -5,6 +5,7 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\Texture.hpp"
 #include "SFML\Graphics\Font.hpp"
+#include "SFML\Graphics\RectangleShape.hpp"
 
 #include "InputManager.h"
 
@@ -39,7 +40,7 @@ System::System()
 
 System::~System()
 {
-
+	
 }
 
 bool System::Init()
@@ -99,6 +100,25 @@ bool System::Init()
 	m_mouse = new MouseObject();
 
 	return true;
+}
+
+void System::drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size)
+{
+	sf::RectangleShape rect_player_box(sf::Vector2f( _size.x, _size.y));
+	rect_player_box.setOrigin(
+		rect_player_box.getLocalBounds().width/2,
+		rect_player_box.getLocalBounds().height/2);
+	rect_player_box.setFillColor(sf::Color(0,0,0,0));
+	rect_player_box.setOutlineColor(sf::Color(255,0,0,128));
+	rect_player_box.setOutlineThickness(2);
+	rect_player_box.setPosition(_pos);
+
+	m_window->draw(rect_player_box);
+}
+
+void System::setDebug(bool _fps)
+{
+	m_debug = _fps;
 }
 
 void System::setFps(int _fps)

@@ -6,6 +6,7 @@
 #include "Math.h"
 
 #include <math.h>
+#include <iostream>
 
 GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
@@ -16,17 +17,27 @@ GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 
 GameObject::~GameObject()
 {
-	if (hasCollider())
+	/*
+	if (m_collider != nullptr)
 	{
-		m_collider = nullptr;
-		delete m_collider;
+		if (hasCollider())
+		{
+			delete m_collider;
+			m_collider = nullptr;
+		}
 	}
+	
+	if (m_sprite != nullptr)
+	{
+		if (hasSprite())
+		{
+			delete m_sprite;
+			m_sprite = nullptr;
+		}
+	}
+	*/
 
-	if (hasSprite())
-	{
-		m_sprite = nullptr;
-		delete m_sprite;
-	}
+	//std::cout << "woo? ";
 }
 
 const sf::Vector2f& GameObject::getPosition() const

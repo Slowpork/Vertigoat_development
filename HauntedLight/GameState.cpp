@@ -78,7 +78,7 @@ bool GameState::Enter()
 	music_main = m_system->m_sound_manager->getMusic("music.wav");
 	music_main->setVolume(25.f);
 	music_main->setLoop(true);
-	music_main->play();
+	//music_main->play();
 
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
@@ -148,19 +148,30 @@ bool GameState::Enter()
 void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
 
-	player = nullptr;
 	delete player;
+	player = nullptr;
 
-	m_collision_manager = nullptr;
 	delete m_collision_manager;
+	m_collision_manager = nullptr;
 
-	m_light_system = nullptr;
 	delete m_light_system;
+	m_light_system = nullptr;
 
 	m_object_manager->Cleanup();
-	m_object_manager = nullptr;
 	delete m_object_manager;
+	m_object_manager = nullptr;
 }
+
+void GameState::Pause()
+{
+
+}
+
+void GameState::Resume()
+{
+
+}
+
 
 void GameState::addWall(sf::Vector2f _pos)
 {
@@ -276,7 +287,24 @@ bool GameState::Update(float _deltatime){
 	sf::Vector2f offset;
 	if (m_collision_manager->checkCollision(player->getCollider(),offset))
 	{
-		//std::cout << _deltatime << std::endl;
+		if (offset.x > 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
+		}
+		else if (offset.x < 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
+		}
+
+		if (offset.y > 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
+		}
+		else if (offset.y < 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
+		}
+		
 		player->setPosition(player->getPosition() + offset);
 	}
 
@@ -343,6 +371,14 @@ void GameState::Draw()
 	m_object_manager->setActiveDepth(5,5);
 	m_object_manager->Draw(m_system->m_window);
 
+	// PLAYER COLLISION-BOX
+	if (m_system->m_debug)
+	{
+		m_system->drawDebugRect(player->getPosition(),
+			sf::Vector2f(player->getCollider()->m_ext.x,
+						player->getCollider()->m_ext.y));
+	}
+
 	// INTERFACE ##################################
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
 	
@@ -351,17 +387,17 @@ void GameState::Draw()
 
 	if (m_system->m_debug)
 	{
-		sf::Text txt_hello;
-		txt_hello.setFont(*fnt_small);
+		sf::Text txt_stats;
+		txt_stats.setFont(*fnt_small);
 		std::string txt = "FPS: " + std::to_string(m_system->getFps()) + "\n " + 
 			std::to_string(m_object_manager->getObjects()) + " walls";
 		sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
-		txt_hello.setString(txt);
-		txt_hello.setPosition(16,0);
-		txt_hello.setColor(col);
-		txt_hello.setCharacterSize(32);
+		txt_stats.setString(txt);
+		txt_stats.setPosition(16,0);
+		txt_stats.setColor(col);
+		txt_stats.setCharacterSize(32);
 
-		m_system->m_window->draw(txt_hello);
+		m_system->m_window->draw(txt_stats);
 	}
 }
 
