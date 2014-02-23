@@ -12,7 +12,9 @@ GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
 	m_sprite = _sprite;
 	m_collider = _collider;
-	m_depth = 0.f;
+	m_depth = 0;
+
+	//std::cout << "  GameObject\n";
 }
 
 GameObject::~GameObject()
@@ -37,7 +39,7 @@ GameObject::~GameObject()
 	}
 	*/
 
-	//std::cout << "X ";
+	//std::cout << "  ~GameObject\n";
 }
 
 const sf::Vector2f& GameObject::getPosition() const
@@ -56,7 +58,7 @@ void GameObject::setPosition(sf::Vector2f& _pos)
 		m_collider->m_pos = m_pos;
 }
 
-const float& GameObject::getDepth()
+const int& GameObject::getDepth() const
 {
 	return m_depth;
 }

@@ -69,7 +69,7 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset)
 {
 	int count = 0;
 	//std::cout << m_object_manager->m_objects.size() << std::endl;
-	for(auto object: m_object_manager->m_objects)
+	for(auto& object: m_object_manager->m_objects)
 	{
 		//std::cout << object.obj.getCollider() << std::endl;
 		//std::cout << object.obj.m_collider->m_type << std::endl;

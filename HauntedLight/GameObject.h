@@ -22,7 +22,7 @@ public:
 	const sf::Vector2f& getPosition() const;
 	void setPosition(sf::Vector2f& _pos);
 
-	const float& getDepth();
+	const int& getDepth() const;
 	void setDepth(int _depth);
 
 	bool hasSprite();
@@ -40,7 +40,6 @@ protected:
 
 protected:
 
-
 	AnimatedSprite* m_sprite;
 	Collider* m_collider;
 
@@ -50,5 +49,5 @@ protected:
 
 	sf::Vector2f m_pos;
 	sf::Vector2f m_vel;
-	float m_depth;
+	int m_depth;
 };

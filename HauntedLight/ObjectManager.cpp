@@ -44,7 +44,7 @@ int ObjectManager::getObjects()
 
 int ObjectManager::atPosition(sf::Vector2f _pos)
 {
-	for(auto object: m_objects)
+	for(auto& object: m_objects)
 	{
 		sf::Vector2f pos = object.second.getPosition();
 		sf::Vector2f size = object.second.getSprite()->getSize();
@@ -78,7 +78,7 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 {
 	for(int z = m_min_z; z <= m_max_z; z++)
 	{
-		for(auto object: m_objects)
+		for(auto& object: m_objects)
 		{
 			if (object.second.getDepth() == z && object.second.hasSprite())
 			{

@@ -147,8 +147,8 @@ void Engine::updateEvents()
 
 	// ESCAPE TO QUIT
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
-		m_system->m_window->close();
 		m_running = false;
+		m_system->m_window->close();
 	}
 
 	// TOGGLE DEBUG

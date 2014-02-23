@@ -12,6 +12,7 @@ class Wall : public GameObject
 {
 public:
 	Wall(AnimatedSprite* _sprite, Collider* _collider = nullptr);
+	~Wall();
 private:
 
 private:

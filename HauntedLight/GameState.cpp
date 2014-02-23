@@ -130,7 +130,9 @@ bool GameState::Enter()
 		}
 	}
 
-	std::cout << "  " << count;
+	//std::cout << "  " << count;
+
+	std::cout << "\n";
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
@@ -177,9 +179,9 @@ void GameState::addWall(sf::Vector2f _pos)
 	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
 		"wall.png",0,0,128,128);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Wall wall(spr_wall,col_wall);
-	wall.setPosition(_pos);
-	m_object_manager->Add(&wall,5);
+	Wall* wall = new Wall(spr_wall,col_wall);
+	wall->setPosition(_pos);
+	m_object_manager->Add(wall,5);
 	//m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 

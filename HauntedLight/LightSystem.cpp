@@ -109,7 +109,7 @@ void LightSystem::update()
 	endPoints.clear();
 	setBounds(mapPos, mapSize);
 	
-	for(auto object: m_object_manager->m_objects)
+	for(auto& object: m_object_manager->m_objects)
 	{
 		
 		sf::Vector2f point1(object.second.getPosition().x, object.second.getPosition().y);
@@ -170,7 +170,7 @@ void LightSystem::setLightLocation(float x, float y)
 	center.x = x;
 	center.y = y;
 
-	for (auto segment : segments)
+	for (auto& segment : segments)
 	{
 		float dx = 0.5f * (segment->a->x + segment->b->x) - x;
 		float dy = 0.5f * (segment->a->y + segment->b->y) - y;
