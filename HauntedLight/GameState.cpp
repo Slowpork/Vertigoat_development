@@ -85,7 +85,7 @@ bool GameState::Enter()
 
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
-	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,128,128,12);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,132,132,12);
 	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
@@ -122,18 +122,17 @@ bool GameState::Enter()
 	{
 		for(int X = 0; X < 15; X++)
 		{
-			if (map[X][Y] )
+			if (map[X][Y])
 			{
-				addWall(sf::Vector2f(SIZE*X,SIZE*Y));
+				//addWall(sf::Vector2f(SIZE*X,SIZE*Y));
 				count++;
 			}
 		}
 	}
 
 	std::cout << "  " << count;
-	
 
-	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(1280/2,720/2));
@@ -281,9 +280,8 @@ void GameState::drawFloor()
 	}
 }
 
-bool GameState::Update(float _deltatime){
-	//std::cout << "GameState::Update" << std::endl;
-	
+void GameState::playerCollision()
+{
 	sf::Vector2f offset;
 	if (m_collision_manager->checkCollision(player->getCollider(),offset))
 	{
@@ -307,6 +305,12 @@ bool GameState::Update(float _deltatime){
 		
 		player->setPosition(player->getPosition() + offset);
 	}
+}
+
+bool GameState::Update(float _deltatime){
+	//std::cout << "GameState::Update" << std::endl;
+	
+	playerCollision();
 
 	player->Update(_deltatime);
 
@@ -336,6 +340,19 @@ bool GameState::Update(float _deltatime){
 			m_object_manager->destroy(ID);
 		}
 		m_light_system->update();
+	}
+
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num1))
+	{
+		m_light_system->setLightBrightness(20);
+	}
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num2))
+	{
+		m_light_system->setLightBrightness(40);
+	}
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num3))
+	{
+		m_light_system->setLightBrightness(100);
 	}
 
 	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))

@@ -45,8 +45,13 @@ sf::Vector2f AnimatedSprite::getSize()
 
 void AnimatedSprite::setFrame(int _frame)
 {
-	//std::cout << "  X: " << _frame * m_width << " Y: " << m_y << " W: " << m_width << " H: " << m_height << std::endl;
+	m_current = _frame;
 	setTextureRect(sf::IntRect(sf::Vector2i((_frame * m_width) + m_x, m_y),sf::Vector2i(m_width, m_height)));
+}
+
+int AnimatedSprite::getFrame()
+{
+	return m_current;
 }
 
 void AnimatedSprite::play(float _deltatime)

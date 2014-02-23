@@ -37,7 +37,7 @@ GameObject::~GameObject()
 	}
 	*/
 
-	//std::cout << "woo? ";
+	//std::cout << "X ";
 }
 
 const sf::Vector2f& GameObject::getPosition() const

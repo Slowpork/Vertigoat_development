@@ -27,6 +27,7 @@ LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManag
 	
 	// Create the lightsource of the guard
 	light_pos = sf::Vector2f(0.f,0.f);
+	light_color = sf::Color(255,255,255,255);
 }
 
 LightSystem::~LightSystem()
@@ -186,6 +187,12 @@ void LightSystem::setLightLocation(float x, float y)
 	}
 }
 
+void LightSystem::setLightBrightness(float _value)
+{
+	float value = 2.55 * _value;
+	light_color = sf::Color(value,value,value,255);
+}
+
 bool sortEndPoints(EndPoint* a, EndPoint* b)
 {
 	if (a->angle > b->angle)
@@ -292,9 +299,9 @@ void LightSystem::addTriangle(float angle1, float angle2, Segment* segment)
 	p2.y = center.y + Math::sin(angle2);
 	sf::Vector2f pEnd = LinesIntersection(p3, p4, p1, p2);
 
-	sf::Vertex middle(p1, sf::Color(255,255,255, 255));
-	sf::Vertex begin(pBegin, sf::Color(255,255,255, 255));
-	sf::Vertex end(pEnd, sf::Color(255,255,255, 255));
+	sf::Vertex middle(p1, light_color);
+	sf::Vertex begin(pBegin, light_color);
+	sf::Vertex end(pEnd, light_color);
 
 	//sf::Transform inverse;
 	//sf::Vector2f tp1(inverse * pBegin), tp2(inverse * pEnd);

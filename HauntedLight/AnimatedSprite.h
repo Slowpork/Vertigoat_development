@@ -11,6 +11,7 @@ public:
 	AnimatedSprite(int _frames, int _w, int _h, int _x = 0, int _y = 0);
 
 	void setFrame(int _frame);
+	int getFrame();
 	void play(float _deltatime);
 
 	sf::Vector2f getSize();

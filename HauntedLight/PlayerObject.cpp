@@ -140,7 +140,7 @@ void PlayerObject::Update(float _deltatime)
 	{
 		if ( m_running)
 		{
-			setState("walk");
+			setState("run");
 			m_sprite->play(_deltatime*1.3);
 		}
 		else

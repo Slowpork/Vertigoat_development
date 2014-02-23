@@ -39,6 +39,7 @@ private:
 	void addWall(sf::Vector2f _pos);
 	void viewBeat(float _deltatime);
 	void FlickerLight(float _deltatime);
+	void playerCollision();
 	void drawFloor();
 
 private:

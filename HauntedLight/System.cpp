@@ -17,8 +17,8 @@
 
 System::System()
 {
-	m_width = 1920;
-	m_height = 1080;
+	m_width = 1280;
+	m_height = 720;
 
 	m_fullscreen = false;
 	m_debug = false;
