@@ -21,8 +21,9 @@ public:
 
 	void setSprites(AnimatedSprite* _idle, AnimatedSprite* _run);
 
-	float getHealth();
-	float getStamina();
+	const float getHealth();
+	const float getStamina();
+	const float getMatches();
 private:
 
 	void setState(std::string _state);
@@ -40,4 +41,5 @@ private:
 	sf::Vector2f m_max_vel;
 	float m_health;
 	float m_stamina;
+	float m_matches;
 };

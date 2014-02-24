@@ -55,8 +55,8 @@ public:
 	LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager);
 	~LightSystem();
 
-	void logic();
-	void Draw();
+	void logic(sf::Vector2f _pos = sf::Vector2f(0,0));
+	void Draw(sf::Vector2f _pos = sf::Vector2f(0,0));
 
 	// Updates all the lists
 	void update();
@@ -82,6 +82,7 @@ private:
 	bool leftOf(Segment* a, sf::Vector2f point);
 	void sweep();
 	void addSegment(float x1, float y1, float x2, float y2);
+	void deleteSegment(float x1, float y1, float x2, float y2);
 	void LightSystem::addTriangle(float angle1, float angle2, Segment* segment);
 	sf::Vector2f interpolate(sf::Vector2f p, sf::Vector2f q, float f);
 	sf::Vector2f LinesIntersection(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2f p4);

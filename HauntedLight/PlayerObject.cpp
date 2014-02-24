@@ -29,6 +29,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 	m_health = 100.f;
 	m_stamina = 100.f;
+	m_matches = 2;
 }
 
 void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
@@ -47,14 +48,19 @@ void PlayerObject::setVelocity(sf::Vector2f _vel)
 	m_vel = _vel;
 }
 
-float PlayerObject::getHealth()
+const float PlayerObject::getHealth()
 {
 	return m_health;
 }
 
-float PlayerObject::getStamina()
+const float PlayerObject::getStamina()
 {
 	return m_stamina;
+}
+
+const float PlayerObject::getMatches()
+{
+	return m_matches;
 }
 
 void PlayerObject::doFriction()
@@ -104,6 +110,16 @@ void PlayerObject::Update(float _deltatime)
 	{
 		moving = true;
 		m_vel.y += speed * _deltatime;
+	}
+
+	// MATCHES DEBUG
+	if (m_keyboard->IsDownOnce(sf::Keyboard::Add) )
+	{
+		m_matches++;
+	}
+	else if (m_keyboard->IsDownOnce(sf::Keyboard::Subtract) )
+	{
+		m_matches--;
 	}
 
 	// RUN

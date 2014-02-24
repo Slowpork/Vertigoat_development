@@ -40,7 +40,7 @@ MenuState::MenuState(System* _system)
 
 bool MenuState::Enter()
 {
-	std::cout << m_name << std::endl;
+	//std::cout << m_name << std::endl;
 	return true;
 }
 

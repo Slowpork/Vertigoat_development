@@ -90,6 +90,10 @@ bool GameState::Enter()
 	//spr_player_run->setScale(.6,.6);
 	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
+	spr_matches_hud = m_system->m_sprite_manager->getSprite("spr_matches_hud.png",0,0,128,128,6);
+	spr_matches_hud->setScale(.75f,.75f);
+	spr_matches_hud->setColor(sf::Color(255,255,255,128));
+	spr_matches_hud->setPosition(m_system->m_width - 128*2,m_system->m_height - 128*2);
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
@@ -328,7 +332,7 @@ bool GameState::Update(float _deltatime){
 	viewBeat(_deltatime);
 
 	FlickerLight(_deltatime);
-	m_light_system->logic();
+	m_light_system->logic(player->getPosition());
 	
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
@@ -387,7 +391,7 @@ void GameState::Draw()
 
 	m_system->m_window->draw(rect_shadow_mask);
 
-	m_light_system->Draw();
+	m_light_system->Draw(player->getPosition());
 	
 	// FLOOR
 	drawFloor();
@@ -416,6 +420,10 @@ void GameState::Draw()
 	
 	// DARKNESS
 	m_system->m_window->draw(*spr_darkness);
+
+	// MATCHES
+	spr_matches_hud->setFrame(player->getMatches());
+	m_system->m_window->draw(*spr_matches_hud);
 
 	if (m_system->m_debug)
 	{

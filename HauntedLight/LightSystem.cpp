@@ -52,12 +52,24 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 	//loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
 }
 
-void LightSystem::logic()
+void LightSystem::logic(sf::Vector2f _pos)
 {
+	float size = 32.f;
+
+	addSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
+	addSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
+	addSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
+	addSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
+
 	sweep();
+
+	deleteSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
+	deleteSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
+	deleteSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
+	deleteSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
 }
 
-void LightSystem::Draw()
+void LightSystem::Draw(sf::Vector2f _pos)
 {
 	/*mWindow->clear(); // Clear the window
 	mWindow->draw(*guard); // Draw the guard(light)*/
@@ -65,7 +77,7 @@ void LightSystem::Draw()
 	for (auto point: points) // FIX ME! draw walls
 	{
 		/*
-		sf::RectangleShape rect(sf::Vector2f( 
+		sf::RectangleShape rect(sf::Vector2f(
 			point->point2.x - point->point1.x, 
 			point->point3.y - point->point1.y));
 		rect.setOutlineColor(sf::Color::Red);
@@ -124,16 +136,6 @@ void LightSystem::update()
 
 		//std::cout << "woo";
 	}
-	
-	/*
-	for (auto point : points)
-	{
-		addSegment(point->point1.x , point->point1.y , point->point2.x , point->point2.y ); // Upper left to upper right
-		addSegment(point->point2.x , point->point2.y , point->point3.x , point->point3.y ); // Upper right to lower right
-		addSegment(point->point3.x , point->point3.y , point->point4.x , point->point4.y ); // Lower right to lower left
-		addSegment(point->point4.x , point->point4.y , point->point1.x , point->point1.y ); // Lower left to upper left
-	}
-	*/
 }
 
 void LightSystem::addSegment(float x1, float y1, float x2, float y2)
@@ -163,6 +165,44 @@ void LightSystem::addSegment(float x1, float y1, float x2, float y2)
 	segments.push_back(segment);
 	endPoints.push_back(p1);
 	endPoints.push_back(p2);
+}
+
+void LightSystem::deleteSegment(float x1, float y1, float x2, float y2)
+{
+	int pos = 0;
+	for(auto& segment: segments)
+	{
+		if ( segment->a->x == x1 && segment->a->y == y1 
+		  && segment->b->y == x2 && segment->b->y == y2)
+		{
+			segments.erase(segments.begin() + pos);
+			break;
+		}
+		pos++;
+	}
+
+	
+	pos = 0;
+	for(auto& endpoint: endPoints)
+	{
+		if ( endpoint->x == x1 && endpoint->y == y1 )
+		{
+			endPoints.erase(endPoints.begin() + pos);
+			break;
+		}
+		pos++;
+	}
+	
+	pos = 0;
+	for(auto& endpoint: endPoints)
+	{
+		if ( endpoint->x == x2 && endpoint->y == y2 )
+		{
+			endPoints.erase(endPoints.begin() + pos);
+			break;
+		}
+		pos++;
+	}
 }
 
 void LightSystem::setLightLocation(float x, float y)
@@ -222,7 +262,7 @@ void LightSystem::sweep()
 
 	for (unsigned int i = 0; i <= 1; i++)
 	{
-		for (auto p : endPoints)
+		for (auto& p : endPoints)
 		{
 			Segment* current_old = open.empty() ? nullptr : open.front();
 			
