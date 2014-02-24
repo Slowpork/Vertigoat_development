@@ -69,6 +69,7 @@ public:
 	void setLightLocation(float x, float y);
 	sf::Vector2f getLightLocation();
 	void setLightBrightness(float _value);
+	const float getLightBrightness() const;
 
 	void addWall(sf::Vector2f pos, sf::Vector2f size);
 

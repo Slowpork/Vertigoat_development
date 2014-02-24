@@ -85,15 +85,16 @@ bool GameState::Enter()
 
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
-	//spr_player->setScale(.6,.6);
+	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,132,132,12);
-	//spr_player_run->setScale(.6,.6);
+	spr_player_run->setScale(.5,.5);
 	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f,.75f);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
 	spr_matches_hud->setPosition(m_system->m_width - 128*2,m_system->m_height - 128*2);
+
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
@@ -191,11 +192,9 @@ void GameState::addWall(sf::Vector2f _pos)
 	//m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 
-void GameState::viewBeat(float _deltatime)
+void GameState::viewScale(float _deltatime)
 {
 	float tracking = player->getSpeed();
-	//system("cls");
-	//std::cout << "\n  Stamina: " << tracking;
 
 	if (tracking == 0.92f)
 	{
@@ -212,29 +211,11 @@ void GameState::viewBeat(float _deltatime)
 			m_view_beat = 1.f;
 	}
 
-	/*
-	if (tracking < 100)
-	{
+	float base_scale = 1280.f/(float)m_system->m_width;
 
-		m_view_beat += (_deltatime/10) * (100 - tracking);
-		float scaleFactor = .85 + (sin(m_view_beat)+2)*.05;
-		m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scaleFactor,m_system->m_height*scaleFactor));
-	}
-	else if (m_system->m_view->getSize().x < m_system->m_width)
-	{
-		float scaleValue =_deltatime/10 * 200;
-		float ratio = m_system->m_width/m_system->m_height;
+	float scalefactor = (base_scale + m_view_beat*.5f);
 
-		m_system->m_view->setSize(sf::Vector2f(m_system->m_view->getSize().x + scaleValue*ratio,m_system->m_view->getSize().y + scaleValue));
-	}
-	else
-	{
-		m_view_beat = Math::PI_HALF;
-		m_system->m_view->setSize(sf::Vector2f(m_system->m_width,m_system->m_height));
-	}
-	//std::cout << "\n  View Width: " <<  m_system->m_view->getSize().x << std::endl;*/
-
-	float scalefactor = 1.f + m_view_beat*.5f;
+	std::cout << base_scale << std::endl;
 
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
@@ -252,8 +233,8 @@ void GameState::FlickerLight(float _deltatime)
 
 	float angle = player->getSprite()->getRotation() * (Math::PI/180);
 	sf::Vector2f light_pos;
-	float x_offset = 70.f;
-	float y_offset = 25.f;
+	float x_offset = 70.f * player->getSprite()->getScale().x;
+	float y_offset = 25.f * player->getSprite()->getScale().y;
 	
 	light_pos.x = x_offset * cos( angle ) - y_offset * sin( angle );
 	light_pos.y = x_offset * sin( angle ) + y_offset * cos( angle );
@@ -329,7 +310,7 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
-	viewBeat(_deltatime);
+	viewScale(_deltatime);
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());

@@ -54,19 +54,22 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 
 void LightSystem::logic(sf::Vector2f _pos)
 {
+	/*
 	float size = 32.f;
-
 	addSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
 	addSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
 	addSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
 	addSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
+	*/
 
 	sweep();
 
+	/*
 	deleteSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
 	deleteSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
 	deleteSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
 	deleteSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
+	*/
 }
 
 void LightSystem::Draw(sf::Vector2f _pos)
@@ -236,6 +239,11 @@ void LightSystem::setLightBrightness(float _value)
 {
 	float value = 2.55 * _value;
 	light_color = sf::Color(value,value,value,255);
+}
+
+const float LightSystem::getLightBrightness() const
+{
+	return light_color.r;
 }
 
 bool sortEndPoints(EndPoint* a, EndPoint* b)

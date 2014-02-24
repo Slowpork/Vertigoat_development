@@ -61,6 +61,18 @@
     <Filter Include="Source Files\Objects\Enemies">
       <UniqueIdentifier>{d164f19d-f6a1-48bb-a553-6f256bde617f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects\Pickups">
+      <UniqueIdentifier>{a8880c08-9e11-4627-bf55-3c241994a208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Pickups">
+      <UniqueIdentifier>{11ed3f36-d8fc-48ce-acbe-b4bd7e57637b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers\Objects">
+      <UniqueIdentifier>{a8494d22-ab3d-4467-8885-c2ef5fee84a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers\Objects">
+      <UniqueIdentifier>{f2d7f7aa-9e50-482e-8ba9-c6919bb708c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -111,9 +123,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -140,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="FontManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Source Files\Managers\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +206,6 @@
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -223,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="FontManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Header Files\Managers\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
