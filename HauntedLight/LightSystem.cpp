@@ -187,6 +187,11 @@ void LightSystem::setLightLocation(float x, float y)
 	}
 }
 
+sf::Vector2f LightSystem::getLightLocation()
+{
+	return center;
+}
+
 void LightSystem::setLightBrightness(float _value)
 {
 	float value = 2.55 * _value;

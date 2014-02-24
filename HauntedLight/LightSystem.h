@@ -67,6 +67,7 @@ public:
 	// Set location of guard
 	// Segment and EndPoint data can't be processed until the guard location is known
 	void setLightLocation(float x, float y);
+	sf::Vector2f getLightLocation();
 	void setLightBrightness(float _value);
 
 	void addWall(sf::Vector2f pos, sf::Vector2f size);

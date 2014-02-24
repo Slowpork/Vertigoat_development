@@ -85,7 +85,9 @@ bool GameState::Enter()
 
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
+	//spr_player->setScale(.6,.6);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,132,132,12);
+	//spr_player_run->setScale(.6,.6);
 	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
@@ -244,15 +246,22 @@ void GameState::FlickerLight(float _deltatime)
 
 	float factor = abs(sin(m_timer));
 
+	float angle = player->getSprite()->getRotation() * (Math::PI/180);
+	sf::Vector2f light_pos;
+	float x_offset = 70.f;
+	float y_offset = 25.f;
+	
+	light_pos.x = x_offset * cos( angle ) - y_offset * sin( angle );
+	light_pos.y = x_offset * sin( angle ) + y_offset * cos( angle );
+
 	m_light_system->setLightLocation(
-		player->getPosition().x - 5.f*factor + 10.f*factor,
-		player->getPosition().y - 5.f*factor + 10.f*factor);
+		light_pos.x + player->getPosition().x - 5.f*factor + 10.f*factor,
+		light_pos.y + player->getPosition().y - 5.f*factor + 10.f*factor);
 
 	/*
 	m_light_system->setLightLocation(
-		player->getPosition().x - 5.f*factor + Random::betweenf(0.f,10.f*factor),
-		player->getPosition().y - 5.f*factor + Random::betweenf(0.f,10.f*factor));
-	*/
+		player->getPosition().x - 5.f*factor + 10.f*factor,
+		player->getPosition().y - 5.f*factor + 10.f*factor);*/
 }
 
 void GameState::drawFloor()
@@ -396,6 +405,10 @@ void GameState::Draw()
 		m_system->drawDebugRect(player->getPosition(),
 			sf::Vector2f(player->getCollider()->m_ext.x,
 						player->getCollider()->m_ext.y));
+
+		m_system->drawDebugRect(m_light_system->getLightLocation(),
+			sf::Vector2f(4,
+						4));
 	}
 
 	// INTERFACE ##################################
