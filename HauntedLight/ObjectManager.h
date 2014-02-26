@@ -40,7 +40,7 @@ public:
 	int getObjects();
 
 private:
-	std::map<int,GameObject> m_objects;
+	std::map<int,GameObject*> m_objects;
 
 	int m_max_z;
 	int m_min_z;

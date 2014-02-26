@@ -32,6 +32,11 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_matches = 2;
 }
 
+PlayerObject::~PlayerObject()
+{
+	
+}
+
 void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
 {
 	m_spr_run = _run;

@@ -139,10 +139,10 @@ void LightSystem::update()
 	for(auto& object: m_object_manager->m_objects)
 	{
 		
-		sf::Vector2f point1(object.second.getPosition().x, object.second.getPosition().y);
-		sf::Vector2f point2(object.second.getPosition().x + object.second.getSprite()->getSize().x, object.second.getPosition().y);
-		sf::Vector2f point3(object.second.getPosition().x + object.second.getSprite()->getSize().x, object.second.getPosition().y + object.second.getSprite()->getSize().y);
-		sf::Vector2f point4(object.second.getPosition().x, object.second.getPosition().y + object.second.getSprite()->getSize().y);
+		sf::Vector2f point1(object.second->getPosition().x, object.second->getPosition().y);
+		sf::Vector2f point2(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y);
+		sf::Vector2f point3(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
+		sf::Vector2f point4(object.second->getPosition().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
 	
 		addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
 		addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right

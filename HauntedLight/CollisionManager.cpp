@@ -73,12 +73,12 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset)
 	{
 		//std::cout << object.obj.getCollider() << std::endl;
 		//std::cout << object.obj.m_collider->m_type << std::endl;
-		if (object.second.getCollider())
+		if (object.second->getCollider())
 		{
 			sf::Vector2f _off;
-			if (_object->m_type == Rect && object.second.getCollider()->m_type == Rect)
+			if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
 			{
-				if ( RectvsRect(_object, object.second.getCollider(), _off))
+				if ( RectvsRect(_object, object.second->getCollider(), _off))
 				{
 					_offset += _off;
 					count++;

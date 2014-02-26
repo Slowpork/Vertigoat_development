@@ -19,7 +19,7 @@ void ObjectManager::Cleanup()
 {
 	for(auto object: m_objects)
 	{
-		delete &object;
+		delete object.second;
 		object.second = nullptr;
 	}
 }
@@ -28,12 +28,16 @@ void ObjectManager::Add(GameObject* _object, int _depth)
 {
 	_object->setDepth(_depth);
 	ID++;
-	m_objects.insert( std::pair<int, GameObject>(ID, *_object));
+	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
 }
 
 void ObjectManager::destroy(int _ID)
 {
-	std::map<int, GameObject>::iterator pos = m_objects.find(_ID);
+	std::map<int, GameObject*>::iterator pos = m_objects.find(_ID);
+
+	delete pos->second;
+	pos->second = nullptr;
+
 	m_objects.erase(pos);
 }
 
@@ -46,8 +50,8 @@ int ObjectManager::atPosition(sf::Vector2f _pos)
 {
 	for(auto& object: m_objects)
 	{
-		sf::Vector2f pos = object.second.getPosition();
-		sf::Vector2f size = object.second.getSprite()->getSize();
+		sf::Vector2f pos = object.second->getPosition();
+		sf::Vector2f size = object.second->getSprite()->getSize();
 
 		if ( _pos.x > pos.x && _pos.x < pos.x + size.x )
 		{
@@ -80,10 +84,10 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 	{
 		for(auto& object: m_objects)
 		{
-			if (object.second.getDepth() == z && object.second.hasSprite())
+			if (object.second->getDepth() == z && object.second->hasSprite())
 			{
 				//std::cout << object.depth << std::endl;
-				_window->draw(*object.second.getSprite());
+				_window->draw(*object.second->getSprite());
 				
 				/*
 				sf::RectangleShape shape;
