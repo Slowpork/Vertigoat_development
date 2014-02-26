@@ -8,14 +8,14 @@
 /* STATE RULES
 
   *RETURN
-   If state is left without any m_next value then it returns to the previous one.
+   If state is left without m_next value...then it returns to the previous one.
 
   *OPEN MENU
-   If state is left with a m_next value and is paused then it keeps the previous one
-   in the background as the rendering base.
+   If state is left with a m_next value and is paused....then it keeps the previous 
+   one in the background as the rendering base.
 
   *RESET AND RETURN TO...
-   If state is left with a m_next value and isn't paused then clear m_current and 
+   If state is left with a m_next value and isn't paused...then clear m_current and 
    restart at the next state.
  
 */
