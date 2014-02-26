@@ -28,6 +28,8 @@ LoadingState::LoadingState(System* _system)
 {
 	m_name = "LoadingState";
 	m_next = "GameState";
+	m_paused = false;
+	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
@@ -35,26 +37,28 @@ LoadingState::LoadingState(System* _system)
 }
 
 bool LoadingState::Enter(){
-	std::cout << m_name << std::endl;
+	//std::cout << m_name << std::endl;
+	m_paused = false;
 	return true;
 }
 void LoadingState::Exit(){
-	std::cout << "  " << m_name << "->";
+	//std::cout << "  " << m_name << "->";
 }
 
 void LoadingState::Pause()
 {
-
+	m_paused = true;
 }
 
 void LoadingState::Resume()
 {
-
+	m_paused = false;
 }
 
 bool LoadingState::Update(float deltatime){
 	//std::cout << "LoadingState::Update" << std::endl;
 
+	m_paused = true;
 	return false;
 }
 void LoadingState::Draw(){
@@ -70,4 +74,14 @@ std::string LoadingState::Next(){
 }
 bool LoadingState::IsType(const std::string &type){
 	return type.compare(m_name) == 0;
+}
+
+bool LoadingState::isPaused()
+{
+	return m_paused;
+}
+
+bool LoadingState::isBase()
+{
+	return m_base;
 }

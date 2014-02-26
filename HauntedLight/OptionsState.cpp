@@ -27,6 +27,8 @@ OptionsState::OptionsState(System* _system)
 {
 	m_name = "OptionsState";
 	m_next = "MenuState";
+	m_paused = false;
+	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
@@ -37,18 +39,20 @@ bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
 	return true;
 }
-void OptionsState::Exit(){
+void OptionsState::Exit()
+{
 	std::cout << "  " << m_name << "->";
+	m_paused = false;
 }
 
 void OptionsState::Pause()
 {
-
+	m_paused = true;
 }
 
 void OptionsState::Resume()
 {
-
+	m_paused = false;
 }
 
 bool OptionsState::Update(float deltatime){
@@ -67,4 +71,14 @@ std::string OptionsState::Next(){
 }
 bool OptionsState::IsType(const std::string &type) {
 	return type.compare(m_name) == 0;
+}
+
+bool OptionsState::isPaused()
+{
+	return m_paused;
+}
+
+bool OptionsState::isBase()
+{
+	return m_base;
 }

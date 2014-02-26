@@ -48,15 +48,20 @@ GameState::GameState(System* _system)
 {
 	m_name = "GameState";
 	m_next = "MenuState";
+	m_paused = false;
+	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
-	m_object_manager = new ObjectManager();
 }
 
 bool GameState::Enter()
 {
-	std::cout << m_name << std::endl;
+	//std::cout << m_name << std::endl;
+	m_base = true;
+	m_paused = false;
+
+	m_object_manager = new ObjectManager();
 
 	m_collision_manager = new CollisionManager(m_object_manager);
 
@@ -66,10 +71,6 @@ bool GameState::Enter()
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
-
-	// PLAYER
-	//AnimatedSprite* spr_player = m_system->m_sprite_manager->addSprite(
-	//	"player.png",0,0,128,128);
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -172,14 +173,15 @@ void GameState::Exit(){
 
 void GameState::Pause()
 {
+	m_paused = true;
 
+	std::cout << "  II PAUSED" << std::endl;
 }
 
 void GameState::Resume()
 {
-
+	m_paused = false;
 }
-
 
 void GameState::addWall(sf::Vector2f _pos)
 {
@@ -189,7 +191,6 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
 	m_object_manager->Add(wall,5);
-	//m_light_system->addWall(wall.getPosition(),sf::Vector2f(wall.getSprite()->getLocalBounds().width,wall.getSprite()->getLocalBounds().width));
 }
 
 void GameState::viewScale(float _deltatime)
@@ -215,7 +216,7 @@ void GameState::viewScale(float _deltatime)
 
 	float scalefactor = (base_scale + m_view_beat*.5f);
 
-	std::cout << base_scale << std::endl;
+	//std::cout << base_scale << std::endl;
 
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
@@ -351,10 +352,13 @@ bool GameState::Update(float _deltatime){
 		m_light_system->setLightBrightness(100);
 	}
 
-	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
+	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
 	return true;
 	else
-	return false;
+	{
+		Pause();
+		return false;
+	}
 }
 
 void GameState::Draw()
@@ -392,8 +396,7 @@ void GameState::Draw()
 						player->getCollider()->m_ext.y));
 
 		m_system->drawDebugRect(m_light_system->getLightLocation(),
-			sf::Vector2f(4,
-						4));
+			sf::Vector2f(4,4));
 	}
 
 	// INTERFACE ##################################
@@ -429,4 +432,14 @@ std::string GameState::Next(){
 
 bool GameState::IsType(const std::string &type) {
 	return type.compare(m_name) == 0;
+}
+
+bool GameState::isPaused()
+{
+	return m_paused;
+}
+
+bool GameState::isBase()
+{
+	return m_base;
 }

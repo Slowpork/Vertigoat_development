@@ -20,13 +20,15 @@ public:
 	void Draw();
 	std::string Next();
 	bool IsType(const std::string &type);
+	bool isPaused();
+	bool isBase();
 
 private:
 
 	std::string m_name;
 	std::string m_next;
-
-	bool m_done;
+	bool m_paused;
+	bool m_base;
 	System* m_system;
 
 	ObjectManager* object_manager;

@@ -33,6 +33,8 @@ public:
 	void Draw();
 	std::string Next();
 	bool IsType(const std::string &type);
+	bool isPaused();
+	bool isBase();
 
 private:
 
@@ -47,9 +49,12 @@ private:
 	// STATE VARIABLES
 	std::string m_name;
 	std::string m_next;
+	bool m_paused;
+	bool m_base;
+	System* m_system;
 	
 	// SYSTEMS
-	System* m_system;
+	
 	float m_timer;
 
 	ObjectManager* m_object_manager;
@@ -71,6 +76,5 @@ private:
 	sf::Font* fnt_small;
 
 	// VARIABLES
-	bool m_done;
 	float m_view_beat;
 };

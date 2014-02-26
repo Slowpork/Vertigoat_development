@@ -18,4 +18,6 @@ public:
 	virtual void Draw() = 0;
 	virtual std::string Next() = 0;
 	virtual bool IsType(const std::string &type) = 0;
+	virtual bool isPaused() = 0;
+	virtual bool isBase() = 0;
 };

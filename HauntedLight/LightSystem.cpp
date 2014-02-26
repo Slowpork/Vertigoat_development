@@ -32,11 +32,23 @@ LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManag
 
 LightSystem::~LightSystem()
 {
+	for(auto segment: segments)
+	{
+		delete segment->a;
+		segment->a = nullptr;
+		delete segment->b;
+		segment->b = nullptr;
+
+		delete segment;
+		segment = nullptr;
+	}
+
+	/*
 	for(auto point: points)
 	{
 		delete point;
 		point = nullptr;
-	}
+	}*/
 }
 
 void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)

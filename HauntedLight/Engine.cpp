@@ -43,7 +43,6 @@ bool Engine::Init()
 	m_state_manager.Attach(new LoadingState(m_system));
 	m_state_manager.Attach(new OptionsState(m_system));
 	m_state_manager.SetState("LoadingState");
-	m_state_manager.setMain("GameState");
 
 	m_running = true;
 	return true;
@@ -58,6 +57,8 @@ void Engine::Run()
 		m_system->setFps(m_fps);
 		updateEvents();
 		m_state_manager.Update(m_deltatime);
+
+		// Cursor
 		spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
 
 		if ( !m_state_manager.IsRunning())

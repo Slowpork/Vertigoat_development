@@ -157,7 +157,7 @@ void PlayerObject::Update(float _deltatime)
 		if ( m_running)
 		{
 			setState("run");
-			m_sprite->play(_deltatime*1.3);
+			m_sprite->play(_deltatime*2);
 		}
 		else
 		{
