@@ -5,6 +5,20 @@
 #include "State.h"
 #include <iostream>
 
+/* STATE RULES
+
+  *RETURN
+   If state is left without any m_next value then it returns to the previous one.
+
+  *OPEN MENU
+   If state is left with a m_next value and is paused then it keeps the previous one
+   in the background as the rendering base.
+
+  *RESET AND RETURN TO...
+   If state is left with a m_next value and isn't paused then clear m_current and 
+   restart at the next state.
+ 
+*/
 
 StateManager::StateManager() 
 {
@@ -18,7 +32,7 @@ StateManager::~StateManager()
 	auto it = m_states.begin();
 	while(it != m_states.end()) {
 		delete *it;
-		//*it = nullptr;
+		*it = nullptr;
 		it++;
 	}
 }
@@ -36,8 +50,6 @@ void StateManager::Update(float _deltatime)
 		{
 			if (!current->isPaused())
 			{
-				//if (current->IsType("GameState"))
-				//std::cout << "!" << std::endl;
 				if ( !current->Update(_deltatime))
 				{
 					ChangeState();
@@ -46,11 +58,6 @@ void StateManager::Update(float _deltatime)
 			}
 		}
 	}
-	/*
-	if(m_current == nullptr) { return; }
-	if(!m_current->Update(deltatime)) {
-		ChangeState();
-	}*/
 }
 
 void StateManager::Draw()
@@ -69,11 +76,6 @@ void StateManager::Draw()
 	}
 	else
 	return;
-	
-	/*
-	if(m_current == nullptr) { return; }
-	m_current->Draw();
-	*/
 }
 
 void StateManager::SetState(const std::string &type)
@@ -83,7 +85,6 @@ void StateManager::SetState(const std::string &type)
 
 	for(unsigned int i = 0; i < m_states.size(); i++) {
 		if(m_states[i]->IsType(type)) {
-			//m_current = m_states[i];
 			m_current.push_back(m_states[i]);
 			m_current.back()->Enter();
 			return;
@@ -124,23 +125,6 @@ void StateManager::ChangeState()
 		else // Goto another state pausing the current one
 		SetState(next);
 	}
-
-	/*
-	// SET NEXT
-	if (next != "")
-	{
-		for(unsigned int i = 0; i < m_states.size(); i++) 
-		{
-			if(m_states[i]->IsType(next)) 
-			{
-				m_current.push_back(m_states[i]);
-				m_current.back()->Enter();
-				//m_current = m_states[i];
-				//m_current->Enter();
-				return;
-			}
-		}
-	}*/
 }
 
 bool StateManager::IsRunning()
