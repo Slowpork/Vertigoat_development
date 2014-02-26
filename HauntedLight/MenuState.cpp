@@ -23,6 +23,7 @@
 
 #include "Wall.h"
 #include "PlayerObject.h"
+#include "AnimatedSprite.h"
 
 #include "Collider.h"
 
@@ -41,8 +42,11 @@ bool MenuState::Enter()
 {
 	//std::cout << m_name << std::endl;
 	m_paused = false;
+	m_base = true;
 
 	object_manager = new ObjectManager();
+
+	spr_menu = m_system->m_sprite_manager->getSprite("spr_main_menu.png",0,0,1288,720);
 
 	return true;
 }
@@ -50,6 +54,10 @@ bool MenuState::Enter()
 void MenuState::Exit()
 {
 	//std::cout << "  " << m_name << "->";
+
+	delete spr_menu;
+	spr_menu = nullptr;
+
 	m_paused = false;
 }
 
@@ -66,14 +74,14 @@ void MenuState::Resume()
 bool MenuState::Update(float _deltatime){
 	//std::cout << "MenuState::Update" << std::endl;
 
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::M))
-	{
-		m_next = "LoadingState";
-		return false;
-	}
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	{
 		m_next = "";
+		return false;
+	}
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
+	{
+		m_next = "GameState";
 		return false;
 	}
 	else
@@ -84,15 +92,7 @@ void MenuState::Draw(){
 	//std::cout << "MenuState::Draw" << std::endl;
 
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
-	sf::RectangleShape rect(sf::Vector2f( 
-		m_system->m_width, 
-		m_system->m_height));
-	rect.setOutlineColor(sf::Color::Red);
-	rect.setPosition(0,0);
-	rect.setOutlineThickness(2.f);
-	rect.setFillColor(sf::Color(0,0,0,128));
-
-	m_system->m_window->draw(rect);
+	m_system->m_window->draw(*spr_menu);
 }
 
 std::string MenuState::Next(){

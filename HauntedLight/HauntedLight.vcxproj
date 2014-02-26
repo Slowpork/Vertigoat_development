@@ -108,6 +108,7 @@
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="OptionsState.cpp" />
+    <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="OptionsState.h" />
+    <ClInclude Include="PauseState.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="SoundManager.h" />

@@ -1,6 +1,6 @@
-//LoadingState.cpp
+// PauseState.cpp
 
-#include "LoadingState.h"
+#include "PauseState.h"
 
 #include "Math.h"
 
@@ -19,14 +19,16 @@
 #include "SpriteManager.h"
 #include "InputManager.h"
 
+#include "SFML\Window\Keyboard.hpp"
+
 #include "Wall.h"
 #include "PlayerObject.h"
 
 #include "Collider.h"
 
-LoadingState::LoadingState(System* _system)
+PauseState::PauseState(System* _system)
 {
-	m_name = "LoadingState";
+	m_name = "PauseState";
 	m_next = "GameState";
 	m_paused = false;
 	m_base = false;
@@ -36,51 +38,65 @@ LoadingState::LoadingState(System* _system)
 	object_manager = new ObjectManager();
 }
 
-bool LoadingState::Enter(){
+bool PauseState::Enter(){
 	//std::cout << m_name << std::endl;
 	m_paused = false;
 	return true;
 }
-void LoadingState::Exit(){
+void PauseState::Exit(){
 	//std::cout << "  " << m_name << "->";
 }
 
-void LoadingState::Pause()
+void PauseState::Pause()
 {
 	m_paused = true;
 }
 
-void LoadingState::Resume()
+void PauseState::Resume()
 {
 	m_paused = false;
 }
 
-bool LoadingState::Update(float deltatime){
-	//std::cout << "LoadingState::Update" << std::endl;
+bool PauseState::Update(float deltatime){
+	//std::cout << "PauseState::Update" << std::endl;
 
-	return false;
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
+	{
+		m_next = "";
+		return false;
+	} else if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
+	{
+		m_next = "MenuState";
+		return false;
+	}
+
+	return true;
 }
-void LoadingState::Draw(){
-	//std::cout << "LoadingState::Draw" << std::endl;
+void PauseState::Draw(){
+	//std::cout << "PauseState::Draw" << std::endl;
 
-	m_system->m_window->clear(sf::Color::Black);
+	// BLACK FADE
+	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
+	rect_fade.setFillColor(sf::Color(0,0,0,128));
+
+	m_system->m_window->draw(rect_fade);
 
 	object_manager->Draw(m_system->m_window);
 }
-std::string LoadingState::Next(){
+std::string PauseState::Next(){
 	//std::cout << "Goto GameState\n--" << std::endl;
 	return m_next;
 }
-bool LoadingState::IsType(const std::string &type){
+bool PauseState::IsType(const std::string &type){
 	return type.compare(m_name) == 0;
 }
 
-bool LoadingState::isPaused()
+bool PauseState::isPaused()
 {
 	return m_paused;
 }
 
-bool LoadingState::isBase()
+bool PauseState::isBase()
 {
 	return m_base;
 }

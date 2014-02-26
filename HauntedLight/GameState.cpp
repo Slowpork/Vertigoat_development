@@ -140,7 +140,7 @@ bool GameState::Enter()
 
 	//std::cout << "  " << count;
 
-	std::cout << "\n";
+	//std::cout << "\n";
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
@@ -156,6 +156,16 @@ bool GameState::Enter()
 
 void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
+
+	// REMOVE SPRITES
+	delete spr_floor;
+	spr_floor = nullptr;
+
+	delete spr_matches_hud;
+	spr_matches_hud = nullptr;
+
+	delete spr_darkness;
+	spr_darkness = nullptr;
 
 	delete player;
 	player = nullptr;
@@ -356,6 +366,7 @@ bool GameState::Update(float _deltatime){
 	return true;
 	else
 	{
+		m_next = "PauseState";
 		Pause();
 		return false;
 	}

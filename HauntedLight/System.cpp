@@ -74,6 +74,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("darkness.png");
 	m_sprite_manager->addTexture("wall.png");
 	m_sprite_manager->addTexture("spr_floor.png");
+	m_sprite_manager->addTexture("spr_main_menu.png");
 
 	m_sprite_manager->addTexture("spr_matches_hud.png");
 	sf::Texture* tex_matches_hud = m_sprite_manager->getTexture("spr_matches_hud.png");

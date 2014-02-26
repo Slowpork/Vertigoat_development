@@ -14,6 +14,7 @@
 #include "LoadingState.h"
 #include "OptionsState.h"
 #include "GameState.h"
+#include "PauseState.h"
 
 #include "AnimatedSprite.h"
 
@@ -42,7 +43,8 @@ bool Engine::Init()
 	m_state_manager.Attach(new MenuState(m_system));
 	m_state_manager.Attach(new LoadingState(m_system));
 	m_state_manager.Attach(new OptionsState(m_system));
-	m_state_manager.SetState("LoadingState");
+	m_state_manager.Attach(new PauseState(m_system));
+	m_state_manager.SetState("MenuState");
 
 	m_running = true;
 	return true;

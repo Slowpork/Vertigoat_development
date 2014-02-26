@@ -24,6 +24,7 @@ class System
 
 	friend class GameState;
 	friend class LoadingState;
+	friend class PauseState;
 	friend class MenuState;
 	friend class OptionsState;
 public:

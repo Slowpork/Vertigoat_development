@@ -1,4 +1,4 @@
-//MenuState.h
+// PauseState.h
 
 #pragma once
 #include "State.h"
@@ -6,18 +6,16 @@
 
 class System;
 class ObjectManager;
-class AnimatedSprite;
 
-class MenuState : public State 
-{
+class PauseState : public State {
 public:
-	MenuState(System* _system);
+	PauseState(System* _system);
 
 	bool Enter();
 	void Exit();
 	void Pause();
 	void Resume();
-	bool Update(float _deltatime);
+	bool Update(float deltatime);
 	void Draw();
 	std::string Next();
 	bool IsType(const std::string &type);
@@ -25,7 +23,6 @@ public:
 	bool isBase();
 
 private:
-
 	std::string m_name;
 	std::string m_next;
 	bool m_paused;
@@ -33,7 +30,4 @@ private:
 	System* m_system;
 
 	ObjectManager* object_manager;
-	
-	
-	AnimatedSprite* spr_menu;
 };
