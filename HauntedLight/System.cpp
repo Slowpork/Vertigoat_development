@@ -76,6 +76,10 @@ bool System::Init()
 	m_sprite_manager->addTexture("spr_floor.png");
 	m_sprite_manager->addTexture("spr_main_menu.png");
 	m_sprite_manager->addTexture("spr_player_shadow.png");
+	m_sprite_manager->addTexture("spr_critter_walk.png");
+
+	sf::Texture* tex_critter = m_sprite_manager->getTexture("spr_critter_walk.png");
+	tex_critter->setSmooth(true);
 
 	sf::Texture* tex_player_shadow = m_sprite_manager->getTexture("spr_player_shadow.png");
 	tex_player_shadow->setSmooth(true);

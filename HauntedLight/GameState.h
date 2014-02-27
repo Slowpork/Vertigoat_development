@@ -69,6 +69,8 @@ private:
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
 
+	AnimatedSprite* spr_critter;
+
 	// SOUNDS
 	sf::Sound* snd_thud;
 	sf::Music* music_main;

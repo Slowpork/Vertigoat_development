@@ -112,14 +112,14 @@ void PlayerObject::updateLight(float _deltatime)
 	}
 	else
 	{
-		if (m_light > 0.2f)
+		if (m_light > 0.3f)
 			m_light -= _deltatime*4;
 	}
 
 	if (m_light > 1.f)
 		m_light = 1.f;
-	if (m_light < 0.2f)
-		m_light = 0.2f;
+	if (m_light < 0.3f)
+		m_light = 0.3f;
 }
 
 void PlayerObject::Update(float _deltatime)
@@ -154,7 +154,7 @@ void PlayerObject::Update(float _deltatime)
 	}
 
 	// LIGHT CANDLE
-	if (m_mouse->IsDownOnce(Middle) && m_matches > 0 )
+	if (m_mouse->IsDownOnce(Middle) && ( m_matches > 0 || m_candle) )
 	{
 		
 		m_candle = !m_candle;

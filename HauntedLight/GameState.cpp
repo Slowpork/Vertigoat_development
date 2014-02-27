@@ -99,6 +99,10 @@ bool GameState::Enter()
 	spr_player_shadow = m_system->m_sprite_manager->getSprite("spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
 
+	spr_critter = m_system->m_sprite_manager->getSprite("spr_critter_walk.png",0,0,128,128,7);
+	spr_critter->setPosition(1280,1280);
+	//spr_critter->setRotation(270);
+
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
@@ -244,7 +248,7 @@ void GameState::viewScale(float _deltatime)
 
 void GameState::FlickerLight(float _deltatime)
 {
-	if (player->getLight() > .2f)
+	if (player->hasCandle())
 	m_timer += _deltatime*5;
 
 	if (Random::between(0,50) == 0)
@@ -259,8 +263,11 @@ void GameState::FlickerLight(float _deltatime)
 	float x_offset = 70.f * player->getSprite()->getScale().x;
 	float y_offset = 25.f * player->getSprite()->getScale().y;
 	
-	light_pos.x = x_offset * cos( angle ) - y_offset * sin( angle );
-	light_pos.y = x_offset * sin( angle ) + y_offset * cos( angle );
+	if ( player->hasCandle() )
+	{
+		light_pos.x = x_offset * cos( angle ) - y_offset * sin( angle );
+		light_pos.y = x_offset * sin( angle ) + y_offset * cos( angle );
+	}
 
 	m_light_system->setLightLocation(
 		light_pos.x + player->getPosition().x - 5.f*factor + 10.f*factor,
@@ -333,6 +340,8 @@ bool GameState::Update(float _deltatime){
 
 	player->Update(_deltatime);
 
+	spr_critter->play(_deltatime);
+
 	viewScale(_deltatime);
 
 	FlickerLight(_deltatime);
@@ -393,18 +402,6 @@ void GameState::Draw()
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
-	// DYNAMIC LIGHTING
-	/*
-	sf::RectangleShape rect_shadow_mask(sf::Vector2f( 
-			m_system->m_width*2.f, 
-			m_system->m_height*2.f));
-	rect_shadow_mask.setOrigin(m_system->m_width,m_system->m_height);
-	rect_shadow_mask.setFillColor(sf::Color(255,255,255,128));
-	rect_shadow_mask.setPosition(m_system->m_view->getCenter().x,
-					m_system->m_view->getCenter().y);
-
-	m_system->m_window->draw(rect_shadow_mask);*/
-
 	m_light_system->Draw(player->getPosition());
 
 	// PLAYER SHADOW
@@ -422,6 +419,8 @@ void GameState::Draw()
 	player->getSprite()->setColor(sf::Color(m_light_system->getLightBrightness()
 		,m_light_system->getLightBrightness(),m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
+
+	m_system->m_window->draw(*spr_critter);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);
