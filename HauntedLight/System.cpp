@@ -17,8 +17,8 @@
 
 System::System()
 {
-	m_width = 1280;
-	m_height = 720;
+	m_width = 1920;
+	m_height = 1080;
 
 	m_fullscreen = false;
 	m_debug = false;
@@ -55,7 +55,7 @@ bool System::Init()
 	//m_window->setView(*m_view);
 
 	// SETTINGS
-	//m_window->setVerticalSyncEnabled(true);
+	m_window->setVerticalSyncEnabled(true);
 	m_window->setFramerateLimit(60);
 	m_window->setMouseCursorVisible(false);
 
@@ -75,6 +75,10 @@ bool System::Init()
 	m_sprite_manager->addTexture("wall.png");
 	m_sprite_manager->addTexture("spr_floor.png");
 	m_sprite_manager->addTexture("spr_main_menu.png");
+	m_sprite_manager->addTexture("spr_player_shadow.png");
+
+	sf::Texture* tex_player_shadow = m_sprite_manager->getTexture("spr_player_shadow.png");
+	tex_player_shadow->setSmooth(true);
 
 	m_sprite_manager->addTexture("spr_matches_hud.png");
 	sf::Texture* tex_matches_hud = m_sprite_manager->getTexture("spr_matches_hud.png");

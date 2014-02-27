@@ -29,7 +29,7 @@ public:
 	
 	bool setActiveDepth(int _min, int _max);
 
-	void Draw(sf::RenderWindow* _window);
+	void Draw(sf::RenderWindow* _window, float _alpha = 255);
 
 	void CheckCollision(GameObject* _object, sf::Vector2f& _offset);
 

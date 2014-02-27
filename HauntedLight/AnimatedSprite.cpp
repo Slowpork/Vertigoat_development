@@ -3,6 +3,8 @@
 #include "AnimatedSprite.h"
 
 #include <iostream>
+#include <math.h>
+#include "Math.h"
 
 AnimatedSprite::AnimatedSprite(int _frames, int _w, int _h, int _x, int _y)
 {
@@ -63,5 +65,14 @@ void AnimatedSprite::play(float _deltatime)
 		m_current = ++m_current % m_frames;
 
 		setFrame(m_current);
-	};
+	}
+}
+
+void AnimatedSprite::turnToPoint(sf::Vector2f _point)
+{
+	float angle = atan2(_point.y - getPosition().y,
+						_point.x - getPosition().x);
+	setRotation(angle * (180/Math::PI));
+
+	//std::cout << "X: " << getPosition().x << " Y:"  << getPosition().y << std::endl;
 }

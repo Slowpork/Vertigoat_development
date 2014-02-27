@@ -17,6 +17,7 @@ public:
 	~PlayerObject();
 
 	void Update(float _deltatime);
+	
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 
@@ -25,9 +26,12 @@ public:
 	const float getHealth();
 	const float getStamina();
 	const float getMatches();
+	const float getLight();
+	const bool hasCandle();
 private:
 
 	void setState(std::string _state);
+	void updateLight(float _deltatime);
 
 private:
 	KeyboardObject* m_keyboard;
@@ -43,4 +47,7 @@ private:
 	float m_health;
 	float m_stamina;
 	float m_matches;
+
+	float m_light;
+	bool m_candle;
 };

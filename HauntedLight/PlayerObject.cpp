@@ -3,6 +3,7 @@
 #include "PlayerObject.h"
 
 #include "SFML\Window\Keyboard.hpp"
+#include "SFML\Window\Mouse.hpp"
 #include "AnimatedSprite.h"
 
 #include "InputManager.h"
@@ -30,6 +31,9 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_health = 100.f;
 	m_stamina = 100.f;
 	m_matches = 2;
+	
+	m_light = 1.f;
+	m_candle = true;
 }
 
 PlayerObject::~PlayerObject()
@@ -68,6 +72,16 @@ const float PlayerObject::getMatches()
 	return m_matches;
 }
 
+const float PlayerObject::getLight()
+{
+	return m_light;
+}
+
+const bool PlayerObject::hasCandle()
+{
+	return m_candle;
+}
+
 void PlayerObject::doFriction()
 {
 	m_vel *= m_friction;
@@ -89,11 +103,33 @@ void PlayerObject::setState(std::string _state)
 	}
 }
 
+void PlayerObject::updateLight(float _deltatime)
+{
+	if (m_candle)
+	{
+		if (m_light < 1.f)
+			m_light += _deltatime*2;
+	}
+	else
+	{
+		if (m_light > 0.2f)
+			m_light -= _deltatime*4;
+	}
+
+	if (m_light > 1.f)
+		m_light = 1.f;
+	if (m_light < 0.2f)
+		m_light = 0.2f;
+}
+
 void PlayerObject::Update(float _deltatime)
 {
-	const float speed = 44.f;
+	float speed = 44.f;
+	speed = 32.f;
 
 	bool moving = false;
+
+	updateLight(_deltatime);
 
 	// MOVE
 	if (m_keyboard->IsDown(sf::Keyboard::A))
@@ -115,6 +151,15 @@ void PlayerObject::Update(float _deltatime)
 	{
 		moving = true;
 		m_vel.y += speed * _deltatime;
+	}
+
+	// LIGHT CANDLE
+	if (m_mouse->IsDownOnce(Middle) && m_matches > 0 )
+	{
+		
+		m_candle = !m_candle;
+		if (m_candle)
+		m_matches--;
 	}
 
 	// MATCHES DEBUG

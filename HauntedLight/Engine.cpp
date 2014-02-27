@@ -18,6 +18,8 @@
 
 #include "AnimatedSprite.h"
 
+#include <iostream>
+
 Engine::Engine()
 {
 	m_running = false;
@@ -67,7 +69,8 @@ void Engine::Run()
 			m_running = false;
 
 		// DRAW 
-		m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
+		//m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
+		m_system->m_window->clear(sf::Color(0,0,0,255));
 		m_state_manager.Draw();
 
 		// Cursor
@@ -137,9 +140,10 @@ void Engine::updateEvents()
 		}
 	}
 
-	/*if ( m_system->m_mouse->GetX() != m_system->m_mouse->getPos().x && 
+	/*
+	if ( m_system->m_mouse->GetX() != m_system->m_mouse->getPos().x && 
 				 m_system->m_mouse->GetY() != m_system->m_mouse->getPos().y)
-			std::cout << "Mouse Pix X: " << m_system->m_mouse->GetX()
+			std::cout << "Mouse Pos X: " << m_system->m_mouse->GetX()
 				<< " Y: " << m_system->m_mouse->GetY() << " Pos X: " 
 				<< m_system->m_mouse->getPos().x << " Y: " 
 				<< m_system->m_mouse->getPos().y << std::endl;*/

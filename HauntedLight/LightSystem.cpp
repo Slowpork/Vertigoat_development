@@ -67,7 +67,8 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 void LightSystem::logic(sf::Vector2f _pos)
 {
 	/*
-	float size = 32.f;
+	float size = 16.f;
+	
 	addSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
 	addSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
 	addSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
@@ -138,7 +139,6 @@ void LightSystem::update()
 	
 	for(auto& object: m_object_manager->m_objects)
 	{
-		
 		sf::Vector2f point1(object.second->getPosition().x, object.second->getPosition().y);
 		sf::Vector2f point2(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y);
 		sf::Vector2f point3(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
@@ -190,6 +190,9 @@ void LightSystem::deleteSegment(float x1, float y1, float x2, float y2)
 		if ( segment->a->x == x1 && segment->a->y == y1 
 		  && segment->b->y == x2 && segment->b->y == y2)
 		{
+			delete segment;
+			segment = nullptr;
+
 			segments.erase(segments.begin() + pos);
 			break;
 		}
@@ -202,6 +205,15 @@ void LightSystem::deleteSegment(float x1, float y1, float x2, float y2)
 	{
 		if ( endpoint->x == x1 && endpoint->y == y1 )
 		{
+
+			/*
+			if (endpoint != nullptr)
+			{
+				delete endpoint;
+				endpoint = nullptr;
+			}
+			*/
+
 			endPoints.erase(endPoints.begin() + pos);
 			break;
 		}
@@ -213,6 +225,14 @@ void LightSystem::deleteSegment(float x1, float y1, float x2, float y2)
 	{
 		if ( endpoint->x == x2 && endpoint->y == y2 )
 		{
+			/*
+			if (endpoint != nullptr)
+			{
+				delete endpoint;
+				endpoint = nullptr;
+			}
+			*/
+
 			endPoints.erase(endPoints.begin() + pos);
 			break;
 		}

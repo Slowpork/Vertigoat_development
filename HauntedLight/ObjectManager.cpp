@@ -78,7 +78,7 @@ bool ObjectManager::setActiveDepth(int _min, int _max)
 	return true;
 }
 
-void ObjectManager::Draw(sf::RenderWindow* _window)
+void ObjectManager::Draw(sf::RenderWindow* _window, float _alpha)
 {
 	for(int z = m_min_z; z <= m_max_z; z++)
 	{
@@ -87,6 +87,7 @@ void ObjectManager::Draw(sf::RenderWindow* _window)
 			if (object.second->getDepth() == z && object.second->hasSprite())
 			{
 				//std::cout << object.depth << std::endl;
+				object.second->getSprite()->setColor(sf::Color(_alpha,_alpha,_alpha,255));
 				_window->draw(*object.second->getSprite());
 				
 				/*

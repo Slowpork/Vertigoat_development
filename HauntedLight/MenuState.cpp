@@ -47,6 +47,7 @@ bool MenuState::Enter()
 	object_manager = new ObjectManager();
 
 	spr_menu = m_system->m_sprite_manager->getSprite("spr_main_menu.png",0,0,1288,720);
+	spr_menu->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
 	return true;
 }

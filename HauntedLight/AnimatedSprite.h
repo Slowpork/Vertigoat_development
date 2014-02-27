@@ -15,6 +15,7 @@ public:
 	void play(float _deltatime);
 
 	sf::Vector2f getSize();
+	void turnToPoint(sf::Vector2f _point);
 
 	void setSpeed(float _speed);
 	void setStart(int _start);

@@ -96,6 +96,9 @@ bool GameState::Enter()
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
 	spr_matches_hud->setPosition(m_system->m_width - 128*2,m_system->m_height - 128*2);
 
+	spr_player_shadow = m_system->m_sprite_manager->getSprite("spr_player_shadow.png",0,0,960,1080);
+	spr_player_shadow->setOrigin(960.f,540.f);
+
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
@@ -222,7 +225,15 @@ void GameState::viewScale(float _deltatime)
 			m_view_beat = 1.f;
 	}
 
+	if (m_view_beat > 1.f)
+		m_view_beat = 1.f;
+	if (m_view_beat < 0.2f)
+		m_view_beat = 0.2f;
+
 	float base_scale = 1280.f/(float)m_system->m_width;
+
+	float factor = abs(sin(m_timer));
+	m_light_system->setLightBrightness((m_view_beat*85.f + factor*15.f)*player->getLight());
 
 	float scalefactor = (base_scale + m_view_beat*.5f);
 
@@ -233,9 +244,10 @@ void GameState::viewScale(float _deltatime)
 
 void GameState::FlickerLight(float _deltatime)
 {
+	if (player->getLight() > .2f)
 	m_timer += _deltatime*5;
 
-	if (Random::between(0,10) == 0)
+	if (Random::between(0,50) == 0)
 	{
 		m_timer = 0.f;
 	}
@@ -325,6 +337,8 @@ bool GameState::Update(float _deltatime){
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());
+	spr_player_shadow->setPosition(player->getPosition());
+	spr_player_shadow->turnToPoint(m_light_system->getLightLocation());
 	
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
@@ -374,30 +388,44 @@ bool GameState::Update(float _deltatime){
 
 void GameState::Draw()
 {
+	const float brightness = m_light_system->getLightBrightness();
+
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
 	// DYNAMIC LIGHTING
+	/*
 	sf::RectangleShape rect_shadow_mask(sf::Vector2f( 
 			m_system->m_width*2.f, 
 			m_system->m_height*2.f));
-	rect_shadow_mask.setFillColor(sf::Color(0,0,0,255));
-	rect_shadow_mask.setPosition(m_system->m_view->getCenter().x - m_system->m_view->getSize().x,
-					m_system->m_view->getCenter().y - m_system->m_view->getSize().y);
+	rect_shadow_mask.setOrigin(m_system->m_width,m_system->m_height);
+	rect_shadow_mask.setFillColor(sf::Color(255,255,255,128));
+	rect_shadow_mask.setPosition(m_system->m_view->getCenter().x,
+					m_system->m_view->getCenter().y);
 
-	m_system->m_window->draw(rect_shadow_mask);
+	m_system->m_window->draw(rect_shadow_mask);*/
 
 	m_light_system->Draw(player->getPosition());
+
+	// PLAYER SHADOW
+	if (player->hasCandle() )
+	{
+		spr_player_shadow->setColor(sf::Color(255,255,255,brightness));
+		//std::cout << m_light_system->getLightBrightness() << std::endl;
+		m_system->m_window->draw(*spr_player_shadow);
+	}
 	
 	// FLOOR
 	drawFloor();
 
 	// PLAYER
+	player->getSprite()->setColor(sf::Color(m_light_system->getLightBrightness()
+		,m_light_system->getLightBrightness(),m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);
-	m_object_manager->Draw(m_system->m_window);
+	m_object_manager->Draw(m_system->m_window, brightness);
 
 	// PLAYER COLLISION-BOX
 	if (m_system->m_debug)

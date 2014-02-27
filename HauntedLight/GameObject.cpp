@@ -3,10 +3,10 @@
 #include "GameObject.h"
 #include "AnimatedSprite.h"
 #include "Collider.h"
-#include "Math.h"
 
-#include <math.h>
 #include <iostream>
+#include <math.h>
+#include "Math.h"
 
 GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 {
@@ -73,6 +73,7 @@ void GameObject::turnToPoint(sf::Vector2f _point)
 						_point.x - m_pos.x);
 	m_sprite->setRotation(angle * (180/Math::PI));
 }
+
 
 bool GameObject::hasSprite()
 {
