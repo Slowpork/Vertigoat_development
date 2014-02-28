@@ -69,12 +69,21 @@ bool System::Init()
 	m_sprite_manager = new SpriteManager("../data/sprites/");
 	m_font_manager = new FontManager("../data/fonts/");
 
-	// LOAD ALL THE TEXTURES
+	// LOAD ALL THE TEXTURES #############################################################
+
+	// MAIN MENU
+	m_sprite_manager->addTexture("spr_menu_background.png");
+	m_sprite_manager->addTexture("spr_title.png");
+	m_sprite_manager->addTexture("spr_candle_light.png");
+	m_sprite_manager->addTexture("spr_candle_idle.png");
+	m_sprite_manager->addTexture("spr_candle_blow.png");
+	m_sprite_manager->addTexture("spr_candle.png");
+
+	// GAME
 	m_sprite_manager->addTexture("curs.png");
 	m_sprite_manager->addTexture("darkness.png");
 	m_sprite_manager->addTexture("wall.png");
 	m_sprite_manager->addTexture("spr_floor.png");
-	m_sprite_manager->addTexture("spr_main_menu.png");
 	m_sprite_manager->addTexture("spr_player_shadow.png");
 	m_sprite_manager->addTexture("spr_critter_walk.png");
 

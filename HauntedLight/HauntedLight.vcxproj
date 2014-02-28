@@ -102,6 +102,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="main.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="LevelSystem.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightSystem.h" />
     <ClInclude Include="LoadingState.h" />

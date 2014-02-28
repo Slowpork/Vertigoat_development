@@ -33,6 +33,7 @@
 #include "FontManager.h"
 
 #include "LightSystem.h"
+#include "LevelSystem.h"
 
 #include "Random.h"
 
@@ -63,6 +64,8 @@ bool GameState::Enter()
 
 	m_object_manager = new ObjectManager();
 
+	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
+
 	m_collision_manager = new CollisionManager(m_object_manager);
 
 	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
@@ -71,6 +74,8 @@ bool GameState::Enter()
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
+
+	// woo;
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -94,7 +99,7 @@ bool GameState::Enter()
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f,.75f);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
-	spr_matches_hud->setPosition(m_system->m_width - 128*2,m_system->m_height - 128*2);
+	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*2.f,(float)m_system->m_height - 128.f*2.f);
 
 	spr_player_shadow = m_system->m_sprite_manager->getSprite("spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
@@ -407,7 +412,7 @@ void GameState::Draw()
 	// PLAYER SHADOW
 	if (player->hasCandle() )
 	{
-		spr_player_shadow->setColor(sf::Color(255,255,255,brightness));
+		spr_player_shadow->setColor(sf::Color(255,255,255,(int)brightness));
 		//std::cout << m_light_system->getLightBrightness() << std::endl;
 		m_system->m_window->draw(*spr_player_shadow);
 	}
@@ -416,8 +421,8 @@ void GameState::Draw()
 	drawFloor();
 
 	// PLAYER
-	player->getSprite()->setColor(sf::Color(m_light_system->getLightBrightness()
-		,m_light_system->getLightBrightness(),m_light_system->getLightBrightness(),255));
+	player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
+		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
 	m_system->m_window->draw(*spr_critter);

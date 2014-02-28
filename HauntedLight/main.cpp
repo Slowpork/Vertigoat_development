@@ -11,5 +11,5 @@ int main(int argc, char* argv[])
 		engine.Cleanup();
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }

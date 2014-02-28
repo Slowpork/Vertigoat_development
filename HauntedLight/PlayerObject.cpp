@@ -67,7 +67,7 @@ const float PlayerObject::getStamina()
 	return m_stamina;
 }
 
-const float PlayerObject::getMatches()
+const int PlayerObject::getMatches()
 {
 	return m_matches;
 }

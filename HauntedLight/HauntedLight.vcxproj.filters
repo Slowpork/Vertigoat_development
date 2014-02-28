@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Managers\Objects">
       <UniqueIdentifier>{f2d7f7aa-9e50-482e-8ba9-c6919bb708c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SubSystems\Level">
+      <UniqueIdentifier>{b2e45f69-4bfc-4c61-b7ba-c96f66c99047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SubSystems\Level">
+      <UniqueIdentifier>{8845a632-22a5-4687-b6bb-2a16e742ff82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -155,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="PauseState.cpp">
       <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSystem.cpp">
+      <Filter>Source Files\SubSystems\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="PauseState.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSystem.h">
+      <Filter>Header Files\SubSystems\Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ class PlayerObject;
 class CollisionManager;
 class LightSystem;
 class AnimatedSprite;
-
+class LevelSystem;
 
 namespace sf
 {
@@ -60,6 +60,7 @@ private:
 	ObjectManager* m_object_manager;
 	CollisionManager* m_collision_manager;
 	LightSystem* m_light_system;
+	LevelSystem* m_level_system;
 
 	// OBJECTS
 	PlayerObject* player;

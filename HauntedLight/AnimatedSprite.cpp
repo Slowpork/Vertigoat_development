@@ -40,6 +40,12 @@ void AnimatedSprite::setSpeed(float _speed)
 	m_global_speed = _speed;
 }
 
+void AnimatedSprite::setOpacity(int _alpha)
+{
+	sf::Color current = getColor();
+	setColor(sf::Color(current.r,current.g,current.b,_alpha));
+}
+
 sf::Vector2f AnimatedSprite::getSize()
 {
 	return sf::Vector2f(m_width,m_height);

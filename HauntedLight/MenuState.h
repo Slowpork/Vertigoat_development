@@ -34,6 +34,17 @@ private:
 
 	ObjectManager* object_manager;
 	
+	// STATE SPECIFIC
+
+	AnimatedSprite* spr_background;
+	AnimatedSprite* spr_title;
+	AnimatedSprite* spr_candle_light;
+	AnimatedSprite* spr_candle_blow;
+	AnimatedSprite* spr_candle_idle;
+	AnimatedSprite* spr_candle;
 	
-	AnimatedSprite* spr_menu;
+
+	int state;
+	float brightness;
+	float title_alpha;
 };

@@ -27,6 +27,21 @@
 
 #include "Collider.h"
 
+/*
+
+	STATES
+	
+	0. become lit;
+	1. idle
+	2. blow
+
+	light
+	54px;
+	title
+	186px;
+
+*/
+
 MenuState::MenuState(System* _system)
 {
 	m_name = "MenuState";
@@ -44,10 +59,47 @@ bool MenuState::Enter()
 	m_paused = false;
 	m_base = true;
 
+	state = 0;
+	brightness = -1.f;
+	title_alpha = 0.f;
+
 	object_manager = new ObjectManager();
 
-	spr_menu = m_system->m_sprite_manager->getSprite("spr_main_menu.png",0,0,1288,720);
-	spr_menu->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+
+	// Background
+	spr_background = m_system->m_sprite_manager->getSprite("spr_menu_background.png",0,0,1288,720);
+	spr_background->setScale(scale.x,scale.y);
+
+	// Title
+	spr_title = m_system->m_sprite_manager->getSprite("spr_title.png",0,0,458,252);
+	spr_title->setScale(scale.x,scale.x);
+	spr_title->setOrigin(229.f,126);
+	spr_title->setPosition(m_system->m_width/2, m_system->m_height/2 - 186.f*scale.y);
+
+	// Candle light
+	spr_candle_light = m_system->m_sprite_manager->getSprite("spr_candle_light.png",0,0,124,124,6);
+	spr_candle_light->setScale(scale.x,scale.y);
+	spr_candle_light->setOrigin(72,72);
+	spr_candle_light->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+
+	// Candle idle
+	spr_candle_idle = m_system->m_sprite_manager->getSprite("spr_candle_idle.png",0,0,124,124,10);
+	spr_candle_idle->setScale(scale.x,scale.y);
+	spr_candle_idle->setOrigin(72,72);
+	spr_candle_idle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+
+	// Candle blow
+	spr_candle_blow = m_system->m_sprite_manager->getSprite("spr_candle_blow.png",0,0,124,124,5);
+	spr_candle_blow->setScale(scale.x,scale.y);
+	spr_candle_blow->setOrigin(72,72);
+	spr_candle_blow->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+
+	// Candle
+	spr_candle = m_system->m_sprite_manager->getSprite("spr_candle.png",0,0,410,410);
+	spr_candle->setScale(scale.x,scale.y);
+	spr_candle->setOrigin(205,205);
+	spr_candle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
 
 	return true;
 }
@@ -56,8 +108,23 @@ void MenuState::Exit()
 {
 	//std::cout << "  " << m_name << "->";
 
-	delete spr_menu;
-	spr_menu = nullptr;
+	delete spr_title;
+	spr_title = nullptr;
+
+	delete spr_candle_light;
+	spr_candle_light = nullptr;
+
+	delete spr_candle_blow;
+	spr_candle_blow = nullptr;
+
+	delete spr_candle_idle;
+	spr_candle_idle = nullptr;
+
+	delete spr_background;
+	spr_background = nullptr;
+
+	delete spr_candle;
+	spr_candle = nullptr;
 
 	m_paused = false;
 }
@@ -75,25 +142,120 @@ void MenuState::Resume()
 bool MenuState::Update(float _deltatime){
 	//std::cout << "MenuState::Update" << std::endl;
 
+	switch(state)
+	{
+	case 0:
+
+		if (brightness < 1.f)
+			brightness += _deltatime;
+		else
+		{
+			brightness = 1.f;
+			state++;
+		}
+
+		spr_candle_light->play(_deltatime/2);
+		break;
+	case 1:
+
+		if (title_alpha < 1.f)
+			title_alpha += _deltatime;
+		else
+			title_alpha = 1.f;
+
+		spr_candle_idle->play(_deltatime);
+		break;
+	case 2:
+		spr_candle_blow->play(_deltatime);
+
+		brightness -= _deltatime*2;
+		if (brightness < 0.f)
+		{
+			m_next = "GameState";
+			return false;
+		}
+		break;
+	}
+
+	if (title_alpha > 1.f)
+		title_alpha = 1.f;
+	if (title_alpha < 0.f)
+		title_alpha = 0.f;
+
+	if (brightness > 1.f)
+		brightness = 1.f;
+	if (brightness < 0.f)
+		brightness = 0.f;
+
+	// DEBUG STATES
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num1))
+	{
+		state = 0;
+		title_alpha = 0.f;
+		brightness = 0.f;
+	}
+	else if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num2))
+	{
+		brightness = 1.f;
+		state = 1;
+	}
+	else if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num3))
+	{
+		brightness = 1.f;
+		state = 2;
+	}
+
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	{
 		m_next = "";
 		return false;
 	}
+	
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
 	{
-		m_next = "GameState";
-		return false;
+		state = 2;
 	}
-	else
-		return true;
+
+	// START GAME
+	//std::cout << brightness << std::endl;
+
+	return true;
 }
 
 void MenuState::Draw(){
 	//std::cout << "MenuState::Draw" << std::endl;
 
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
-	m_system->m_window->draw(*spr_menu);
+
+	m_system->m_window->draw(*spr_background);
+
+	m_system->m_window->draw(*spr_candle);
+
+	// CANDLE STATE
+	switch(state)
+	{
+	case 0:
+		m_system->m_window->draw(*spr_candle_light);
+		break;
+	case 1:
+		m_system->m_window->draw(*spr_candle_idle);
+		break;
+	case 2:
+		m_system->m_window->draw(*spr_candle_blow);
+		break;
+	}
+
+	// TITLE
+	spr_title->setOpacity(title_alpha*255.f);
+	m_system->m_window->draw(*spr_title);
+
+	// BLACK FADE
+	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
+	rect_fade.setFillColor(sf::Color(0,0,0,255 - brightness*255));
+
+	m_system->m_window->draw(rect_fade);
+
+	//std::cout << 255 - brightness*255 << std::endl;
 }
 
 std::string MenuState::Next(){

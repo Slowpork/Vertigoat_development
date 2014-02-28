@@ -17,6 +17,7 @@ public:
 	sf::Vector2f getSize();
 	void turnToPoint(sf::Vector2f _point);
 
+	void setOpacity(int _alpha);
 	void setSpeed(float _speed);
 	void setStart(int _start);
 	void restart();

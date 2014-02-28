@@ -25,7 +25,7 @@ public:
 
 	const float getHealth();
 	const float getStamina();
-	const float getMatches();
+	const int getMatches();
 	const float getLight();
 	const bool hasCandle();
 private:
@@ -46,7 +46,7 @@ private:
 	sf::Vector2f m_max_vel;
 	float m_health;
 	float m_stamina;
-	float m_matches;
+	int m_matches;
 
 	float m_light;
 	bool m_candle;
