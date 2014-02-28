@@ -100,7 +100,7 @@ bool GameState::Enter()
 	spr_player_shadow->setOrigin(960.f,540.f);
 
 	spr_critter = m_system->m_sprite_manager->getSprite("spr_critter_walk.png",0,0,128,128,7);
-	spr_critter->setPosition(1280,1280);
+	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);

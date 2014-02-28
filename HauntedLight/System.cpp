@@ -55,7 +55,7 @@ bool System::Init()
 	//m_window->setView(*m_view);
 
 	// SETTINGS
-	m_window->setVerticalSyncEnabled(true);
+	//m_window->setVerticalSyncEnabled(true);
 	m_window->setFramerateLimit(60);
 	m_window->setMouseCursorVisible(false);
 
