@@ -12,6 +12,11 @@ SoundManager::SoundManager(std::string _dir)
 	m_dir = _dir;
 }
 
+SoundManager::~SoundManager()
+{
+
+}
+
 void SoundManager::addSoundBuffer(const std::string& _filename)
 {
 	std::string path = m_dir + _filename;

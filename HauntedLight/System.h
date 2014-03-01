@@ -2,6 +2,9 @@
 
 #pragma once
 #include "SFML\System\Vector2.hpp"
+#include "SFML\Window\VideoMode.hpp"
+
+#include <string>
 
 namespace sf
 {
@@ -37,18 +40,25 @@ public:
 	void drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size);
 	void setDebug(bool _mode);
 
+	void setVideoMode();
+
 private:
 	void setFps(int _fps);
 	
 private:
-
+	// DATA
 	int m_height, m_width;
 	float m_ticks;
 	int m_fps;
 
+	std::string m_title;
+	std::vector<sf::VideoMode> m_video_modes;
 	bool m_fullscreen;
+	bool m_borderless;
+
 	bool m_debug;
 
+	// SYSTEM PARTS
 	sf::RenderWindow* m_window;
 	sf::View* m_view;
 	sf::Clock* m_clock;

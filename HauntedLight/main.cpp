@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
 		engine.Run();
 		engine.Cleanup();
 	}
+	else
+	return EXIT_FAILURE;
 
 	return EXIT_SUCCESS;
 }

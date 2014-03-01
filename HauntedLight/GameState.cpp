@@ -75,7 +75,7 @@ bool GameState::Enter()
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
 
-	// woo;
+	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -97,9 +97,9 @@ bool GameState::Enter()
 	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
 
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("spr_matches_hud.png",0,0,128,128,6);
-	spr_matches_hud->setScale(.75f,.75f);
+	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
-	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*2.f,(float)m_system->m_height - 128.f*2.f);
+	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*1.5f*scale.x,(float)m_system->m_height - 128.f*1.5f*scale.y);
 
 	spr_player_shadow = m_system->m_sprite_manager->getSprite("spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
@@ -110,7 +110,7 @@ bool GameState::Enter()
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
-	spr_darkness->setScale((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
 
 	
@@ -170,27 +170,17 @@ void GameState::Exit(){
 	std::cout << "  " << m_name << "->";
 
 	// REMOVE SPRITES
-	delete spr_floor;
-	spr_floor = nullptr;
+	delete spr_floor; spr_floor = nullptr;
+	delete spr_matches_hud; spr_matches_hud = nullptr;
+	delete spr_darkness; spr_darkness = nullptr;
 
-	delete spr_matches_hud;
-	spr_matches_hud = nullptr;
+	delete player; player = nullptr;
 
-	delete spr_darkness;
-	spr_darkness = nullptr;
-
-	delete player;
-	player = nullptr;
-
-	delete m_collision_manager;
-	m_collision_manager = nullptr;
-
-	delete m_light_system;
-	m_light_system = nullptr;
+	delete m_collision_manager; m_collision_manager = nullptr;
+	delete m_light_system; m_light_system = nullptr;
 
 	m_object_manager->Cleanup();
-	delete m_object_manager;
-	m_object_manager = nullptr;
+	delete m_object_manager; m_object_manager = nullptr;
 }
 
 void GameState::Pause()

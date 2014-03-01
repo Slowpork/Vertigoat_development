@@ -40,6 +40,9 @@
 	title
 	186px;
 
+	9
+	32
+
 */
 
 MenuState::MenuState(System* _system)
@@ -60,8 +63,8 @@ bool MenuState::Enter()
 	m_base = true;
 
 	state = 0;
-	brightness = -1.f;
 	title_alpha = 0.f;
+	brightness = 0.f;
 
 	object_manager = new ObjectManager();
 
@@ -81,19 +84,19 @@ bool MenuState::Enter()
 	spr_candle_light = m_system->m_sprite_manager->getSprite("spr_candle_light.png",0,0,124,124,6);
 	spr_candle_light->setScale(scale.x,scale.y);
 	spr_candle_light->setOrigin(72,72);
-	spr_candle_light->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+	spr_candle_light->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle idle
 	spr_candle_idle = m_system->m_sprite_manager->getSprite("spr_candle_idle.png",0,0,124,124,10);
 	spr_candle_idle->setScale(scale.x,scale.y);
 	spr_candle_idle->setOrigin(72,72);
-	spr_candle_idle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+	spr_candle_idle->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle blow
 	spr_candle_blow = m_system->m_sprite_manager->getSprite("spr_candle_blow.png",0,0,124,124,5);
 	spr_candle_blow->setScale(scale.x,scale.y);
 	spr_candle_blow->setOrigin(72,72);
-	spr_candle_blow->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
+	spr_candle_blow->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle
 	spr_candle = m_system->m_sprite_manager->getSprite("spr_candle.png",0,0,410,410);
@@ -152,6 +155,7 @@ bool MenuState::Update(float _deltatime){
 		{
 			brightness = 1.f;
 			state++;
+			title_alpha = 0.f;
 		}
 
 		spr_candle_light->play(_deltatime/2);
@@ -159,9 +163,7 @@ bool MenuState::Update(float _deltatime){
 	case 1:
 
 		if (title_alpha < 1.f)
-			title_alpha += _deltatime;
-		else
-			title_alpha = 1.f;
+			title_alpha += _deltatime/2;
 
 		spr_candle_idle->play(_deltatime);
 		break;
@@ -193,16 +195,19 @@ bool MenuState::Update(float _deltatime){
 		state = 0;
 		title_alpha = 0.f;
 		brightness = 0.f;
+		spr_candle_light->setFrame(0);
 	}
 	else if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num2))
 	{
 		brightness = 1.f;
 		state = 1;
+		spr_candle_idle->setFrame(0);
 	}
 	else if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num3))
 	{
 		brightness = 1.f;
 		state = 2;
+		spr_candle_blow->setFrame(0);
 	}
 
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))

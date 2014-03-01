@@ -96,7 +96,6 @@ void Engine::updateDeltatime()
 
 	// FPS
 	m_fps = 1.f / m_deltatime;
-	//std::cout << m_fps << std::endl;
 }
 
 void Engine::updateEvents()
@@ -160,27 +159,14 @@ void Engine::updateEvents()
 
 	// TOGGLE DEBUG
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F1))
-	{
 		m_system->setDebug(m_system->m_debug = !m_system->m_debug);
-	}
-
 	
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11) 
 		|| (m_system->m_keyboard->IsDown(sf::Keyboard::LAlt) && m_system->m_keyboard->IsDownOnce(sf::Keyboard::Return)) )
 	{
 		m_system->m_fullscreen = !m_system->m_fullscreen;
-
-		m_system->m_window->close();
-		delete m_system->m_window;
-
-		if (m_system->m_fullscreen)
-		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Fullscreen);
-		else
-		m_system->m_window = new sf::RenderWindow(sf::VideoMode(m_system->m_width,m_system->m_height), "Haunted Light - Pre-alpha", sf::Style::Default);
-		
-		m_system->m_window->setFramerateLimit(60);
-		m_system->m_window->setMouseCursorVisible(false);
+		m_system->setVideoMode();
 	}
 }
  
