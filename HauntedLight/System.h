@@ -55,6 +55,7 @@ private:
 	std::vector<sf::VideoMode> m_video_modes;
 	bool m_fullscreen;
 	bool m_borderless;
+	bool m_vsync;
 
 	bool m_debug;
 

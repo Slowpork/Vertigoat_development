@@ -36,7 +36,7 @@ public:
 
 protected:
 
-	void turnToPoint(sf::Vector2f _point);
+	void turnToPoint(sf::Vector2f _point, float _speed = 0.f);
 
 protected:
 

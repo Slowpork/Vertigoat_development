@@ -26,6 +26,7 @@ System::System()
 
 	m_fullscreen = false;
 	m_borderless = false;
+	m_vsync = false;
 	m_debug = false;
 
 	m_ticks = 0.f;
@@ -171,25 +172,33 @@ bool System::Init()
 
 void System::setVideoMode()
 {
+	if (m_borderless)
+	{
+		m_width = m_video_modes[0].width;
+		m_height = m_video_modes[0].height;
+	}
 	sf::VideoMode videomode = sf::VideoMode(m_width,m_height);
-	sf::VideoMode borderlessmode = 
-		sf::VideoMode(m_video_modes[0].width,m_video_modes[0].height);
-
-	//m_window->close();
-	//delete m_system->m_window;
 
 	if (m_fullscreen)
 	m_window->create(videomode,m_title,sf::Style::Fullscreen);
 	else
 	{
-		/*m_borderless = true;
 		if (m_borderless)
-		m_window->create(borderlessmode,m_title,sf::Style::None);
-		else*/
+		m_window->create(videomode,m_title,sf::Style::None);
+		else
 		m_window->create(videomode,m_title,sf::Style::Titlebar | sf::Style::Close);
 	}
 
-	m_window->setFramerateLimit(60);
+	if (m_vsync)
+	{
+		m_window->setFramerateLimit(0);
+		m_window->setVerticalSyncEnabled(true);
+	}
+	else
+	{
+		m_window->setFramerateLimit(60);
+		m_window->setVerticalSyncEnabled(false);
+	}
 	m_window->setMouseCursorVisible(false);
 }
 

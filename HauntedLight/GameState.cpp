@@ -367,19 +367,6 @@ bool GameState::Update(float _deltatime){
 		m_light_system->update();
 	}
 
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num1))
-	{
-		m_light_system->setLightBrightness(20);
-	}
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num2))
-	{
-		m_light_system->setLightBrightness(40);
-	}
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num3))
-	{
-		m_light_system->setLightBrightness(100);
-	}
-
 	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
 	return true;
 	else

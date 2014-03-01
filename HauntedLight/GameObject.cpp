@@ -67,11 +67,49 @@ void GameObject::setDepth(int _depth)
 	m_depth = _depth;
 }
 
-void GameObject::turnToPoint(sf::Vector2f _point)
+void GameObject::turnToPoint(sf::Vector2f _point, float _speed)
 {
 	float angle = atan2(_point.y - m_pos.y,
-						_point.x - m_pos.x);
-	m_sprite->setRotation(angle * (180/Math::PI));
+							_point.x - m_pos.x);
+	float desired = angle * (180/Math::PI);
+
+	if (_speed == 0.f ) // DIRECT TURN
+	{
+		getSprite()->setRotation(desired);
+	}
+	else // INCREMENTAL TURN
+	{
+		float wdir, tempdir, turnspeed;
+		wdir = desired;
+		turnspeed = _speed;
+		if (abs(wdir-getSprite()->getRotation()) > 180) {
+			if (wdir > 180) {
+				tempdir = wdir - 360;
+				if (abs(tempdir-getSprite()->getRotation()) > turnspeed) {
+					getSprite()->setRotation(getSprite()->getRotation() - turnspeed);
+				} else {
+					getSprite()->setRotation(wdir);
+				}
+			} else {
+				tempdir = wdir + 360;
+				if (abs(tempdir-getSprite()->getRotation()) > turnspeed) {
+					getSprite()->setRotation(getSprite()->getRotation() + turnspeed);
+				} else {
+					getSprite()->setRotation(wdir);
+				}
+			}
+		} else {
+			if (abs(wdir - getSprite()->getRotation()) > turnspeed) {
+				if (wdir > getSprite()->getRotation()) {
+					getSprite()->setRotation(getSprite()->getRotation() + turnspeed);
+				} else {
+					getSprite()->setRotation(getSprite()->getRotation() - turnspeed);
+				}
+			} else {
+				getSprite()->setRotation(wdir);
+			}
+		}
+	}
 }
 
 

@@ -74,11 +74,49 @@ void AnimatedSprite::play(float _deltatime)
 	}
 }
 
-void AnimatedSprite::turnToPoint(sf::Vector2f _point)
+void AnimatedSprite::turnToPoint(sf::Vector2f _point, float _speed)
 {
 	float angle = atan2(_point.y - getPosition().y,
-						_point.x - getPosition().x);
-	setRotation(angle * (180/Math::PI));
+							_point.x - getPosition().x);
+	float desired = angle * (180/Math::PI);
+
+	if (_speed == 0.f ) // DIRECT TURN
+	{
+		setRotation(desired);
+	}
+	else // INCREMENTAL TURN
+	{
+		float wdir, tempdir, turnspeed;
+		wdir = desired;
+		turnspeed = _speed;
+		if (abs(wdir-getRotation()) > 180) {
+			if (wdir > 180) {
+				tempdir = wdir - 360;
+				if (abs(tempdir-getRotation()) > turnspeed) {
+					setRotation(getRotation() - turnspeed);
+				} else {
+					setRotation(wdir);
+				}
+			} else {
+				tempdir = wdir + 360;
+				if (abs(tempdir-getRotation()) > turnspeed) {
+					setRotation(getRotation() + turnspeed);
+				} else {
+					setRotation(wdir);
+				}
+			}
+		} else {
+			if (abs(wdir - getRotation()) > turnspeed) {
+				if (wdir > getRotation()) {
+					setRotation(getRotation() + turnspeed);
+				} else {
+					setRotation(getRotation() - turnspeed);
+				}
+			} else {
+				setRotation(wdir);
+			}
+		}
+	}
 
 	//std::cout << "X: " << getPosition().x << " Y:"  << getPosition().y << std::endl;
 }

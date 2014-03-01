@@ -15,7 +15,7 @@ public:
 	void play(float _deltatime);
 
 	sf::Vector2f getSize();
-	void turnToPoint(sf::Vector2f _point);
+	void turnToPoint(sf::Vector2f _point, float _speed = 0.f);
 
 	void setOpacity(int _alpha);
 	void setSpeed(float _speed);
