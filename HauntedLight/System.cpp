@@ -99,6 +99,8 @@ bool System::Init()
 	if (m_window == nullptr)
 		return false;
 
+	m_vsync = true;
+	m_fullscreen = true;
 	setVideoMode();
 
 	// VIEW
@@ -118,41 +120,41 @@ bool System::Init()
 	// LOAD ALL THE TEXTURES #############################################################
 
 	// MAIN MENU
-	m_sprite_manager->addTexture("spr_menu_background.png");
-	m_sprite_manager->addTexture("spr_title.png");
-	m_sprite_manager->addTexture("spr_candle_light.png");
-	m_sprite_manager->addTexture("spr_candle_idle.png");
-	m_sprite_manager->addTexture("spr_candle_blow.png");
-	m_sprite_manager->addTexture("spr_candle.png");
+	m_sprite_manager->addTexture("Menu/spr_menu_background.png");
+	m_sprite_manager->addTexture("Menu/spr_title.png");
+	m_sprite_manager->addTexture("Menu/spr_candle_light.png");
+	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
+	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
+	m_sprite_manager->addTexture("Menu/spr_candle.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");
-	m_sprite_manager->addTexture("darkness.png");
-	m_sprite_manager->addTexture("wall.png");
-	m_sprite_manager->addTexture("spr_floor.png");
-	m_sprite_manager->addTexture("spr_player_shadow.png");
-	m_sprite_manager->addTexture("spr_critter_walk.png");
+	m_sprite_manager->addTexture("Game/darkness.png");
+	m_sprite_manager->addTexture("Game/wall.png");
+	m_sprite_manager->addTexture("Game/spr_floor.png");
+	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
+	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
 
-	sf::Texture* tex_critter = m_sprite_manager->getTexture("spr_critter_walk.png");
+	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
 
-	sf::Texture* tex_player_shadow = m_sprite_manager->getTexture("spr_player_shadow.png");
+	sf::Texture* tex_player_shadow = m_sprite_manager->getTexture("Game/spr_player_shadow.png");
 	tex_player_shadow->setSmooth(true);
 
-	m_sprite_manager->addTexture("spr_matches_hud.png");
-	sf::Texture* tex_matches_hud = m_sprite_manager->getTexture("spr_matches_hud.png");
+	m_sprite_manager->addTexture("Game/spr_matches_hud.png");
+	sf::Texture* tex_matches_hud = m_sprite_manager->getTexture("Game/spr_matches_hud.png");
 	tex_matches_hud->setSmooth(true);
 
-	m_sprite_manager->addTexture("spr_player_walk.png");
-	sf::Texture* tex_player = m_sprite_manager->getTexture("spr_player_walk.png");
+	m_sprite_manager->addTexture("Game/spr_player_walk.png");
+	sf::Texture* tex_player = m_sprite_manager->getTexture("Game/spr_player_walk.png");
 	tex_player->setSmooth(true);
 
-	m_sprite_manager->addTexture("spr_player_run.png");
-	sf::Texture* tex_player_run = m_sprite_manager->getTexture("spr_player_run.png");
+	m_sprite_manager->addTexture("Game/spr_player_run.png");
+	sf::Texture* tex_player_run = m_sprite_manager->getTexture("Game/spr_player_run.png");
 	tex_player->setSmooth(true);
 
 
-	sf::Texture* tex_wall = m_sprite_manager->getTexture("wall.png");
+	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/wall.png");
 	tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS

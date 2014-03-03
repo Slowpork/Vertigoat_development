@@ -46,14 +46,8 @@
     <Filter Include="Source Files\SubSystems\Light">
       <UniqueIdentifier>{19354dee-b51b-40f5-a721-7d7bef16e722}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SubSystems\Sound">
-      <UniqueIdentifier>{7fd12992-a15c-402c-bcdf-5ba76916ba4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\SubSystems\Light">
       <UniqueIdentifier>{54b3dd9f-7040-4d21-b362-bebb701dbb8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SubSystems\Sound">
-      <UniqueIdentifier>{b193b421-dc6e-47bf-87ca-13c11877933a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Objects\Enemies">
       <UniqueIdentifier>{4f9822d0-88d9-4594-80fc-8b15f4a63681}</UniqueIdentifier>

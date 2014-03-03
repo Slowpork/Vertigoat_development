@@ -93,6 +93,8 @@ void Engine::updateDeltatime()
 {
 	// DELTATIME
 	m_deltatime = m_system->m_clock->restart().asSeconds();
+	if(m_deltatime > 0.1f)
+		m_deltatime = 0.1f;
 
 	// FPS
 	m_fps = 1.f / m_deltatime;

@@ -7,6 +7,8 @@
 
 #include "AnimatedSprite.h"
 
+#include <iostream>
+
 int ObjectManager::ID = 0;
 
 ObjectManager::ObjectManager()
@@ -35,10 +37,24 @@ void ObjectManager::destroy(int _ID)
 {
 	std::map<int, GameObject*>::iterator pos = m_objects.find(_ID);
 
-	delete pos->second;
-	pos->second = nullptr;
+	if (pos != m_objects.end())
+	{
+		delete pos->second;
+		pos->second = nullptr;
 
-	m_objects.erase(pos);
+		m_objects.erase(pos);
+		return;
+	}
+	std::cout << _ID << " Does not exist!" << std::endl;
+}
+
+GameObject* ObjectManager::getObject(int _ID)
+{
+	std::map<int, GameObject*>::iterator pos = m_objects.find(_ID);
+
+	if (pos != m_objects.end())
+		return pos->second;
+	return nullptr;
 }
 
 int ObjectManager::getObjects()

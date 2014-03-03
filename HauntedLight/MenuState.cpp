@@ -53,12 +53,16 @@ MenuState::MenuState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
+	state = 0;
+	title_alpha = 0.f;
+	brightness = 0.f;
+
 	m_system = _system;
 }
 
 bool MenuState::Enter()
 {
-	//std::cout << m_name << std::endl;
+	//std::cout << "Enter " << m_name << std::endl;
 	m_paused = false;
 	m_base = true;
 
@@ -71,35 +75,35 @@ bool MenuState::Enter()
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
 	// Background
-	spr_background = m_system->m_sprite_manager->getSprite("spr_menu_background.png",0,0,1288,720);
+	spr_background = m_system->m_sprite_manager->getSprite("Menu/spr_menu_background.png",0,0,1288,720);
 	spr_background->setScale(scale.x,scale.y);
 
 	// Title
-	spr_title = m_system->m_sprite_manager->getSprite("spr_title.png",0,0,458,252);
+	spr_title = m_system->m_sprite_manager->getSprite("Menu/spr_title.png",0,0,458,252);
 	spr_title->setScale(scale.x,scale.x);
 	spr_title->setOrigin(229.f,126);
 	spr_title->setPosition(m_system->m_width/2, m_system->m_height/2 - 186.f*scale.y);
 
 	// Candle light
-	spr_candle_light = m_system->m_sprite_manager->getSprite("spr_candle_light.png",0,0,124,124,6);
+	spr_candle_light = m_system->m_sprite_manager->getSprite("Menu/spr_candle_light.png",0,0,124,124,6);
 	spr_candle_light->setScale(scale.x,scale.y);
 	spr_candle_light->setOrigin(72,72);
 	spr_candle_light->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle idle
-	spr_candle_idle = m_system->m_sprite_manager->getSprite("spr_candle_idle.png",0,0,124,124,10);
+	spr_candle_idle = m_system->m_sprite_manager->getSprite("Menu/spr_candle_idle.png",0,0,124,124,10);
 	spr_candle_idle->setScale(scale.x,scale.y);
 	spr_candle_idle->setOrigin(72,72);
 	spr_candle_idle->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle blow
-	spr_candle_blow = m_system->m_sprite_manager->getSprite("spr_candle_blow.png",0,0,124,124,5);
+	spr_candle_blow = m_system->m_sprite_manager->getSprite("Menu/spr_candle_blow.png",0,0,124,124,5);
 	spr_candle_blow->setScale(scale.x,scale.y);
 	spr_candle_blow->setOrigin(72,72);
 	spr_candle_blow->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 	// Candle
-	spr_candle = m_system->m_sprite_manager->getSprite("spr_candle.png",0,0,410,410);
+	spr_candle = m_system->m_sprite_manager->getSprite("Menu/spr_candle.png",0,0,410,410);
 	spr_candle->setScale(scale.x,scale.y);
 	spr_candle->setOrigin(205,205);
 	spr_candle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
@@ -148,7 +152,6 @@ bool MenuState::Update(float _deltatime){
 	switch(state)
 	{
 	case 0:
-
 		if (brightness < 1.f)
 			brightness += _deltatime;
 		else
@@ -161,7 +164,7 @@ bool MenuState::Update(float _deltatime){
 		spr_candle_light->play(_deltatime/2);
 		break;
 	case 1:
-
+		
 		if (title_alpha < 1.f)
 			title_alpha += _deltatime/2;
 
@@ -221,9 +224,6 @@ bool MenuState::Update(float _deltatime){
 		state = 2;
 	}
 
-	// START GAME
-	//std::cout << brightness << std::endl;
-
 	return true;
 }
 
@@ -259,8 +259,6 @@ void MenuState::Draw(){
 	rect_fade.setFillColor(sf::Color(0,0,0,255 - brightness*255));
 
 	m_system->m_window->draw(rect_fade);
-
-	//std::cout << 255 - brightness*255 << std::endl;
 }
 
 std::string MenuState::Next(){

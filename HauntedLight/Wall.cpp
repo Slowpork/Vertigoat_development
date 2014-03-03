@@ -7,7 +7,13 @@
 Wall::Wall(AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
-	
+	m_health = 5;
+}
+
+bool Wall::hit()
+{
+	m_health--;
+	return m_health < 1;
 }
 
 Wall::~Wall()

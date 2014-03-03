@@ -90,25 +90,25 @@ bool GameState::Enter()
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
 
 	// SPRITES
-	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("spr_player_walk.png",0,0,128,128,8);
+	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
 	spr_player->setScale(.5,.5);
-	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("spr_player_run.png",0,0,132,132,12);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
 	spr_player_run->setScale(.5,.5);
-	spr_floor = m_system->m_sprite_manager->getSprite("spr_floor.png",0,0,400,400);
+	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,400,400);
 
-	spr_matches_hud = m_system->m_sprite_manager->getSprite("spr_matches_hud.png",0,0,128,128,6);
+	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
-	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*1.5f*scale.x,(float)m_system->m_height - 128.f*1.5f*scale.y);
+	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*1.5f*scale.x,(float)m_system->m_height - 128.f*scale.y);
 
-	spr_player_shadow = m_system->m_sprite_manager->getSprite("spr_player_shadow.png",0,0,960,1080);
+	spr_player_shadow = m_system->m_sprite_manager->getSprite("Game/spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
 
-	spr_critter = m_system->m_sprite_manager->getSprite("spr_critter_walk.png",0,0,128,128,7);
+	spr_critter = m_system->m_sprite_manager->getSprite("Game/spr_critter_walk.png",0,0,128,128,7);
 	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
 
-	spr_darkness = m_system->m_sprite_manager->getSprite("darkness.png",0,0,1280,720);
+	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
@@ -198,7 +198,7 @@ void GameState::Resume()
 void GameState::addWall(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
-		"wall.png",0,0,128,128);
+		"Game/wall.png",0,0,128,128);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
@@ -356,13 +356,17 @@ bool GameState::Update(float _deltatime){
 			m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
 		m_light_system->update();
 	}
-	else if (m_system->m_mouse->IsDownOnce(Right))
+	else if (m_system->m_mouse->IsDownOnce(Right)) // HIT WALL
 	{
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID != -1)
 		{
-			//std::cout << "  at";
-			m_object_manager->destroy(ID);
+			GameObject* go = m_object_manager->getObject(ID);
+			if (go != nullptr)
+			{
+				if (static_cast<Wall*> (go)->hit())
+					m_object_manager->destroy(ID);
+			}
 		}
 		m_light_system->update();
 	}

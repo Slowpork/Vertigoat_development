@@ -35,6 +35,8 @@ public:
 
 	int atPosition(sf::Vector2f _pos);
 
+	GameObject* getObject(int _ID);
+
 	void destroy(int _ID);
 
 	int getObjects();
