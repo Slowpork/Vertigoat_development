@@ -6,6 +6,7 @@
 
 class System;
 class ObjectManager;
+class AnimatedSprite;
 
 class OptionsState : public State {
 public:
@@ -15,7 +16,7 @@ public:
 	void Exit();
 	void Pause();
 	void Resume();
-	bool Update(float deltatime);
+	bool Update(float _deltatime);
 	void Draw();
 	std::string Next();
 	bool IsType(const std::string &type);
@@ -29,6 +30,10 @@ private:
 	bool m_paused;
 	bool m_base;
 	System* m_system;
+
+	//STATE SPECIFIC
+
+	AnimatedSprite* spr_background;
 
 	ObjectManager* object_manager;
 };

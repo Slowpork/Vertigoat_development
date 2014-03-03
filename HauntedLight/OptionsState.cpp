@@ -1,6 +1,7 @@
 //OptionsState.cpp
 
 #include "OptionsState.h"
+
 #include "Math.h"
 
 #include <iostream>
@@ -10,6 +11,7 @@
 #include "SFML\Graphics\View.hpp"
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
+#include "SFML\System\Vector2.hpp"
 
 #include "System.h"
 
@@ -20,6 +22,7 @@
 
 #include "Wall.h"
 #include "PlayerObject.h"
+#include "AnimatedSprite.h"
 
 #include "Collider.h"
 
@@ -32,16 +35,28 @@ OptionsState::OptionsState(System* _system)
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_system = _system;
-	object_manager = new ObjectManager();
 }
 
 bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
+
+	object_manager = new ObjectManager();
+
+	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+
+	//Background
+	spr_background = m_system->m_sprite_manager->getSprite("spr_options_background.png",0,0,1288,720);
+	spr_background->setScale(scale.x,scale.y);
+
 	return true;
 }
 void OptionsState::Exit()
 {
 	std::cout << "  " << m_name << "->";
+
+	delete spr_background;
+	spr_background = nullptr;
+
 	m_paused = false;
 }
 
@@ -55,13 +70,18 @@ void OptionsState::Resume()
 	m_paused = false;
 }
 
-bool OptionsState::Update(float deltatime){
+bool OptionsState::Update(float _deltatime){
 	//std::cout << "OptionsState::Update" << std::endl;
+	spr_background->play(_deltatime/2);
 
 	return false;
 }
 void OptionsState::Draw(){
 	//std::cout << "OptionsState::Draw" << std::endl;
+
+	m_system->m_window->setView(m_system->m_window->getDefaultView());
+
+	m_system->m_window->draw(*spr_background);
 
 	object_manager->Draw(m_system->m_window);
 }
