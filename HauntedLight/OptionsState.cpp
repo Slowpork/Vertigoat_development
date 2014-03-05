@@ -50,10 +50,6 @@ bool OptionsState::Enter(){
 
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
-	//Background
-//	spr_background = m_system->m_sprite_manager->getSprite("Options/spr_options_background.png",0,0,1288,720);
-//	spr_background->setScale(scale.x,scale.y);
-
 	//ButtonTest
 	spr_volume_low = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128);
 	spr_volume_low->setScale(scale.x/2,scale.y/2);
@@ -69,6 +65,9 @@ void OptionsState::Exit()
 
 	delete spr_background;
 	spr_background = nullptr;
+
+	delete object_manager;
+	object_manager = nullptr;
 
 	m_paused = false;
 }
