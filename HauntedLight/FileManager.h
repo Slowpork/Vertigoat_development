@@ -3,8 +3,6 @@
 #pragma once
 #include <string>
 
-class ofstream;
-
 class FileManager
 {
 public:

@@ -50,7 +50,7 @@ MenuState::MenuState(System* _system)
 	m_name = "MenuState";
 	m_next = "LoadingState";
 	m_paused = false;
-	m_base = false;
+	m_base = true;
 	std::cout << "  *Created " << m_name << std::endl;
 
 	state = 0;
@@ -177,7 +177,7 @@ bool MenuState::Update(float _deltatime){
 		if (brightness < 0.f)
 		{
 			Pause();
-			m_next = "OptionsState";
+			m_next = "GameState";
 			return false;
 		}
 		break;
@@ -217,6 +217,13 @@ bool MenuState::Update(float _deltatime){
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	{
 		m_next = "";
+		return false;
+	}
+
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::O))
+	{
+		m_next = "OptionsState";
+		Pause();
 		return false;
 	}
 	

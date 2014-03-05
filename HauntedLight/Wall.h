@@ -6,6 +6,7 @@
 namespace sf
 {
 	class Sprite;
+	class RenderWindow;
 };
 
 class Wall : public GameObject
@@ -15,9 +16,11 @@ public:
 	~Wall();
 
 	bool hit();
+	void drawCracks(sf::RenderWindow* _window);
 private:
 
 private:
 
 	int m_health;
+	AnimatedSprite* spr_cracks;
 };

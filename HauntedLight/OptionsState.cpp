@@ -31,7 +31,7 @@
 OptionsState::OptionsState(System* _system)
 {
 	m_name = "OptionsState";
-	m_next = "MenuState";
+	m_next = "";
 	m_paused = false;
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
@@ -100,22 +100,25 @@ bool OptionsState::Update(float _deltatime){
 		break;
 	}
 */
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	{
         m_next = "";
 		return false;
-		
 	}
-
-
 
 	return true;	
 }
 
 void OptionsState::Draw(){
-	std::cout << "OptionsState::Draw" << std::endl;
+	//std::cout << "OptionsState::Draw" << std::endl;
 
-	m_system->m_window->setView(m_system->m_window->getDefaultView());
+	//m_system->m_window->setView(m_system->m_window->getDefaultView());
+
+	// BLACK FADE
+	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
+	rect_fade.setFillColor(sf::Color(0,0,0,128));
+
+	m_system->m_window->draw(rect_fade);
 
 //	m_system->m_window->draw(*spr_background);
 
@@ -126,7 +129,7 @@ void OptionsState::Draw(){
 
 std::string OptionsState::Next(){
 	//std::cout << "OptionsState::next" << std::endl;
-	return "Menustate";
+	return m_next;
 }
 
 bool OptionsState::IsType(const std::string &type) {

@@ -62,11 +62,14 @@ void Engine::Run()
 		updateEvents();
 		m_state_manager.Update(m_deltatime);
 
+		if ( !m_state_manager.IsRunning())
+		{
+			m_running = false;
+			break;
+		}
+
 		// Cursor
 		spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
-
-		if ( !m_state_manager.IsRunning())
-			m_running = false;
 
 		// DRAW 
 		//m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);

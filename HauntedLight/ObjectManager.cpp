@@ -6,6 +6,7 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 
 #include "AnimatedSprite.h"
+#include "Wall.h"
 
 #include <iostream>
 
@@ -105,16 +106,10 @@ void ObjectManager::Draw(sf::RenderWindow* _window, float _alpha)
 				//std::cout << object.depth << std::endl;
 				object.second->getSprite()->setColor(sf::Color(_alpha,_alpha,_alpha,255));
 				_window->draw(*object.second->getSprite());
-				
-				/*
-				sf::RectangleShape shape;
-				shape.setOutlineColor(sf::Color(255,0,0,128));
-				shape.setOutlineThickness(1);
-				shape.setSize(sf::Vector2f(128,128));
-				shape.setFillColor(sf::Color(0,0,0,0));
-				shape.setPosition(object.obj.getCollider()->m_pos);
 
-				_window->draw(shape);*/
+				if (z == 5){
+					//static_cast<Wall*> (object.second)->drawCracks(_window);
+				}
 			}
 		}
 	}
