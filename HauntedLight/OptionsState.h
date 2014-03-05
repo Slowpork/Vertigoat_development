@@ -36,7 +36,7 @@ private:
 	//STATE SPECIFIC
 
 	AnimatedSprite* spr_background;
-	AnimatedSprite* spr_options_test;
+	AnimatedSprite* spr_volume_low;
 
 	int state;
 };

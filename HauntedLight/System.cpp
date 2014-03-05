@@ -129,7 +129,7 @@ bool System::Init()
 
 	//Options Menu
 //	m_sprite_manager->addTexture("Options/spr_options_background.png");
-	m_sprite_manager->addTexture("Options/spr_options_test.png");
+	m_sprite_manager->addTexture("Options/spr_volume_low.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");

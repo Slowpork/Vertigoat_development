@@ -55,10 +55,10 @@ bool OptionsState::Enter(){
 //	spr_background->setScale(scale.x,scale.y);
 
 	//ButtonTest
-	spr_options_test = m_system->m_sprite_manager->getSprite("Options/spr_options_test.png",0,0,360,200);
-	spr_options_test->setScale(scale.x,scale.y);
-	spr_options_test->setOrigin(229.f,126);
-	spr_options_test->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
+	spr_volume_low = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128);
+	spr_volume_low->setScale(scale.x/2,scale.y/2);
+	spr_volume_low->setOrigin(100.f,100);
+	spr_volume_low->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
 
 
 	return true;
@@ -122,7 +122,7 @@ void OptionsState::Draw(){
 
 //	m_system->m_window->draw(*spr_background);
 
-	m_system->m_window->draw(*spr_options_test);
+	m_system->m_window->draw(*spr_volume_low);
 
 //	object_manager->Draw(m_system->m_window);
 }
