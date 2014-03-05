@@ -100,7 +100,7 @@ bool System::Init()
 		return false;
 
 	m_vsync = true;
-	m_fullscreen = true;
+	m_fullscreen = false;
 	setVideoMode();
 
 	// VIEW
@@ -126,6 +126,10 @@ bool System::Init()
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
+
+	//Options Menu
+//	m_sprite_manager->addTexture("Options/spr_options_background.png");
+	m_sprite_manager->addTexture("Options/spr_options_test.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");

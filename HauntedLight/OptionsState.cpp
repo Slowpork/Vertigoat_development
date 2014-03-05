@@ -20,6 +20,8 @@
 #include "SpriteManager.h"
 #include "InputManager.h"
 
+#include "SFML\Window\Keyboard.hpp"
+
 #include "Wall.h"
 #include "PlayerObject.h"
 #include "AnimatedSprite.h"
@@ -34,19 +36,30 @@ OptionsState::OptionsState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
+	state = 0;
+
 	m_system = _system;
 }
 
 bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
 
+	state = 0;
+
 	object_manager = new ObjectManager();
 
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
 	//Background
-	spr_background = m_system->m_sprite_manager->getSprite("spr_options_background.png",0,0,1288,720);
-	spr_background->setScale(scale.x,scale.y);
+//	spr_background = m_system->m_sprite_manager->getSprite("Options/spr_options_background.png",0,0,1288,720);
+//	spr_background->setScale(scale.x,scale.y);
+
+	//ButtonTest
+	spr_options_test = m_system->m_sprite_manager->getSprite("Options/spr_options_test.png",0,0,360,200);
+	spr_options_test->setScale(scale.x,scale.y);
+	spr_options_test->setOrigin(229.f,126);
+	spr_options_test->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
+
 
 	return true;
 }
@@ -72,23 +85,50 @@ void OptionsState::Resume()
 
 bool OptionsState::Update(float _deltatime){
 	//std::cout << "OptionsState::Update" << std::endl;
-	spr_background->play(_deltatime/2);
+	
+/*
+	switch(state)
+	{
+	case 0:
+		if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
+		{
+			state = 1;
+		}
+	case 1:
+		m_next = "MenuState";
+		return false;
+		break;
+	}
+*/
+	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
+	{
+        m_next = "";
+		return false;
+		
+	}
 
-	return false;
+
+
+	return true;	
 }
+
 void OptionsState::Draw(){
-	//std::cout << "OptionsState::Draw" << std::endl;
+	std::cout << "OptionsState::Draw" << std::endl;
 
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
 
-	m_system->m_window->draw(*spr_background);
+//	m_system->m_window->draw(*spr_background);
 
-	object_manager->Draw(m_system->m_window);
+	m_system->m_window->draw(*spr_options_test);
+
+//	object_manager->Draw(m_system->m_window);
 }
+
 std::string OptionsState::Next(){
 	//std::cout << "OptionsState::next" << std::endl;
-	return "MenuState";
+	return "Menustate";
 }
+
 bool OptionsState::IsType(const std::string &type) {
 	return type.compare(m_name) == 0;
 }

@@ -31,9 +31,12 @@ private:
 	bool m_base;
 	System* m_system;
 
+	ObjectManager* object_manager;
+
 	//STATE SPECIFIC
 
 	AnimatedSprite* spr_background;
+	AnimatedSprite* spr_options_test;
 
-	ObjectManager* object_manager;
+	int state;
 };
