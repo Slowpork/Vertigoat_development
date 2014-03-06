@@ -126,6 +126,10 @@ bool System::Init()
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
 
+	//---------------------BUTTON-----------------FOR PÄR
+	m_sprite_manager->addTexture("Menu/spr_button_play.png");
+	//----------------------------------------------------
+
 	//Options Menu
 //	m_sprite_manager->addTexture("Options/spr_options_background.png");
 	m_sprite_manager->addTexture("Options/spr_volume_low.png");

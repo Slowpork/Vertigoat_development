@@ -20,10 +20,12 @@
 #include "InputManager.h"
 
 #include "SFML\Window\Keyboard.hpp"
+#include "SFML\Window\Mouse.hpp"
 
 #include "Wall.h"
 #include "PlayerObject.h"
 #include "AnimatedSprite.h"
+#include "Button.h"
 
 #include "Collider.h"
 
@@ -80,7 +82,7 @@ bool MenuState::Enter()
 
 	// Title
 	spr_title = m_system->m_sprite_manager->getSprite("Menu/spr_title.png",0,0,458,252);
-	spr_title->setScale(scale.x,scale.x);
+	spr_title->setScale(scale.x,scale.y);
 	spr_title->setOrigin(229.f,126);
 	spr_title->setPosition(m_system->m_width/2, m_system->m_height/2 - 186.f*scale.y);
 
@@ -108,6 +110,13 @@ bool MenuState::Enter()
 	spr_candle->setOrigin(205,205);
 	spr_candle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
 
+
+	//-------------------------BUTTON------------------------FOR PÄR
+	spr_button = m_system->m_sprite_manager->getSprite("Menu/spr_button_play.png", 0,0, 219, 64, 2);
+	spr_button->setScale(scale.x, scale.y);
+	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, 600, 600);
+	//---------------------------------------------------------------
+
 	return true;
 }
 
@@ -132,6 +141,13 @@ void MenuState::Exit()
 
 	delete spr_candle;
 	spr_candle = nullptr;
+
+	//----------------BUTTON------------FOR PÄR
+	delete spr_button;
+	spr_button = nullptr;
+	delete m_button;
+	m_button = nullptr;
+	//------------------------------------------
 
 	m_paused = false;
 }
@@ -231,6 +247,10 @@ bool MenuState::Update(float _deltatime){
 		state = 2;
 	}
 
+	//-------------------------BUTTON--------------------- FOR PÄR
+	m_button->Update(_deltatime, m_system->m_mouse);
+	//-------------------------------------------------------------
+
 	return true;
 }
 
@@ -266,6 +286,10 @@ void MenuState::Draw(){
 	rect_fade.setFillColor(sf::Color(0,0,0,255 - brightness*255));
 
 	m_system->m_window->draw(rect_fade);
+
+	//------------BUTTON--------------FOR PÄR
+	m_button->Draw(m_system->m_window);
+	//---------------------------------------
 }
 
 std::string MenuState::Next(){
