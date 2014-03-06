@@ -30,11 +30,11 @@ private:
 	ObjectManager* m_object_manager;
 	SpriteManager* m_sprite_manager;
 
-	/// CONSTATNTS
+	/// CONSTANTS
 	static const int HEIGHT = 7;
 	static const int WIDTH = 7;
 
-	static const int SIZE = 128;
+	static const int SIZE = 512;
 
 	// GENERATION
 	int m_status[HEIGHT][WIDTH];

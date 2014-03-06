@@ -16,7 +16,7 @@
 
 /*
 
-	m_status RULES'
+	m_status RULES
 	
    -1 = Ignore
     This tile have already been generated.
@@ -26,8 +26,6 @@
 
 	1 = Generate
 	The player has been here and you need to generate it (again)
-
-	2 = 
 
 
 */
@@ -127,7 +125,9 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 		return;
 	}
 	else
-		//std::cout << "X: " << PlayerX << " Y: " << PlayerY << std::endl;
+	{
+		std::cout << "X: " << PlayerX << " Y: " << PlayerY << std::endl;
+	}
 
 	//std::cout << "BEGIN" << std::endl;
 
@@ -159,7 +159,7 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 		{
 			if (X < WIDTH || X > 0 || Y > 0 || Y < HEIGHT) // Out of bounds
 			{
-				if (m_status[X][Y] != 0 && m_status[X][Y] != -1) // GENERATE
+				if (m_status[X][Y] == 1) // GENERATE
 				{
 					generate(X,Y);
 					m_status[X][Y] = -1; // Generation done

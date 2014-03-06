@@ -115,13 +115,13 @@ bool GameState::Enter()
 
 	
 	// WALLS
-	const float SIZE = 128;
+	const float SIZE = 512;
 
 	bool map[15][25] = 
 	{
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -142,9 +142,9 @@ bool GameState::Enter()
 	{
 		for(int X = 0; X < 15; X++)
 		{
-			if (map[X][Y])
+			if (map[Y][X])
 			{
-				//addWall(sf::Vector2f(SIZE*X,SIZE*Y));
+				addWall(sf::Vector2f(SIZE*X,SIZE*Y));
 				count++;
 			}
 		}
@@ -160,7 +160,7 @@ bool GameState::Enter()
 	//player->setPosition(sf::Vector2f(1280/2,720/2));
 	player->setSprites(spr_player_run, spr_player_run);
 
-	m_light_system->setBounds(sf::Vector2f(-256,-256),sf::Vector2f(2084,2084));
+	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
 
 	return true;

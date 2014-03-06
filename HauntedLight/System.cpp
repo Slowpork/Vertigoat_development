@@ -16,13 +16,12 @@
 
 #include <iostream>
 
-
 System::System()
 {
 	m_width = 1280;
 	m_height = 720;
 
-	m_title = "Haunted Light - Alpha";
+	m_title = "Haunted Light - Pre Beta";
 
 	m_fullscreen = false;
 	m_borderless = false;
@@ -99,7 +98,7 @@ bool System::Init()
 	if (m_window == nullptr)
 		return false;
 
-	m_vsync = true;
+	m_vsync = false;
 	m_fullscreen = false;
 	setVideoMode();
 
