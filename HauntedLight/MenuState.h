@@ -7,8 +7,10 @@
 class System;
 class ObjectManager;
 class AnimatedSprite;
+class Button;
+class MouseObject;
 
-class MenuState : public State 
+class MenuState : public State
 {
 public:
 	MenuState(System* _system);
@@ -42,7 +44,11 @@ private:
 	AnimatedSprite* spr_candle_blow;
 	AnimatedSprite* spr_candle_idle;
 	AnimatedSprite* spr_candle;
-	
+
+	//--------------BUTTON---------------FOR PÄR
+	AnimatedSprite* spr_button;
+	Button* m_button;
+	//-------------------------------------------
 
 	int state;
 	float brightness;

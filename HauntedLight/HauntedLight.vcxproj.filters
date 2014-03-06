@@ -159,6 +159,9 @@
     <ClCompile Include="LevelSystem.cpp">
       <Filter>Source Files\SubSystems\Level</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\SubSystems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="LevelSystem.h">
       <Filter>Header Files\SubSystems\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
