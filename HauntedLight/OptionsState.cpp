@@ -28,6 +28,12 @@
 
 #include "Collider.h"
 
+/*
+
+	Sound Bar Dimensions: 456x128px
+
+*/
+
 OptionsState::OptionsState(System* _system)
 {
 	m_name = "OptionsState";

@@ -12,18 +12,18 @@ class LevelSystem
 public:
 	LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_manager);
 
-	void setPlayerPos(sf::Vector2f _pos);
-	void setEnemyPos(sf::Vector2f _pos);
-
-	void Update();
+	void Update(sf::Vector2f _player, sf::Vector2f _enemy);
 
 private:
 
+	void setPlayerPos(sf::Vector2f _pos);
+	void setEnemyPos(sf::Vector2f _pos);
+
 	bool atPosition(sf::Vector2f _pos);
 	void addWall(sf::Vector2f _pos);
+	void generate(int _x, int _y);
 	bool genCorridor( int _x, int _y, int _length, int _direction);
 	bool genRoom(int _x, int _y, int _width, int _height, int _direction);
-
 
 private:
 
@@ -37,9 +37,8 @@ private:
 	static const int SIZE = 128;
 
 	// GENERATION
-	bool m_status[HEIGHT][WIDTH];
+	int m_status[HEIGHT][WIDTH];
 
-	sf::Vector2f m_size;
 	sf::Vector2f m_player_pos;
 	sf::Vector2f m_enemy_pos;
 };

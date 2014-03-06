@@ -176,7 +176,6 @@ bool MenuState::Update(float _deltatime){
 		brightness -= _deltatime*2;
 		if (brightness < 0.f)
 		{
-			Pause();
 			m_next = "GameState";
 			return false;
 		}
