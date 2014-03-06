@@ -1,4 +1,4 @@
-//MenuState.h
+// MenuState.h
 
 #pragma once
 #include "State.h"
@@ -45,7 +45,7 @@ private:
 	AnimatedSprite* spr_candle_idle;
 	AnimatedSprite* spr_candle;
 
-	//--------------BUTTON---------------FOR PÄR
+	//--------------BUTTON---------------
 	AnimatedSprite* spr_button;
 	Button* m_button;
 	//-------------------------------------------

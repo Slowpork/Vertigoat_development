@@ -1,7 +1,10 @@
-//Button.cpp
+// Button.cpp
 
 #include "Button.h"
 #include <SFML\Graphics\RenderWindow.hpp>
+
+#include "AnimatedSprite.h"
+#include "InputManager.h"
 
 Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float _y)
 {
@@ -18,36 +21,36 @@ Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float
 
 Button::~Button()
 {
-	delete m_sprite; m_sprite = nullptr;
+
 }
 
-void Button::Update(float _deltatime, MouseObject* _mouse)
+bool Button::Update(float _deltatime, MouseObject* _mouse)
 {
-	m_active = false;
 	m_mousePos.x = _mouse->GetX();
 	m_mousePos.y = _mouse->GetY();
 
 	if(m_mousePos.x > getPosition().x && m_mousePos.x < getPosition().x + m_width &&
 	   m_mousePos.y > getPosition().y && m_mousePos.y < getPosition().y + m_height)
 	{
-		if(_mouse->IsDown(Left))
+		if(_mouse->IsDownOnce(Left))
 		{
-			m_active = true;
 			m_opacity = 128;
-		}else{
-			if(m_opacity < 255)
-			{
-				m_opacity += 150 * _deltatime;
-			}else if(m_opacity >= 255){
-				m_opacity = 255;
-			}
+			return true;
 		}
-	}else{
-		if(m_opacity > 0)
-		{
-			m_opacity -= 150 * _deltatime;
+		else{
+			m_opacity += 400 * _deltatime;
 		}
 	}
+	else{
+		m_opacity -= 200 * _deltatime;
+	}
+
+	if (m_opacity < 0.f)
+		m_opacity = 0.f;
+	if (m_opacity > 255.f)
+		m_opacity = 255.f;
+	
+	return false;
 }
 
 void Button::Draw(sf::RenderWindow* _window)
@@ -66,5 +69,3 @@ sf::Vector2i Button::getSize(){return sf::Vector2i(m_width, m_height);}
 sf::Vector2f Button::getPosition(){return m_position;}
 	
 AnimatedSprite* Button::getSprite(){return m_sprite;}
-
-bool Button::isClicked(){return m_active;}

@@ -157,7 +157,7 @@ bool GameState::Enter()
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	//player->setPosition(sf::Vector2f(1280/2,720/2));
+	player->setPosition(sf::Vector2f(1280/2,720/2));
 	player->setSprites(spr_player_run, spr_player_run);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));

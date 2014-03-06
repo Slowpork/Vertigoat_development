@@ -1,4 +1,4 @@
-//MenuState.cpp
+// MenuState.cpp
 
 #include "MenuState.h"
 
@@ -111,10 +111,10 @@ bool MenuState::Enter()
 	spr_candle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
 
 
-	//-------------------------BUTTON------------------------FOR PÄR
+	//-------------------------BUTTON-----------------------
 	spr_button = m_system->m_sprite_manager->getSprite("Menu/spr_button_play.png", 0,0, 219, 64, 2);
 	spr_button->setScale(scale.x, scale.y);
-	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, 600, 600);
+	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, m_system->m_width/2 - 109*scale.x, (m_system->m_height/7)*5 - 32*scale.y);
 	//---------------------------------------------------------------
 
 	return true;
@@ -142,7 +142,7 @@ void MenuState::Exit()
 	delete spr_candle;
 	spr_candle = nullptr;
 
-	//----------------BUTTON------------FOR PÄR
+	//----------------BUTTON------------
 	delete spr_button;
 	spr_button = nullptr;
 	delete m_button;
@@ -244,11 +244,12 @@ bool MenuState::Update(float _deltatime){
 	
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Space))
 	{
-		state = 2;
+		
 	}
 
-	//-------------------------BUTTON--------------------- FOR PÄR
-	m_button->Update(_deltatime, m_system->m_mouse);
+	//-------------------------BUTTON---------------------
+	if (m_button->Update(_deltatime, m_system->m_mouse))
+		state = 2;
 	//-------------------------------------------------------------
 
 	return true;
@@ -281,15 +282,15 @@ void MenuState::Draw(){
 	spr_title->setOpacity(title_alpha*255.f);
 	m_system->m_window->draw(*spr_title);
 
+	//------------BUTTON--------------
+	m_button->Draw(m_system->m_window);
+	//---------------------------------------
+
 	// BLACK FADE
 	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
 	rect_fade.setFillColor(sf::Color(0,0,0,255 - brightness*255));
 
 	m_system->m_window->draw(rect_fade);
-
-	//------------BUTTON--------------FOR PÄR
-	m_button->Draw(m_system->m_window);
-	//---------------------------------------
 }
 
 std::string MenuState::Next(){
