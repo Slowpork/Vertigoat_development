@@ -114,7 +114,7 @@ bool MenuState::Enter()
 	//-------------------------BUTTON-----------------------
 	spr_button = m_system->m_sprite_manager->getSprite("Menu/spr_button_play.png", 0,0, 219, 64, 2);
 	spr_button->setScale(scale.x, scale.y);
-	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, m_system->m_width/2 - 109*scale.x, (m_system->m_height/7)*5 - 32*scale.y);
+	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, m_system->m_width/2 - 109*scale.x, ((m_system->m_height/9)*7 - 32)*scale.y);
 	//---------------------------------------------------------------
 
 	return true;
