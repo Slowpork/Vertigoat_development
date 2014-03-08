@@ -15,7 +15,7 @@ class AnimatedSprite;
 class Button
 {
 public:
-	Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float _y);
+	Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float _y, bool _onpress = false);
 	~Button();
 
 	bool Update(float _deltatime, MouseObject* _mouse);
@@ -31,6 +31,8 @@ private:
 	int m_width;
 	int m_height;
 	int m_opacity;
+
+	bool m_onpress;
 	sf::Vector2f m_position;
 	AnimatedSprite* m_sprite;
 	sf::Vector2i m_mousePos;

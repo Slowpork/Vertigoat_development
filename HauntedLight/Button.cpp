@@ -6,7 +6,9 @@
 #include "AnimatedSprite.h"
 #include "InputManager.h"
 
-Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float _y)
+#include <iostream>
+
+Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float _y, bool _onpress)
 {
 	m_width = _width;
 	m_height = _height;
@@ -15,6 +17,8 @@ Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float
 
 	m_sprite = _sprite;
 	m_sprite->setPosition(m_position.x, m_position.y);
+
+	m_onpress = _onpress;
 
 	m_opacity = 0;
 }
@@ -32,17 +36,34 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 	if(m_mousePos.x > getPosition().x && m_mousePos.x < getPosition().x + m_width &&
 	   m_mousePos.y > getPosition().y && m_mousePos.y < getPosition().y + m_height)
 	{
-		if(_mouse->IsDownOnce(Left))
+		if (m_onpress)
 		{
-			m_opacity = 128;
-			return true;
+			if(_mouse->IsDown(Left))
+			{
+				m_opacity = 128;
+				std::cout << "pressed";
+				return true;
+			}
+			else{
+				m_opacity += 800 * _deltatime;
+			}
 		}
-		else{
-			m_opacity += 400 * _deltatime;
+		else
+		{
+			if(_mouse->IsDownOnce(Left))
+			{
+				m_opacity = 128;
+				std::cout << "pressed";
+				return true;
+			}
+			else{
+				m_opacity += 800 * _deltatime;
+			}
 		}
+		
 	}
 	else{
-		m_opacity -= 200 * _deltatime;
+		m_opacity -= 400 * _deltatime;
 	}
 
 	if (m_opacity < 0.f)
