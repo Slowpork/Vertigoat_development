@@ -19,7 +19,7 @@
 System::System()
 {
 	m_width = 1280;
-	m_height = 720;
+	m_height = 722;
 
 	m_title = "Haunted Light - Pre Beta";
 

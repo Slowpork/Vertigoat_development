@@ -92,11 +92,11 @@ void LevelSystem::setEnemyPos(sf::Vector2f _pos)
 void LevelSystem::generate(int _x, int _y)
 {
 	std::cout << "Generate X:" << _x << " Y: " << _y << std::endl;
-
+	/*
 	if ( Random::between(1,3) == 1 )
 	{
 		std::cout << std::endl;
-	}
+	}*/
 }
 
 bool LevelSystem::genCorridor(int _x, int _y, int _length, int _direction)
@@ -126,7 +126,7 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 	}
 	else
 	{
-		std::cout << "X: " << PlayerX << " Y: " << PlayerY << std::endl;
+		//std::cout << "X: " << PlayerX << " Y: " << PlayerY << std::endl;
 	}
 
 	//std::cout << "BEGIN" << std::endl;
