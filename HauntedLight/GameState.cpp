@@ -398,9 +398,9 @@ void GameState::Draw()
 	// PLAYER SHADOW
 	if (player->hasCandle() )
 	{
-		spr_player_shadow->setColor(sf::Color(255,255,255,(int)brightness));
+		//spr_player_shadow->setColor(sf::Color(255,255,255,(int)brightness));
 		//std::cout << m_light_system->getLightBrightness() << std::endl;
-		m_system->m_window->draw(*spr_player_shadow);
+		//m_system->m_window->draw(*spr_player_shadow);
 	}
 	
 	// FLOOR
