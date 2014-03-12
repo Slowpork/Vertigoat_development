@@ -162,6 +162,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
+    <ClCompile Include="micropather.cpp">
+      <Filter>Source Files\SubSystems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -252,6 +255,9 @@
       <Filter>Header Files\SubSystems\Level</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Header Files\SubSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="micropather.h">
       <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
   </ItemGroup>

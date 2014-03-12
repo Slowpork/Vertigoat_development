@@ -108,6 +108,7 @@
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="micropather.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="OptionsState.cpp" />
     <ClCompile Include="PauseState.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="micropather.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="OptionsState.h" />
     <ClInclude Include="PauseState.h" />
