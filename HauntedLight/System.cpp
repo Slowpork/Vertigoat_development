@@ -170,7 +170,6 @@ bool System::Init()
 	m_sound_manager = new SoundManager("../data/sounds/");
 
 	//LOAD ALL THE SOUNDS
-	m_sound_manager->addSoundBuffer("cow_bell.wav");
 	m_sound_manager->addSoundBuffer("thud.wav");
 	m_sound_manager->addSoundBuffer("snd_Start_Up_screen.wav");
 	m_sound_manager->addSoundBuffer("snd_Main_Menu_blow_out_candle.wav");

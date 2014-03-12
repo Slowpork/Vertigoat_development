@@ -337,7 +337,7 @@ void GameState::playerCollision()
 
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
-	
+
 	playerCollision();
 
 	player->Update(_deltatime);
