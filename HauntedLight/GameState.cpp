@@ -81,10 +81,13 @@ bool GameState::Enter()
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
 	snd_thud->setVolume(25.f);
 
-	music_main = m_system->m_sound_manager->getMusic("music.wav");
+	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
+	snd_Mining_with_pebbles->setVolume(25.f);
+
+	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
 	music_main->setVolume(25.f);
 	music_main->setLoop(true);
-	//music_main->play();
+	music_main->play();
 
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
@@ -181,6 +184,10 @@ void GameState::Exit(){
 
 	m_object_manager->Cleanup();
 	delete m_object_manager; m_object_manager = nullptr;
+
+	//sounds
+	music_main->stop();
+	snd_thud->stop();
 }
 
 void GameState::Pause()
@@ -366,6 +373,7 @@ bool GameState::Update(float _deltatime){
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID != -1)
 		{
+			snd_Mining_with_pebbles->play();
 			GameObject* go = m_object_manager->getObject(ID);
 			if (go != nullptr)
 			{
