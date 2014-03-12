@@ -73,8 +73,35 @@ private:
 	AnimatedSprite* spr_critter;
 
 	// SOUNDS
-	sf::Sound* snd_thud;
 	sf::Music* music_main;
+
+	sf::Sound* snd_thud;
+	sf::Sound* snd_Start_Up_screen;
+	sf::Sound* snd_Main_Menu_blow_out_candle;
+	sf::Sound* snd_ambiant_alarm;
+	sf::Sound* snd_big_monster_1;
+	sf::Sound* snd_big_monster_2;
+	sf::Sound* snd_big_monster_3;
+	sf::Sound* snd_critter_attack;
+	sf::Sound* snd_critter_walk;
+	sf::Sound* snd_Crunching_sound;
+	sf::Sound* snd_Door;
+	sf::Sound* snd_Equipment_selection;
+	sf::Sound* snd_Equipment_selection_2;
+	sf::Sound* snd_Game_Over_screen;
+	sf::Sound* snd_Mining_not_hitting_anything;
+	sf::Sound* snd_Mining_Pickaxe;
+	sf::Sound* snd_Mining_with_pebbles;
+	sf::Sound* snd_Pickup_Powerup;
+	sf::Sound* snd_Player_breathing;
+	sf::Sound* snd_Player_dies;
+	sf::Sound* snd_Player_Lighting_Candle;
+	sf::Sound* snd_Player_walk_test;
+	sf::Sound* snd_wall_monster_1;
+	sf::Sound* snd_wall_monster_2;
+	sf::Sound* snd_wall_monster_3;
+	sf::Sound* snd_wall_monster_4;
+	sf::Sound* snd_wall_monster_5;
 
 	// FONTS
 	sf::Font* fnt_small;

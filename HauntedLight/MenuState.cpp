@@ -14,10 +14,15 @@
 
 #include "System.h"
 
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
+
 #include "ObjectManager.h"
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 #include "SFML\Window\Keyboard.hpp"
 #include "SFML\Window\Mouse.hpp"
@@ -117,6 +122,22 @@ bool MenuState::Enter()
 	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, m_system->m_width/2 - 109*scale.x, (m_system->m_height/9)*7 - 32*scale.y);
 	//---------------------------------------------------------------
 
+	//Sounds
+	snd_Start_Up_screen = m_system->m_sound_manager->getSound("snd_Start_Up_screen.wav");
+	snd_Start_Up_screen->setVolume(25.f);
+	snd_Start_Up_screen->play();
+	
+	if (snd_Start_Up_screen->getStatus() == snd_Start_Up_screen->Playing)
+	{
+		music_main = m_system->m_sound_manager->getMusic("msc_Main_Menu.wav");
+		music_main->setVolume(25.f);
+		music_main->setLoop(true);
+		music_main->play();
+	}
+
+	snd_Main_Menu_blow_out_candle = m_system->m_sound_manager->getSound("snd_Main_Menu_blow_out_candle.wav");
+	snd_Main_Menu_blow_out_candle->setVolume(25.f);
+
 	return true;
 }
 
@@ -148,6 +169,12 @@ void MenuState::Exit()
 	delete m_button;
 	m_button = nullptr;
 	//------------------------------------------
+
+	//Sounds
+	music_main->stop();
+	snd_Main_Menu_blow_out_candle->stop();
+	snd_Start_Up_screen->stop();
+	
 
 	m_paused = false;
 }
@@ -249,7 +276,10 @@ bool MenuState::Update(float _deltatime){
 
 	//-------------------------BUTTON---------------------
 	if (m_button->Update(_deltatime, m_system->m_mouse))
+	{
+		snd_Main_Menu_blow_out_candle->play();
 		state = 2;
+	}
 	//-------------------------------------------------------------
 
 	return true;

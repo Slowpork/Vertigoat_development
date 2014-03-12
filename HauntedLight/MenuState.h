@@ -10,6 +10,13 @@ class AnimatedSprite;
 class Button;
 class MouseObject;
 
+namespace sf
+{
+	class Sound;
+	class Music;
+	class Font;
+};
+
 class MenuState : public State
 {
 public:
@@ -49,6 +56,12 @@ private:
 	AnimatedSprite* spr_button;
 	Button* m_button;
 	//-------------------------------------------
+
+	//Sounds
+	sf::Sound* snd_Start_Up_screen;
+	sf::Sound* snd_Main_Menu_blow_out_candle;
+	sf::Sound* snd_New_Game_button;
+	sf::Music* music_main;
 
 	int state;
 	float brightness;
