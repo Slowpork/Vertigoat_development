@@ -45,6 +45,9 @@ public:
 
 	void setVideoMode();
 
+	float getVolume();
+	void setVolume(float _newvolume);
+
 private:
 	void setFps(int _fps);
 	
@@ -61,6 +64,9 @@ private:
 	bool m_vsync;
 
 	bool m_debug;
+
+	// SOUND
+	float m_volume;
 
 	// SYSTEM PARTS
 	sf::RenderWindow* m_window;

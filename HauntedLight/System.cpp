@@ -33,6 +33,8 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
+	m_volume = .25f;
+
 	m_window = nullptr;
 	m_view = nullptr;
 	m_clock = nullptr;
@@ -266,4 +268,16 @@ void System::setFps(int _fps)
 int System::getFps()
 {
 	return m_fps;
+}
+
+// Min 0, Max 1
+float System::getVolume()
+{
+	return m_volume;
+}
+
+// Min 0, Max 1
+void System::setVolume(float _newvolume)
+{
+	m_volume = _newvolume;
 }
