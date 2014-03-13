@@ -74,6 +74,7 @@ private:
 
 	// SOUNDS
 	sf::Music* music_main;
+	sf::Music* msc_Player_breathing;
 
 	sf::Sound* snd_thud;
 	sf::Sound* snd_Start_Up_screen;
@@ -93,7 +94,6 @@ private:
 	sf::Sound* snd_Mining_Pickaxe;
 	sf::Sound* snd_Mining_with_pebbles;
 	sf::Sound* snd_Pickup_Powerup;
-	sf::Sound* snd_Player_breathing;
 	sf::Sound* snd_Player_dies;
 	sf::Sound* snd_Player_Lighting_Candle;
 	sf::Sound* snd_Player_walk_test;

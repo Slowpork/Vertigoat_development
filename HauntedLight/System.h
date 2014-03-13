@@ -30,6 +30,9 @@ class System
 	friend class PauseState;
 	friend class MenuState;
 	friend class OptionsState;
+
+	friend class PlayerObject;
+
 public:
 	System();
 	~System();
