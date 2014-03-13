@@ -61,6 +61,7 @@ bool GameState::Enter()
 	//std::cout << m_name << std::endl;
 	m_base = true;
 	m_paused = false;
+	critter_spawned = true;
 
 	m_object_manager = new ObjectManager();
 
@@ -93,6 +94,10 @@ bool GameState::Enter()
 	msc_Player_breathing->setVolume(12.f);
 	msc_Player_breathing->setLoop(true);
 	msc_Player_breathing->play();
+
+	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
+	msc_critter_walk->setVolume(25.f);
+	msc_critter_walk->setLoop(true);
 
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
@@ -192,6 +197,7 @@ void GameState::Exit(){
 
 	//sounds
 	music_main->stop();
+	msc_Player_breathing->stop();
 	snd_thud->stop();
 }
 
@@ -348,10 +354,17 @@ bool GameState::Update(float _deltatime){
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());
 
+	//Citter
 	spr_critter->play(_deltatime);
-
+	if (critter_spawned == true)
+	{
+		msc_critter_walk->play();
+		critter_spawned = false;
+	}
+	
 	viewScale(_deltatime);
 	
+	//Player breathing
 	msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
 	FlickerLight(_deltatime);

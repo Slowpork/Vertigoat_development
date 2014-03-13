@@ -70,11 +70,14 @@ private:
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
 
+	bool critter_spawned;
+
 	AnimatedSprite* spr_critter;
 
 	// SOUNDS
 	sf::Music* music_main;
 	sf::Music* msc_Player_breathing;
+	sf::Music* msc_critter_walk;
 
 	sf::Sound* snd_thud;
 	sf::Sound* snd_Start_Up_screen;
@@ -84,7 +87,7 @@ private:
 	sf::Sound* snd_big_monster_2;
 	sf::Sound* snd_big_monster_3;
 	sf::Sound* snd_critter_attack;
-	sf::Sound* snd_critter_walk;
+	
 	sf::Sound* snd_Crunching_sound;
 	sf::Sound* snd_Door;
 	sf::Sound* snd_Equipment_selection;
