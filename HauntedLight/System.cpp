@@ -180,7 +180,7 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_big_monster_2.wav");
 	m_sound_manager->addSoundBuffer("snd_big_monster_3.wav");
 	m_sound_manager->addSoundBuffer("snd_critter_attack.wav");
-	m_sound_manager->addSoundBuffer("snd_critter_walk.wav");
+	m_sound_manager->addSoundBuffer("msc_critter_walk.wav");
 	m_sound_manager->addSoundBuffer("snd_Crunching_sound.wav");
 	m_sound_manager->addSoundBuffer("snd_Door.wav");
 	m_sound_manager->addSoundBuffer("snd_Equipment_selection.wav");

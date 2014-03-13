@@ -70,13 +70,18 @@ private:
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
 
+<<<<<<< HEAD
 	AnimatedSprite* spr_monster_big;
+=======
+	bool critter_spawned;
+>>>>>>> 5706c7e3288a140ed8116b751f1bc54221a32c0d
 
 	AnimatedSprite* spr_critter;
 
 	// SOUNDS
 	sf::Music* music_main;
 	sf::Music* msc_Player_breathing;
+	sf::Music* msc_critter_walk;
 
 	sf::Sound* snd_thud;
 	sf::Sound* snd_Start_Up_screen;
@@ -86,7 +91,7 @@ private:
 	sf::Sound* snd_big_monster_2;
 	sf::Sound* snd_big_monster_3;
 	sf::Sound* snd_critter_attack;
-	sf::Sound* snd_critter_walk;
+	
 	sf::Sound* snd_Crunching_sound;
 	sf::Sound* snd_Door;
 	sf::Sound* snd_Equipment_selection;
