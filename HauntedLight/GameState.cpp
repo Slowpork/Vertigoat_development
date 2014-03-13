@@ -352,7 +352,7 @@ bool GameState::Update(float _deltatime){
 
 	viewScale(_deltatime);
 	
-	msc_Player_breathing->setVolume((100 - (player->getStamina()/100))*64);
+	msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());
