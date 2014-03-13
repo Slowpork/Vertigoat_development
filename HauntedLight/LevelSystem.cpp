@@ -60,7 +60,7 @@ bool LevelSystem::atPosition(sf::Vector2f _pos)
 void LevelSystem::addWall(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_wall = m_sprite_manager->getSprite(
-		"wall.png",0,0,128,128);
+		"spr_wall_brick.png",0,0,128,128,16);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);

@@ -102,7 +102,7 @@ bool GameState::Enter()
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
 	spr_player_run->setScale(.5,.5);
-	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,400,400);
+	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
@@ -116,6 +116,9 @@ bool GameState::Enter()
 	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
 
+	spr_monster_big = m_system->m_sprite_manager->getSprite("Game/spr_monster_big.png",0,0,256,256,12);
+	spr_monster_big->setRotation(-90);
+
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
@@ -128,20 +131,20 @@ bool GameState::Enter()
 	bool map[15][25] = 
 	{
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 	};
 
 	int count = 0;
@@ -165,7 +168,7 @@ bool GameState::Enter()
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	player->setPosition(sf::Vector2f(1280/2,720/2));
+	player->setPosition(sf::Vector2f(256,13*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
@@ -210,7 +213,7 @@ void GameState::Resume()
 void GameState::addWall(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
-		"Game/wall.png",0,0,128,128);
+		"Game/spr_wall_brick.png",0,0,128,128,16);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
@@ -288,7 +291,7 @@ void GameState::FlickerLight(float _deltatime)
 
 void GameState::drawFloor()
 {
-	const int floor_size = 400;
+	const int floor_size = 256;
 	sf::Vector2f view_pos = sf::Vector2f(
 		m_system->m_view->getCenter().x - m_system->m_view->getSize().x/2,
 		m_system->m_view->getCenter().y - m_system->m_view->getSize().y/2);
@@ -349,6 +352,8 @@ bool GameState::Update(float _deltatime){
 	m_level_system->Update(player->getPosition(), player->getPosition());
 
 	spr_critter->play(_deltatime);
+	spr_monster_big->play(_deltatime*1.2);
+	spr_monster_big->setPosition(sf::Vector2f(player->getPosition().x - 128, player->getPosition().y + 512));
 
 	viewScale(_deltatime);
 	
@@ -427,6 +432,8 @@ void GameState::Draw()
 	m_system->m_window->draw(*player->getSprite());
 
 	m_system->m_window->draw(*spr_critter);
+
+	m_system->m_window->draw(*spr_monster_big);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);

@@ -151,7 +151,7 @@ void PlayerObject::Update(float _deltatime)
 		moving = true;
 		m_vel.x += speed * _deltatime;
 	}
-	if (m_keyboard->IsDown(sf::Keyboard::W))
+	if (m_keyboard->IsDown(sf::Keyboard::W) || true)
 	{
 		moving = true;
 		m_vel.y -= speed * _deltatime;
@@ -238,6 +238,9 @@ void PlayerObject::Update(float _deltatime)
 	turnToPoint(m_mouse->getPos());
 
 	m_pos += m_vel;
+
+	if ( m_pos.y < 128*5)
+		m_pos.y = 128*10;
 
 	setPosition(m_pos);
 

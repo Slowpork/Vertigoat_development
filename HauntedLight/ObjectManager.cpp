@@ -32,6 +32,171 @@ void ObjectManager::Add(GameObject* _object, int _depth)
 	_object->setDepth(_depth);
 	ID++;
 	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
+	tile(ID);
+}
+
+bool ObjectManager::CheckDirection(float _x, float _y, int _dir)
+{
+	switch(_dir)
+	{
+	case 0:
+		if ( atPosition(sf::Vector2f(_x + 64.f, _y - 64.f)) )
+			return true;
+	break;
+	case 1:
+		if ( atPosition(sf::Vector2f(_x + 64.f, _y + 64.f)) )
+			return true;
+	break;
+	case 2:
+		if ( atPosition(sf::Vector2f(_x + 64.f, _y + 64.f + 128.f)) )
+			return true;
+	break;
+	case 3:
+		if ( atPosition(sf::Vector2f(_x - 64.f, _y + 64.f)) )
+			return true;
+	break;
+	}
+
+	return false;
+}
+
+void ObjectManager::tile(int _ID)
+{
+	int image_index = 0;
+	GameObject* obj = getObject(_ID);
+	sf::Vector2f objPos = obj->getPosition();
+
+	if (!CheckDirection(objPos.x, objPos.y, 1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0) )
+	{
+		image_index = 0;
+	}
+	// 1
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0) )
+	{
+		image_index = 1;
+	}
+	// 2
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 2;
+	}
+	// 3
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 3;
+	}
+	// 4
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 4;
+	}
+	// 5
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 5;
+	}
+	// 6
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 6;
+	}
+	// 7
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 7;
+	}
+	// 8
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 8;
+	}
+	// 9
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 9;
+	}
+	// 10 Hor
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 10;
+	}
+	// 11 Vert
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 11;
+	}
+	// 12 vänster
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 12;
+	}
+	// 13 ner
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 13;
+	}
+	// 14 vänster
+	else if (CheckDirection(objPos.x, objPos.y,1)
+	&& !CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 14;
+	}
+	// 15 upp
+	else if (!CheckDirection(objPos.x, objPos.y,1)
+	&& CheckDirection(objPos.x, objPos.y,2)
+	&& !CheckDirection(objPos.x, objPos.y,3)
+	&& !CheckDirection(objPos.x, objPos.y,0))
+	{
+		image_index = 15;
+	}
+
+	image_index = 0;
+
+	obj->getSprite()->setFrame(image_index);
 }
 
 void ObjectManager::destroy(int _ID)

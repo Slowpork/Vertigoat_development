@@ -139,10 +139,11 @@ bool System::Init()
 	// GAME
 	m_sprite_manager->addTexture("curs.png");
 	m_sprite_manager->addTexture("Game/darkness.png");
-	m_sprite_manager->addTexture("Game/wall.png");
+	m_sprite_manager->addTexture("Game/spr_wall_brick.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
+	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
@@ -163,7 +164,7 @@ bool System::Init()
 	tex_player->setSmooth(true);
 
 
-	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/wall.png");
+	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
 	tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS
