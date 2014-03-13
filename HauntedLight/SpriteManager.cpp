@@ -43,7 +43,7 @@ AnimatedSprite* SpriteManager::getSprite(const std::string& _filename,
 	std::map<std::string, sf::Texture>::iterator it = m_textures.find(_filename);
 	if ( it == m_textures.end())
 	{
-		std::cout << "  ------------\n ERROR: Texture does not exist. \n  -------------";
+		std::cout << "  ------------\n ERROR: Texture " << _filename << " does not exist. \n  -------------";
 		return nullptr;
 	}
 
