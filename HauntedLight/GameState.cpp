@@ -89,6 +89,11 @@ bool GameState::Enter()
 	music_main->setLoop(true);
 	music_main->play();
 
+	msc_Player_breathing = m_system->m_sound_manager->getMusic("msc_Player_breathing.wav");
+	msc_Player_breathing->setVolume(12.f);
+	msc_Player_breathing->setLoop(true);
+	msc_Player_breathing->play();
+
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
 
@@ -346,6 +351,8 @@ bool GameState::Update(float _deltatime){
 	spr_critter->play(_deltatime);
 
 	viewScale(_deltatime);
+	
+	msc_Player_breathing->setVolume((100 - (player->getStamina()/100))*64);
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());
