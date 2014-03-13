@@ -3,16 +3,26 @@
 #pragma once
 
 #include "SFML\System\Vector2.hpp"
+#include "micropather.h"
 
 class ObjectManager;
 class SpriteManager;
 
-class LevelSystem
+class LevelSystem : public micropather::Graph
 {
 public:
 	LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_manager);
 
 	void Update(sf::Vector2f _player, sf::Vector2f _enemy);
+
+	// PATH FINDING
+	void NodeToXY( void* node, int* x, int* y );
+	void* XYToNode( int x, int y );
+	bool Passable( int nx, int ny );
+
+	virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd );
+	virtual void AdjacentCost( void* node, std::vector< micropather::StateCost > *neighbors );
+	virtual void PrintStateInfo( void* node );
 
 private:
 

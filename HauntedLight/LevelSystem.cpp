@@ -168,3 +168,85 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 		}
 	}
 }
+
+// #################################################################### PATH FINDING
+bool LevelSystem::Passable( int nx, int ny )
+{
+	if (    nx >= 0 && nx < WIDTH 
+			&& ny >= 0 && ny < HEIGHT )
+	{
+		return (m_object_manager->atPosition(sf::Vector2f(nx*SIZE, ny*SIZE)) == -1 );
+		/*
+		int index = ny*WIDTH+nx;
+		char c = gMap[ index ];
+		if ( c == ' ' )
+			return 1;
+		else if ( c == 'D' )
+			return 2;*/
+	}		
+	return 0;
+
+}
+
+void LevelSystem::NodeToXY( void* node, int* x, int* y ) 
+{
+	int index = (int)node;
+	*y = index / WIDTH;
+	*x = index - *y * WIDTH;
+}
+
+void* LevelSystem::XYToNode( int x, int y )
+{
+	return (void*) ( y*WIDTH + x );
+}
+
+float LevelSystem::LeastCostEstimate( void* nodeStart, void* nodeEnd ) 
+{
+	int xStart, yStart, xEnd, yEnd;
+	NodeToXY( nodeStart, &xStart, &yStart );
+	NodeToXY( nodeEnd, &xEnd, &yEnd );
+
+	/* Compute the minimum path cost using distance measurement. It is possible
+		to compute the exact minimum path using the fact that you can move only 
+		on a straight line or on a diagonal, and this will yield a better result.
+	*/
+	int dx = xStart - xEnd;
+	int dy = yStart - yEnd;
+	return (float) sqrt( (double)(dx*dx) + (double)(dy*dy) );
+}
+
+void LevelSystem::AdjacentCost( void* node, std::vector< micropather::StateCost > *neighbors ) 
+{
+	int x, y;
+	const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+	const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+	const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+
+	NodeToXY( node, &x, &y );
+
+	for( int i=0; i<8; ++i ) 
+	{
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+
+		if ( Passable( nx, ny ) )
+		{
+			// Normal floor
+			micropather::StateCost nodeCost = { XYToNode( nx, ny ), cost[i] };
+			neighbors->push_back( nodeCost );
+		}
+		else 
+		{
+			// Normal floor
+			micropather::StateCost nodeCost = { XYToNode( nx, ny ), FLT_MAX };
+			neighbors->push_back( nodeCost );
+		}
+	}
+}
+
+void LevelSystem::PrintStateInfo( void* node )
+{
+	int x, y;
+	NodeToXY( node, &x, &y );
+	printf( "(%d,%d)", x, y );
+}

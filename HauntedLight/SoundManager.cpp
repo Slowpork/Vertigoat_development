@@ -31,7 +31,7 @@ void SoundManager::addSoundBuffer(const std::string& _filename)
 	}
 	else
 	{
-		std::cout << "  ------------\n ERROR: soundBuffer already exists. \n  -------------";
+		std::cout << "  ------------\n ERROR: soundBuffer: " << _filename << " already exists. \n  -------------";
 	}	
 	
 

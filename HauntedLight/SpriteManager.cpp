@@ -23,7 +23,7 @@ void SpriteManager::addTexture(const std::string& _filename)
 	if (it == m_textures.end())
 		m_textures.insert( std::pair<std::string, sf::Texture>(_filename, texture));
 	else
-		std::cout << "  ------------\n ERROR: Texture already exists. \n  -------------";
+		std::cout << "  ------------\n ERROR: Texture: " << _filename << " already exists. \n  -------------";
 }
 
 sf::Texture* SpriteManager::getTexture(const std::string& _name)
