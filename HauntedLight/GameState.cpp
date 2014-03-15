@@ -135,7 +135,7 @@ bool GameState::Enter()
 
 	bool map[15][25] = 
 	{
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -173,7 +173,7 @@ bool GameState::Enter()
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	player->setPosition(sf::Vector2f(256,13*SIZE));
+	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
@@ -359,18 +359,16 @@ bool GameState::Update(float _deltatime){
 
 	//Citter
 	spr_critter->play(_deltatime);
-<<<<<<< HEAD
-	spr_monster_big->play(_deltatime*1.2);
-	spr_monster_big->setPosition(sf::Vector2f(player->getPosition().x - 128, player->getPosition().y + 512));
 
-=======
+	spr_monster_big->play(_deltatime*1.2);
+	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
+
 	if (critter_spawned == true)
 	{
 		msc_critter_walk->play();
 		critter_spawned = false;
 	}
-	
->>>>>>> 5706c7e3288a140ed8116b751f1bc54221a32c0d
+
 	viewScale(_deltatime);
 	
 	//Player breathing

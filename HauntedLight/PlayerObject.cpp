@@ -239,7 +239,7 @@ void PlayerObject::Update(float _deltatime)
 
 	m_pos += m_vel;
 
-	if ( m_pos.y < 128*5)
+	if ( m_pos.y < 128*4)
 		m_pos.y = 128*10;
 
 	setPosition(m_pos);

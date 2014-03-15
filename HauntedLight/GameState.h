@@ -69,14 +69,10 @@ private:
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
-
-<<<<<<< HEAD
 	AnimatedSprite* spr_monster_big;
-=======
-	bool critter_spawned;
->>>>>>> 5706c7e3288a140ed8116b751f1bc54221a32c0d
-
 	AnimatedSprite* spr_critter;
+
+	bool critter_spawned;
 
 	// SOUNDS
 	sf::Music* music_main;
