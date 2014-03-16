@@ -20,7 +20,8 @@ public:
 
 	bool Update(float _deltatime, MouseObject* _mouse);
 	void Draw(sf::RenderWindow* _window);
-	
+	void Draw(sf::RenderWindow* _window, int _num);
+
 	sf::Vector2i getSize();
 	sf::Vector2f getPosition();
 	AnimatedSprite* getSprite();

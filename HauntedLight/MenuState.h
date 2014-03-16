@@ -53,8 +53,15 @@ private:
 	AnimatedSprite* spr_candle;
 
 	//--------------BUTTON---------------
-	AnimatedSprite* spr_button;
-	Button* m_button;
+	AnimatedSprite* spr_button_play;
+	AnimatedSprite* spr_button_credits;
+	AnimatedSprite* spr_button_quit;
+	AnimatedSprite* spr_button_options;
+
+	Button* m_button_play;
+	Button* m_button_credits;
+	Button* m_button_quit;
+	Button* m_button_options;
 	//-------------------------------------------
 
 	//Sounds

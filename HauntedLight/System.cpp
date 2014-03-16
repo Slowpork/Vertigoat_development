@@ -125,14 +125,24 @@ bool System::Init()
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
-
-	//---------------------BUTTON-----------------FOR PÄR
 	m_sprite_manager->addTexture("Menu/spr_button_play.png");
-	//----------------------------------------------------
+	m_sprite_manager->addTexture("Menu/spr_button_credits.png");
+	m_sprite_manager->addTexture("Menu/spr_button_quit.png");
+	m_sprite_manager->addTexture("Menu/spr_button_options.png");
 
 	//Options Menu
-//	m_sprite_manager->addTexture("Options/spr_options_background.png");
+	//m_sprite_manager->addTexture("Options/spr_options_background.png");
 	m_sprite_manager->addTexture("Options/spr_volume_low.png");
+	m_sprite_manager->addTexture("Options/spr_volume_high.png");
+	m_sprite_manager->addTexture("Options/spr_volume_bars.png");
+	//m_sprite_manager->addTexture("Options/spr_text_vsync.png");
+	//m_sprite_manager->addTexture("Options/spr_text_fullscreen.png");
+	//m_sprite_manager->addTexture("Options/spr_text_resolution.png");
+	m_sprite_manager->addTexture("Options/spr_button_apply.png");
+	m_sprite_manager->addTexture("Options/spr_button_back.png");
+	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
+	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
+	m_sprite_manager->addTexture("Options/spr_checkbox.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");
@@ -166,11 +176,11 @@ bool System::Init()
 
 	// LOAD ALL THE FONTS
 	m_font_manager->addFont("pixel.ttf");
+	m_font_manager->addFont("MTCORSVA.TTF");
 
 	m_sound_manager = new SoundManager("../data/sounds/");
 
 	//LOAD ALL THE SOUNDS
-	m_sound_manager->addSoundBuffer("cow_bell.wav");
 	m_sound_manager->addSoundBuffer("thud.wav");
 	m_sound_manager->addSoundBuffer("snd_Start_Up_screen.wav");
 	m_sound_manager->addSoundBuffer("snd_Main_Menu_blow_out_candle.wav");
