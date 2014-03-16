@@ -11,6 +11,7 @@ namespace sf
 	class RenderWindow;
 	class View;
 	class Clock;
+	class Image;
 };
 
 class SpriteManager;
@@ -70,6 +71,7 @@ private:
 
 	// SYSTEM PARTS
 	sf::RenderWindow* m_window;
+	sf::Image* m_icon;
 	sf::View* m_view;
 	sf::Clock* m_clock;
 

@@ -21,7 +21,7 @@ System::System()
 	m_width = 1280;
 	m_height = 720;
 
-	m_title = "Haunted Light - Pre Beta";
+	m_title = "Haunted Light - BETA";
 
 	m_fullscreen = false;
 	m_borderless = false;
@@ -36,6 +36,7 @@ System::System()
 	m_volume = .25f;
 
 	m_window = nullptr;
+	m_icon = nullptr;
 	m_view = nullptr;
 	m_clock = nullptr;
 
@@ -85,7 +86,7 @@ bool System::Init()
 			}
 		}
 
-		// IF NOT SUPPORTED VIDEO MODE CHANGE TO DEFAULT 
+		// IF NOT SUPPORTED VIDEO MODE CHANGE TO DEFAULT
 		if (!found)
 		{
 			m_width = m_video_modes[0].width;
@@ -95,10 +96,17 @@ bool System::Init()
 	else
 		return false;
 
-	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), "Haunted Light - Alpha",
+	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), m_title,
 		sf::Style::Titlebar | sf::Style::Close);
 	if (m_window == nullptr)
 		return false;
+
+	/*
+	if (!m_icon->loadFromFile("../data/Haunted_Light_Icon.png") )
+	{
+		m_window->setIcon(256,256,m_icon->getPixelsPtr());
+		return EXIT_FAILURE;
+	}*/
 
 	m_vsync = false;
 	m_fullscreen = false;

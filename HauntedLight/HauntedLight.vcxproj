@@ -146,6 +146,7 @@
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="State.h" />
@@ -153,6 +154,12 @@
     <ClInclude Include="System.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Waller.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HauntedLight.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\bin\Haunted_Light_Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
