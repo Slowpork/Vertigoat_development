@@ -135,11 +135,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
-<<<<<<< HEAD
-=======
 
 	//---------------------BUTTON----------------
->>>>>>> 0858a095c7dcc24cfd3c8e8705f890cc73f7d337
 	m_sprite_manager->addTexture("Menu/spr_button_play.png");
 	m_sprite_manager->addTexture("Menu/spr_button_credits.png");
 	m_sprite_manager->addTexture("Menu/spr_button_quit.png");
