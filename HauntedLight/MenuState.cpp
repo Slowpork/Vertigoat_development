@@ -117,9 +117,33 @@ bool MenuState::Enter()
 
 
 	//-------------------------BUTTON-----------------------
-	spr_button = m_system->m_sprite_manager->getSprite("Menu/spr_button_play.png", 0,0, 219, 64, 2);
-	spr_button->setScale(scale.x, scale.y);
-	m_button = new Button(spr_button, spr_button->getSize().x, spr_button->getSize().y, m_system->m_width/2 - 109*scale.x, (m_system->m_height/9)*7 - 32*scale.y);
+	spr_button_play = m_system->m_sprite_manager->getSprite("Menu/spr_button_play.png", 0,0, 219, 64, 2);
+	spr_button_play->setScale(scale.x, scale.y);
+	m_button_play = new Button(spr_button_play, spr_button_play->getSize().x*spr_button_play->getScale().x,
+		spr_button_play->getSize().y*spr_button_play->getScale().y,
+		m_system->m_width/2 - (spr_button_play->getSize().x*spr_button_play->getScale().x)/2,
+		(m_system->m_height/9)*7 - 32*scale.y);
+
+	spr_button_credits = m_system->m_sprite_manager->getSprite("Menu/spr_button_credits.png", 0,0, 219, 64, 2);
+	spr_button_credits->setScale(scale.x, scale.y);
+	m_button_credits = new Button(spr_button_credits, spr_button_credits->getSize().x*spr_button_credits->getScale().x,
+		spr_button_credits->getSize().y*spr_button_credits->getScale().y,
+		m_system->m_width - spr_button_credits->getSize().x*spr_button_credits->getScale().x + 15*scale.x,
+		m_system->m_height - spr_button_credits->getSize().y*spr_button_credits->getScale().y - 12*scale.y);
+
+	spr_button_quit = m_system->m_sprite_manager->getSprite("Menu/spr_button_quit.png", 0,0, 219, 64, 2);
+	spr_button_quit->setScale(scale.x, scale.y);
+	m_button_quit = new Button(spr_button_quit, spr_button_quit->getSize().x*spr_button_quit->getScale().x,
+		spr_button_quit->getSize().y*spr_button_quit->getScale().y,
+		m_system->m_width/2 + (spr_button_play->getSize().x*spr_button_play->getScale().x)/2,
+		(m_system->m_height/9)*7 - 32*scale.y);
+
+	spr_button_options = m_system->m_sprite_manager->getSprite("Menu/spr_button_options.png", 0,0, 219, 64, 2);
+	spr_button_options->setScale(scale.x, scale.y);
+	m_button_options = new Button(spr_button_options, spr_button_options->getSize().x*spr_button_options->getScale().x,
+		spr_button_options->getSize().y*spr_button_options->getScale().y,
+		spr_button_play->getPosition().x - spr_button_options->getSize().x*spr_button_options->getScale().x,
+		(m_system->m_height/9)*7 - 32*scale.y);
 	//---------------------------------------------------------------
 
 	//Sounds
@@ -164,10 +188,25 @@ void MenuState::Exit()
 	spr_candle = nullptr;
 
 	//----------------BUTTON------------
-	delete spr_button;
-	spr_button = nullptr;
-	delete m_button;
-	m_button = nullptr;
+	delete spr_button_play;
+	spr_button_play = nullptr;
+	delete m_button_play;
+	m_button_play = nullptr;
+
+	delete spr_button_credits;
+	spr_button_credits = nullptr;
+	delete m_button_credits;
+	m_button_credits = nullptr;
+
+	delete spr_button_quit;
+	spr_button_quit = nullptr;
+	delete m_button_quit;
+	m_button_quit = nullptr;
+
+	delete spr_button_options;
+	spr_button_options = nullptr;
+	delete m_button_options;
+	m_button_options = nullptr;
 	//------------------------------------------
 
 	//Sounds
@@ -175,7 +214,6 @@ void MenuState::Exit()
 	snd_Main_Menu_blow_out_candle->stop();
 	snd_Start_Up_screen->stop();
 	
-
 	m_paused = false;
 }
 
@@ -275,10 +313,29 @@ bool MenuState::Update(float _deltatime){
 	}
 
 	//-------------------------BUTTON---------------------
-	if (m_button->Update(_deltatime, m_system->m_mouse))
+	if (m_button_play->Update(_deltatime, m_system->m_mouse))
 	{
 		snd_Main_Menu_blow_out_candle->play();
 		state = 2;
+	}
+	if(m_button_credits->Update(_deltatime, m_system->m_mouse))
+	{
+		snd_Main_Menu_blow_out_candle->play();
+		m_next = "";
+		return false;
+	}
+	if (m_button_options->Update(_deltatime, m_system->m_mouse))
+	{
+		snd_Main_Menu_blow_out_candle->play();
+		m_next = "OptionsState";
+		Pause();
+		return false;
+	}
+	if (m_button_quit->Update(_deltatime, m_system->m_mouse))
+	{
+		snd_Main_Menu_blow_out_candle->play();
+		m_next = "";
+		return false;
 	}
 	//-------------------------------------------------------------
 
@@ -313,7 +370,10 @@ void MenuState::Draw(){
 	m_system->m_window->draw(*spr_title);
 
 	//------------BUTTON--------------
-	m_button->Draw(m_system->m_window);
+	m_button_play->Draw(m_system->m_window);
+	m_button_credits->Draw(m_system->m_window);
+	m_button_options->Draw(m_system->m_window);
+	m_button_quit->Draw(m_system->m_window);
 	//---------------------------------------
 
 	// BLACK FADE

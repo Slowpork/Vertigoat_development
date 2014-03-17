@@ -75,7 +75,7 @@ void LightSystem::logic(sf::Vector2f _pos)
 	addSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
 	*/
 
-	sweep();
+	sweep(_pos);
 
 	/*
 	deleteSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
@@ -292,7 +292,13 @@ bool sortEndPoints(EndPoint* a, EndPoint* b)
 	return false;
 }
 
-void LightSystem::sweep()
+bool LightSystem::pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point)
+{
+	return (_point.x > _pos.x && _point.x < _pos.x + _size.x &&
+	   _point.y > _pos.y && _point.y < _pos.y + _size.y);
+}
+
+void LightSystem::sweep(sf::Vector2f _pos)
 {
 	std::sort(endPoints.begin(), endPoints.end(), sortEndPoints);
 
@@ -300,10 +306,16 @@ void LightSystem::sweep()
 	open.clear();
 	float startingAngle = 0.0f;
 
+	sf::Vector2f pos(_pos.x - mWindow->getSize().x/2,_pos.y - mWindow->getSize().y/2);
+	sf::Vector2f size(mWindow->getSize().x,mWindow->getSize().y);
+
 	for (unsigned int i = 0; i <= 1; i++)
 	{
 		for (auto& p : endPoints)
 		{
+			/*if (!pointInside(pos,size,sf::Vector2f(p->x,p->y)) )
+				continue;*/
+
 			Segment* current_old = open.empty() ? nullptr : open.front();
 			
 			if (p->begin)

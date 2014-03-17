@@ -84,8 +84,9 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset)
 					count++;
 				}
 			}
+			//else if (_object->m_type == Circle)
 		}
-		//else if (_object->m_type == Circle)
+		
 	}
 
 	if (count > 0)

@@ -38,7 +38,7 @@ GameObject::~GameObject()
 		}
 	}
 
-	std::cout << "  ~GameObject\n";
+	//std::cout << "  ~GameObject\n";
 }
 
 const sf::Vector2f& GameObject::getPosition() const

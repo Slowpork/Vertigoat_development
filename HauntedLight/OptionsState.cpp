@@ -7,26 +7,19 @@
 #include <iostream>
 #include <string>
 
-#include "SFML\Graphics\Sprite.hpp"
-#include "SFML\Graphics\View.hpp"
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
-#include "SFML\System\Vector2.hpp"
+#include "SFML\Graphics\Font.hpp"
 
 #include "System.h"
 
 #include "ObjectManager.h"
-#include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
+#include "FontManager.h"
 
-#include "SFML\Window\Keyboard.hpp"
-
-#include "Wall.h"
-#include "PlayerObject.h"
 #include "AnimatedSprite.h"
-
-#include "Collider.h"
+#include "Button.h"
 
 /*
 
@@ -43,6 +36,7 @@ OptionsState::OptionsState(System* _system)
 	std::cout << "  *Created " << m_name << std::endl;
 
 	state = 0;
+	m_resolution = 0;
 
 	m_system = _system;
 }
@@ -56,12 +50,93 @@ bool OptionsState::Enter(){
 
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
-	//ButtonTest
-	spr_volume_low = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128);
-	spr_volume_low->setScale(scale.x/2,scale.y/2);
-	spr_volume_low->setOrigin(100.f,100);
-	spr_volume_low->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
+	spr_button_resolutiondown = m_system->m_sprite_manager->getSprite("Options/spr_button_resolution_low.png",0,0,128,128,2);
+	spr_button_resolutiondown->setScale(0.5*scale.x, 0.5*scale.y);
+	m_button_resolutiondown = new Button(spr_button_resolutiondown, spr_button_resolutiondown->getSize().x*spr_button_resolutiondown->getScale().x,
+		spr_button_resolutiondown->getSize().y*spr_button_resolutiondown->getScale().y,
+		m_system->m_width/2 - 250 * scale.x, m_system->m_height/2 - 250 * scale.y);
 
+	spr_button_resolutionup = m_system->m_sprite_manager->getSprite("Options/spr_button_resolution_high.png",0,0,128,128,2);
+	spr_button_resolutionup->setScale(0.5*scale.x,0.5*scale.y);
+	m_button_resolutionup = new Button(spr_button_resolutionup, spr_button_resolutionup->getSize().x*spr_button_resolutionup->getScale().x,
+		spr_button_resolutionup->getSize().y*spr_button_resolutionup->getScale().y,
+		m_system->m_width/2 + 186 * scale.x, m_system->m_height/2 - 250 * scale.y);
+
+	spr_volume_bar = m_system->m_sprite_manager->getSprite("Options/spr_volume_bars.png",0,0,456,128,10);
+	spr_volume_bar->setScale(scale.x, 0.5*scale.y);
+	spr_volume_bar->setPosition((m_system->m_width/2 - (spr_volume_bar->getSize().x*spr_volume_bar->getScale().x)/2),
+		m_system->m_height/2);
+
+	spr_button_volumedown = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128);
+	spr_button_volumedown->setScale(0.5*scale.x, 0.5*scale.y);
+	m_button_volumedown = new Button(spr_button_volumedown, spr_button_volumedown->getSize().x*spr_button_volumedown->getScale().x,
+		spr_button_volumedown->getSize().y*spr_button_volumedown->getScale().y,
+		(spr_volume_bar->getPosition().x - (spr_button_volumedown->getSize().x*spr_button_volumedown->getScale().x) - 20),
+		spr_volume_bar->getPosition().y);
+
+	spr_button_volumeup = m_system->m_sprite_manager->getSprite("Options/spr_volume_high.png",0,0,128,128);
+	spr_button_volumeup->setScale(0.5*scale.x, 0.5*scale.y);
+	m_button_volumeup = new Button(spr_button_volumeup, spr_button_volumeup->getSize().x*spr_button_volumeup->getScale().x,
+		spr_button_volumeup->getSize().y*spr_button_volumeup->getScale().y,
+		(spr_volume_bar->getPosition().x + spr_volume_bar->getSize().x*spr_volume_bar->getScale().x + 20),
+		spr_volume_bar->getPosition().y);
+
+	spr_checkbox_fullscreen = m_system->m_sprite_manager->getSprite("Options/spr_checkbox.png",0,0,128,128,2);
+	spr_checkbox_fullscreen->setScale(0.5*scale.x, 0.5*scale.y);
+	m_button_fullscreen = new Button(spr_checkbox_fullscreen, spr_checkbox_fullscreen->getSize().x*spr_checkbox_fullscreen->getScale().x,
+		spr_checkbox_fullscreen->getSize().y*spr_checkbox_fullscreen->getScale().y, 
+		m_system->m_width/2 + 150*scale.x, m_system->m_height/2 - 150*scale.y);
+
+	spr_checkbox_vsync = m_system->m_sprite_manager->getSprite("Options/spr_checkbox.png",0,0,128,128,2);
+	spr_checkbox_vsync->setScale(0.5*scale.x, 0.5*scale.y);
+	m_button_vsync = new Button(spr_checkbox_vsync, spr_checkbox_vsync->getSize().x*spr_checkbox_vsync->getScale().x,
+		spr_checkbox_vsync->getSize().y*spr_checkbox_vsync->getScale().y, 
+		m_system->m_width/2 - 214*scale.x, m_system->m_height/2 - 150*scale.y);
+
+	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
+	spr_button_back->setScale(scale.x, scale.y);
+	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
+		spr_button_back->getSize().y*spr_button_back->getScale().y, 
+		m_system->m_width/2, (m_system->m_height/9)*7 - 32*scale.y);
+
+	spr_button_apply = m_system->m_sprite_manager->getSprite("Options/spr_button_apply.png",0,0,219,64,2);
+	spr_button_apply->setScale(scale.x, scale.y);
+	m_button_apply = new Button(spr_button_apply, spr_button_apply->getSize().x*spr_button_apply->getScale().x, 
+		spr_button_apply->getSize().y*spr_button_apply->getScale().y, 
+		m_system->m_width/2 + spr_button_apply->getSize().x*spr_button_apply->getScale().x, (m_system->m_height/9)*7 - 32*scale.y);
+
+	m_font_options = m_system->m_font_manager->getFont("MTCORSVA.TTF");
+
+	m_vsync = m_system->m_vsync;
+	m_fullscreen = m_system->m_fullscreen;
+
+	if(m_vsync)
+	{
+		spr_checkbox_vsync->setFrame(1);
+	}else{
+		spr_checkbox_vsync->setFrame(0);
+	}
+
+	if(m_fullscreen)
+	{
+		spr_checkbox_fullscreen->setFrame(1);
+	}else{
+		spr_checkbox_fullscreen->setFrame(0);
+	}
+
+	m_vol = m_system->m_volume*10;
+	spr_volume_bar->setFrame(m_vol);
+
+	/*#pragma region Volume Buttons
+	spr_buttons_volume = m_system->m_sprite_manager->getSprite("Options/empty.png",0,0,45,128);
+	spr_buttons_volume->setScale(scale.x, scale.y);
+
+	for(int i = 0; i < 10; i++)
+	{
+		m_buttons_volume[i] = new Button(spr_buttons_volume, spr_buttons_volume->getSize().x, spr_buttons_volume->getSize().y,
+			spr_volume_bar->getPosition().x + (spr_buttons_volume->getSize().x * i + 1), spr_volume_bar->getPosition().y);
+	}
+	#pragma endregion*/
 
 	return true;
 }
@@ -71,6 +146,60 @@ void OptionsState::Exit()
 
 	delete spr_background;
 	spr_background = nullptr;
+
+	delete spr_button_resolutiondown;
+	spr_button_resolutiondown = nullptr;
+
+	delete spr_button_resolutionup;
+	spr_button_resolutionup = nullptr;
+
+	delete spr_volume_bar;
+	spr_volume_bar = nullptr;
+
+	delete spr_button_volumedown;
+	spr_button_volumedown = nullptr;
+
+	delete spr_button_volumeup;
+	spr_button_volumeup = nullptr;
+
+	delete m_button_volumedown;
+	m_button_volumedown = nullptr;
+
+	delete m_button_volumeup;
+	m_button_volumeup = nullptr;
+
+	delete m_button_fullscreen;
+	m_button_fullscreen = nullptr;
+
+	delete spr_checkbox_fullscreen;
+	spr_checkbox_fullscreen = nullptr;
+
+	delete m_button_vsync;
+	m_button_vsync = nullptr;
+
+	delete spr_checkbox_vsync;
+	spr_checkbox_vsync = nullptr;
+
+	delete spr_button_apply;
+	spr_button_apply = nullptr;
+
+	delete spr_button_back;
+	spr_button_back = nullptr;
+
+	delete m_button_apply;
+	m_button_apply = nullptr;
+
+	delete m_button_back;
+	m_button_back = nullptr;
+
+	/*for(int i = 0; i < 10; i++)
+	{
+		delete m_buttons_volume[i];
+		m_buttons_volume[i] = nullptr;
+	}
+
+	delete spr_buttons_volume;
+	spr_buttons_volume = nullptr;*/
 
 	delete object_manager;
 	object_manager = nullptr;
@@ -105,13 +234,94 @@ bool OptionsState::Update(float _deltatime){
 		break;
 	}
 */
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
+	/*if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Q))
 	{
         m_next = "";
 		return false;
+	}*/
+
+	if(m_vol > 0)
+	{
+		if(m_button_volumedown->Update(_deltatime, m_system->m_mouse))
+		{
+			m_vol -= 1;
+			spr_volume_bar->setFrame(m_vol);
+		}
+	}
+	if(m_vol < 10)
+	{
+		if(m_button_volumeup->Update(_deltatime, m_system->m_mouse))
+		{
+			m_vol += 1;
+			spr_volume_bar->setFrame(m_vol);
+		}
 	}
 
-	return true;	
+	if(m_resolution >= 0)
+	{
+		if(m_button_resolutiondown->Update(_deltatime, m_system->m_mouse))
+		{
+			m_resolution -= 1;
+		}
+	}
+	if(m_resolution < m_system->m_video_modes.size())
+	{
+		if(m_button_resolutionup->Update(_deltatime, m_system->m_mouse))
+		{
+			m_resolution += 1;
+		}
+	}
+
+	if(m_button_apply->Update(_deltatime, m_system->m_mouse))
+	{
+		m_system->m_volume = m_vol/10;
+		
+		m_system->m_fullscreen = m_fullscreen;
+		m_system->m_vsync = m_vsync;
+
+		/*if(m_fullscreen)
+		{
+			m_system->m_fullscreen = !m_system->m_fullscreen;
+		}*/
+
+		if(m_vsync)
+		{
+			if(spr_checkbox_vsync->getFrame() == 0)
+			{
+				m_system->m_window->setVerticalSyncEnabled(false);
+			}else if(spr_checkbox_vsync->getFrame() == 1)
+			{
+				m_system->m_window->setVerticalSyncEnabled(true);
+			}
+		}
+
+		if(m_system->m_width != m_system->m_video_modes[m_resolution].width && m_system->m_height != m_system->m_video_modes[m_resolution].height)
+		{
+			m_system->m_width = m_system->m_video_modes[m_resolution].width;
+			m_system->m_height = m_system->m_video_modes[m_resolution].height;
+		}
+	}
+
+	if(m_button_back->Update(_deltatime, m_system->m_mouse))
+	{
+		m_next = "";
+		Pause();
+		return false;
+	}
+
+	if(m_button_fullscreen->Update(_deltatime, m_system->m_mouse))
+	{
+		spr_checkbox_fullscreen->setFrame(!spr_checkbox_fullscreen->getFrame());
+		m_fullscreen = !m_fullscreen;
+	}
+
+	if(m_button_vsync->Update(_deltatime, m_system->m_mouse))
+	{
+		spr_checkbox_vsync->setFrame(!spr_checkbox_vsync->getFrame());
+		m_vsync = !m_vsync;
+	}
+
+	return true;
 }
 
 void OptionsState::Draw(){
@@ -120,14 +330,26 @@ void OptionsState::Draw(){
 	//m_system->m_window->setView(m_system->m_window->getDefaultView());
 
 	// BLACK FADE
-	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
+	sf::RectangleShape rect_fade(sf::Vector2f(m_system->m_width, m_system->m_height));
 	rect_fade.setFillColor(sf::Color(0,0,0,128));
 
 	m_system->m_window->draw(rect_fade);
 
-//	m_system->m_window->draw(*spr_background);
+	//m_system->m_window->draw(*spr_background);
 
-	m_system->m_window->draw(*spr_volume_low);
+	m_system->m_window->draw(*spr_volume_bar);
+	//m_system->m_window->draw(*spr_text_vsync);
+	//m_system->m_window->draw(*spr_text_fullscreen);
+	//m_system->m_window->draw(*spr_text_resolution);
+
+	m_button_volumedown->Draw(m_system->m_window, 1);
+	m_button_volumeup->Draw(m_system->m_window, 1);
+	m_button_fullscreen->Draw(m_system->m_window, 1);
+	m_button_vsync->Draw(m_system->m_window, 1);
+	m_button_apply->Draw(m_system->m_window);
+	m_button_back->Draw(m_system->m_window);
+	m_button_resolutiondown->Draw(m_system->m_window);
+	m_button_resolutionup->Draw(m_system->m_window);
 
 //	object_manager->Draw(m_system->m_window);
 }

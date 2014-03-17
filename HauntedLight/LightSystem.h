@@ -79,9 +79,10 @@ public:
 
 private:
 
+	bool pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point);
 	bool _segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo);
 	bool leftOf(Segment* a, sf::Vector2f point);
-	void sweep();
+	void sweep(sf::Vector2f _pos);
 	void addSegment(float x1, float y1, float x2, float y2);
 	void deleteSegment(float x1, float y1, float x2, float y2);
 	void LightSystem::addTriangle(float angle1, float angle2, Segment* segment);

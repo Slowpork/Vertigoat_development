@@ -18,8 +18,8 @@
 
 System::System()
 {
-	m_width = 1280;
-	m_height = 720;
+	m_width = 1920;
+	m_height = 1080;
 
 	m_title = "Haunted Light - BETA";
 
@@ -33,7 +33,7 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
-	m_volume = .25f;
+	m_volume = .2f;
 
 	m_window = nullptr;
 	m_icon = nullptr;
@@ -138,11 +138,20 @@ bool System::Init()
 
 	//---------------------BUTTON----------------
 	m_sprite_manager->addTexture("Menu/spr_button_play.png");
-	//----------------------------------------------------
+	m_sprite_manager->addTexture("Menu/spr_button_credits.png");
+	m_sprite_manager->addTexture("Menu/spr_button_quit.png");
+	m_sprite_manager->addTexture("Menu/spr_button_options.png");
 
 	//Options Menu
-//	m_sprite_manager->addTexture("Options/spr_options_background.png");
+	//m_sprite_manager->addTexture("Options/spr_options_background.png");
 	m_sprite_manager->addTexture("Options/spr_volume_low.png");
+	m_sprite_manager->addTexture("Options/spr_volume_high.png");
+	m_sprite_manager->addTexture("Options/spr_volume_bars.png");
+	m_sprite_manager->addTexture("Options/spr_button_apply.png");
+	m_sprite_manager->addTexture("Options/spr_button_return.png");
+	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
+	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
+	m_sprite_manager->addTexture("Options/spr_checkbox.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");
@@ -174,10 +183,11 @@ bool System::Init()
 
 
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
-	tex_wall->setSmooth(true);
+	//tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS
 	m_font_manager->addFont("pixel.ttf");
+	m_font_manager->addFont("MTCORSVA.TTF");
 
 	m_sound_manager = new SoundManager("../data/sounds/");
 

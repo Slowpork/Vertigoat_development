@@ -136,21 +136,21 @@ bool GameState::Enter()
 
 	bool map[15][25] = 
 	{
-		{1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	};
 
 	int count = 0;
@@ -371,7 +371,7 @@ bool GameState::Update(float _deltatime){
 	//Citter
 	spr_critter->play(_deltatime);
 
-	spr_monster_big->play(_deltatime*1.2);
+	spr_monster_big->play(_deltatime*1.2f);
 	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
 
 	if (critter_spawned == true)
@@ -383,7 +383,7 @@ bool GameState::Update(float _deltatime){
 	viewScale(_deltatime);
 	
 	//Player breathing
-	msc_Player_breathing->setVolume(100 - (player->getStamina()));
+	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());
@@ -394,19 +394,20 @@ bool GameState::Update(float _deltatime){
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
 	
-	if (m_system->m_mouse->IsDownOnce(Left))
+	if (m_system->m_mouse->IsDown(Left))
 	{
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID == -1)
 		{
 			snd_thud->play();
 			addWall(sf::Vector2f(
-				m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128),
-				m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
+				floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+				floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
+				));
 			m_light_system->update();
 		}
 	}
-	else if (m_system->m_mouse->IsDownOnce(Right)) // HIT WALL
+	else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
 	{
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID != -1)
