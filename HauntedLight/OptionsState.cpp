@@ -94,7 +94,7 @@ bool OptionsState::Enter(){
 		spr_checkbox_vsync->getSize().y*spr_checkbox_vsync->getScale().y, 
 		m_system->m_width/2 - 214*scale.x, m_system->m_height/2 - 150*scale.y);
 
-	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_back.png",0,0,219,64,2);
+	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
 	spr_button_back->setScale(scale.x, scale.y);
 	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
 		spr_button_back->getSize().y*spr_button_back->getScale().y, 

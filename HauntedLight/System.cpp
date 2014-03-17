@@ -147,11 +147,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_volume_low.png");
 	m_sprite_manager->addTexture("Options/spr_volume_high.png");
 	m_sprite_manager->addTexture("Options/spr_volume_bars.png");
-	//m_sprite_manager->addTexture("Options/spr_text_vsync.png");
-	//m_sprite_manager->addTexture("Options/spr_text_fullscreen.png");
-	//m_sprite_manager->addTexture("Options/spr_text_resolution.png");
 	m_sprite_manager->addTexture("Options/spr_button_apply.png");
-	m_sprite_manager->addTexture("Options/spr_button_back.png");
+	m_sprite_manager->addTexture("Options/spr_button_return.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
 	m_sprite_manager->addTexture("Options/spr_checkbox.png");
