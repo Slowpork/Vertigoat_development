@@ -38,6 +38,7 @@
 #include "Random.h"
 
 #include "Wall.h"
+#include "PickaxeObject.h"
 #include "PlayerObject.h"
 
 #include "AnimatedSprite.h"
@@ -224,6 +225,16 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
 	m_object_manager->Add(wall,5);
+}
+
+void GameState::addPickaxe(sf::Vector2f _pos)
+{
+	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
+		"Game/spr_pickaxe_pickup.png",0,0,128,128,16);
+	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	PickaxeObject* pickaxe = new PickaxeObject(spr_wall,col_Pickaxe);
+	pickaxe->setPosition(_pos);
+	m_object_manager->Add(pickaxe,5);
 }
 
 void GameState::viewScale(float _deltatime)
