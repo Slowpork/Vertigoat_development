@@ -67,14 +67,14 @@ bool OptionsState::Enter(){
 	spr_volume_bar->setPosition((m_system->m_width/2 - (spr_volume_bar->getSize().x*spr_volume_bar->getScale().x)/2),
 		m_system->m_height/2);
 
-	spr_button_volumedown = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128);
+	spr_button_volumedown = m_system->m_sprite_manager->getSprite("Options/spr_volume_low.png",0,0,128,128,2);
 	spr_button_volumedown->setScale(0.5*scale.x, 0.5*scale.y);
 	m_button_volumedown = new Button(spr_button_volumedown, spr_button_volumedown->getSize().x*spr_button_volumedown->getScale().x,
 		spr_button_volumedown->getSize().y*spr_button_volumedown->getScale().y,
 		(spr_volume_bar->getPosition().x - (spr_button_volumedown->getSize().x*spr_button_volumedown->getScale().x) - 20),
 		spr_volume_bar->getPosition().y);
 
-	spr_button_volumeup = m_system->m_sprite_manager->getSprite("Options/spr_volume_high.png",0,0,128,128);
+	spr_button_volumeup = m_system->m_sprite_manager->getSprite("Options/spr_volume_high.png",0,0,128,128,2);
 	spr_button_volumeup->setScale(0.5*scale.x, 0.5*scale.y);
 	m_button_volumeup = new Button(spr_button_volumeup, spr_button_volumeup->getSize().x*spr_button_volumeup->getScale().x,
 		spr_button_volumeup->getSize().y*spr_button_volumeup->getScale().y,
@@ -257,11 +257,13 @@ bool OptionsState::Update(float _deltatime){
 		}
 	}
 
-	if(m_resolution >= 0)
+	if(m_resolution > 0)
 	{
 		if(m_button_resolutiondown->Update(_deltatime, m_system->m_mouse))
 		{
 			m_resolution -= 1;
+
+			std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
 		}
 	}
 	if(m_resolution < m_system->m_video_modes.size())
@@ -269,6 +271,8 @@ bool OptionsState::Update(float _deltatime){
 		if(m_button_resolutionup->Update(_deltatime, m_system->m_mouse))
 		{
 			m_resolution += 1;
+
+			std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
 		}
 	}
 
@@ -342,8 +346,8 @@ void OptionsState::Draw(){
 	//m_system->m_window->draw(*spr_text_fullscreen);
 	//m_system->m_window->draw(*spr_text_resolution);
 
-	m_button_volumedown->Draw(m_system->m_window, 1);
-	m_button_volumeup->Draw(m_system->m_window, 1);
+	m_button_volumedown->Draw(m_system->m_window);
+	m_button_volumeup->Draw(m_system->m_window);
 	m_button_fullscreen->Draw(m_system->m_window, 1);
 	m_button_vsync->Draw(m_system->m_window, 1);
 	m_button_apply->Draw(m_system->m_window);
