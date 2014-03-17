@@ -173,7 +173,7 @@ bool System::Init()
 
 
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
-	tex_wall->setSmooth(true);
+	//tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS
 	m_font_manager->addFont("pixel.ttf");

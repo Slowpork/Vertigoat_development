@@ -44,6 +44,8 @@ public:
 	int getObjects();
 
 private:
+	bool pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point);
+	void proximityTiling(int _ID, GameObject* _object);
 	bool CheckDirection(float _x, float _y, int _dir);
 
 private:
