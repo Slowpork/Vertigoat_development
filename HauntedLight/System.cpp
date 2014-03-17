@@ -18,8 +18,8 @@
 
 System::System()
 {
-	m_width = 1280;
-	m_height = 720;
+	m_width = 1920;
+	m_height = 1080;
 
 	m_title = "Haunted Light - BETA";
 
@@ -33,7 +33,7 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
-	m_volume = .25f;
+	m_volume = .2f;
 
 	m_window = nullptr;
 	m_icon = nullptr;
