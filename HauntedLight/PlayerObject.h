@@ -5,6 +5,7 @@
 
 #include "GameObject.h"
 #include <string>
+#include <vector>
 
 class KeyboardObject;
 class MouseObject;
@@ -20,6 +21,7 @@ public:
 
 	void Update(float _deltatime);
 	
+	void setPath(std::vector<sf::Vector2f> _path);
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 
@@ -38,6 +40,9 @@ private:
 private:
 	KeyboardObject* m_keyboard;
 	MouseObject* m_mouse;
+
+	std::vector<sf::Vector2f> m_path;
+	int m_current_node;
 
 	AnimatedSprite* m_spr_run;
 	AnimatedSprite* m_spr_walk;

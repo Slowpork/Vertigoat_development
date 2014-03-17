@@ -38,6 +38,7 @@
 #include "Random.h"
 
 #include "Wall.h"
+#include "PickaxeObject.h"
 #include "PlayerObject.h"
 
 #include "AnimatedSprite.h"
@@ -160,7 +161,7 @@ bool GameState::Enter()
 		{
 			if (map[Y][X])
 			{
-				addWall(sf::Vector2f(SIZE*X,SIZE*Y));
+				//addWall(sf::Vector2f(SIZE*X,SIZE*Y));
 				count++;
 			}
 		}
@@ -224,6 +225,16 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
 	m_object_manager->Add(wall,5);
+}
+
+void GameState::addPickaxe(sf::Vector2f _pos)
+{
+	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
+		"Game/spr_pickaxe_pickup.png",0,0,128,128,16);
+	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	PickaxeObject* pickaxe = new PickaxeObject(spr_wall,col_Pickaxe);
+	pickaxe->setPosition(_pos);
+	m_object_manager->Add(pickaxe,5);
 }
 
 void GameState::viewScale(float _deltatime)
@@ -383,33 +394,51 @@ bool GameState::Update(float _deltatime){
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
 	
-	if (m_system->m_mouse->IsDown(Left))
+	if (!m_system->m_keyboard->IsDown(sf::Keyboard::LControl))
 	{
-		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
-		if ( ID == -1)
+		if (m_system->m_mouse->IsDown(Left))
 		{
-			snd_thud->play();
-			addWall(sf::Vector2f(
-				floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
-				floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
-				));
+			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
+			if ( ID == -1)
+			{
+				snd_thud->play();
+				addWall(sf::Vector2f(
+					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
+					));
+				m_light_system->update();
+			}
+		}
+		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
+		{
+			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
+			if ( ID != -1)
+			{
+				snd_Mining_with_pebbles->play();
+				GameObject* go = m_object_manager->getObject(ID);
+				if (go != nullptr)
+				{
+					//if (static_cast<Wall*> (go)->hit())
+						m_object_manager->destroy(ID);
+				}
+			}
 			m_light_system->update();
 		}
 	}
-	else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
+	else
 	{
-		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
-		if ( ID != -1)
+		if (m_system->m_mouse->IsDown(Left))
 		{
-			snd_Mining_with_pebbles->play();
-			GameObject* go = m_object_manager->getObject(ID);
-			if (go != nullptr)
-			{
-				//if (static_cast<Wall*> (go)->hit())
-					m_object_manager->destroy(ID);
-			}
+			sf::Vector2f dest(
+					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
+					);
+			player->setPath(*m_level_system->getPath(player->getPosition(),dest));
 		}
-		m_light_system->update();
+		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
+		{
+			
+		}
 	}
 
 	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))

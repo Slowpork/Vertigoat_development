@@ -17,6 +17,7 @@
 #include "SoundManager.h"
 
 #include <string>
+#include <iostream>
 
 PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	AnimatedSprite* _sprite, Collider* _collider)
@@ -41,7 +42,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	
 	m_light = 1.f;
 	m_candle = true;
-
+	m_current_node = 0;
 }
 
 PlayerObject::~PlayerObject()
@@ -130,6 +131,12 @@ void PlayerObject::updateLight(float _deltatime)
 		m_light = 0.3f;
 }
 
+void PlayerObject::setPath(std::vector<sf::Vector2f> _path)
+{
+	std::cout << "SetPath" << std::cout;
+	m_path = _path;
+}
+
 void PlayerObject::Update(float _deltatime)
 {
 	float speed = 44.f;
@@ -162,7 +169,30 @@ void PlayerObject::Update(float _deltatime)
 		m_vel.y += speed * _deltatime;
 	}
 
+	if (!m_path.empty())
+	{
+		sf::Vector2f dest(m_path.at(m_current_node).x,m_path.at(m_current_node).y);
+		
+		if (m_pos.x < dest.x)
+			m_vel.x += speed *_deltatime;
+		else if (m_pos.x > dest.x)
+			m_vel.x -= speed *_deltatime;
 
+		if (m_pos.y < dest.y)
+			m_vel.y += speed *_deltatime;
+		else if (m_pos.y > dest.y)
+			m_vel.y -= speed *_deltatime;
+
+		if ( abs(m_pos.x - dest.x) < 16 && abs(m_pos.y - dest.y) < 16 )
+		{
+			m_pos = dest;
+			if (m_current_node == m_path.size())
+			{
+				m_path.clear();
+				m_current_node = 0;
+			}
+		}
+	}
 
 	// LIGHT CANDLE
 	if (m_mouse->IsDownOnce(Middle) && ( m_matches > 0 || m_candle) )

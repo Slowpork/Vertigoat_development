@@ -16,15 +16,19 @@ public:
 	void Update(sf::Vector2f _player, sf::Vector2f _enemy);
 
 	// PATH FINDING
+	std::vector<sf::Vector2f>* getPath(sf::Vector2f _pos, sf::Vector2f _dest);
+
+private:
+
+	// PATH FINDING
 	void NodeToXY( void* node, int* x, int* y );
 	void* XYToNode( int x, int y );
+	std::vector<sf::Vector2f>* ConvertPath(std::vector<void*>* _path);
 	bool Passable( int nx, int ny );
-
+	sf::Vector2f NodeToCoords(void* _node);
 	virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd );
 	virtual void AdjacentCost( void* node, std::vector< micropather::StateCost > *neighbors );
 	virtual void PrintStateInfo( void* node );
-
-private:
 
 	void setPlayerPos(sf::Vector2f _pos);
 	void setEnemyPos(sf::Vector2f _pos);
@@ -36,6 +40,9 @@ private:
 	bool genRoom(int _x, int _y, int _width, int _height, int _direction);
 
 private:
+
+	// PATH FINDING
+	micropather::MicroPather* m_pather;
 
 	ObjectManager* m_object_manager;
 	SpriteManager* m_sprite_manager;

@@ -20,7 +20,7 @@ ObjectManager::ObjectManager()
 
 void ObjectManager::Cleanup()
 {
-	for(auto object: m_objects)
+	for(auto& object: m_objects)
 	{
 		delete object.second;
 		object.second = nullptr;

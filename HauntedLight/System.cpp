@@ -161,6 +161,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
+	m_sprite_manager->addTexture("Game/spr_pickaxe_pickup.png");
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
