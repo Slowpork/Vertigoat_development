@@ -263,9 +263,6 @@
     <ClInclude Include="micropather.h">
       <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -282,8 +279,5 @@
     <Image Include="..\bin\Haunted_Light_Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-=======
->>>>>>> 2467df947821f30b59a5fa2a8b41b45123d16e91
->>>>>>> 2d0970261f2f5ed2560cd97b58d765588d65df9c
   </ItemGroup>
 </Project>

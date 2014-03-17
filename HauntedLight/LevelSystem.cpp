@@ -54,7 +54,9 @@ LevelSystem::LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_
 
 bool LevelSystem::atPosition(sf::Vector2f _pos)
 {
-	return ( m_object_manager->atPosition(_pos) != -1 ? true : false);
+	std::cout << "atPosition...";
+	return (  m_object_manager->atPosition(_pos) != -1 ? true : false);
+	
 }
 
 void LevelSystem::addWall(sf::Vector2f _pos)
@@ -178,7 +180,7 @@ std::vector<sf::Vector2f>* LevelSystem::getPath(sf::Vector2f _pos, sf::Vector2f 
 	std::cout << "wuuut?" << std::endl;
 	float totalcost;
 	if (atPosition(_dest) == -1)
-	{
+	{std::cout << "DONE!\n";
 		std::cout << "begin calculate path...";
 		result = m_pather->Solve(XYToNode(_pos.x,_pos.y), XYToNode( _dest.x, _dest.y), *&path, &totalcost);
 		std::cout << "DONE! totalcost: " << totalcost << std::endl;
