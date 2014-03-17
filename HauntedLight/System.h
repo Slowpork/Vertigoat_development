@@ -11,6 +11,7 @@ namespace sf
 	class RenderWindow;
 	class View;
 	class Clock;
+	class Image;
 };
 
 class SpriteManager;
@@ -30,6 +31,9 @@ class System
 	friend class PauseState;
 	friend class MenuState;
 	friend class OptionsState;
+
+	friend class PlayerObject;
+
 public:
 	System();
 	~System();
@@ -41,6 +45,9 @@ public:
 	void setDebug(bool _mode);
 
 	void setVideoMode();
+
+	float getVolume();
+	void setVolume(float _newvolume);
 
 private:
 	void setFps(int _fps);
@@ -59,8 +66,12 @@ private:
 
 	bool m_debug;
 
+	// SOUND
+	float m_volume;
+
 	// SYSTEM PARTS
 	sf::RenderWindow* m_window;
+	sf::Image* m_icon;
 	sf::View* m_view;
 	sf::Clock* m_clock;
 

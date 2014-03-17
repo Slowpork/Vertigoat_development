@@ -8,6 +8,13 @@
 
 #include "InputManager.h"
 #include "Collider.h"
+#include "System.h"
+
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
+
+#include "SoundManager.h"
 
 #include <string>
 
@@ -34,6 +41,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	
 	m_light = 1.f;
 	m_candle = true;
+
 }
 
 PlayerObject::~PlayerObject()
@@ -129,6 +137,7 @@ void PlayerObject::Update(float _deltatime)
 
 	bool moving = false;
 
+
 	updateLight(_deltatime);
 
 	// MOVE
@@ -152,6 +161,8 @@ void PlayerObject::Update(float _deltatime)
 		moving = true;
 		m_vel.y += speed * _deltatime;
 	}
+
+
 
 	// LIGHT CANDLE
 	if (m_mouse->IsDownOnce(Middle) && ( m_matches > 0 || m_candle) )
@@ -181,7 +192,7 @@ void PlayerObject::Update(float _deltatime)
 			if ( moving)
 			{
 				m_running = true;
-				//m_stamina -= _deltatime*25.f;
+				m_stamina -= _deltatime*25.f;
 			}
 		}
 	}
@@ -227,6 +238,9 @@ void PlayerObject::Update(float _deltatime)
 	turnToPoint(m_mouse->getPos());
 
 	m_pos += m_vel;
+
+	/*if ( m_pos.y < 128*4)
+		m_pos.y = 128*10;*/
 
 	setPosition(m_pos);
 

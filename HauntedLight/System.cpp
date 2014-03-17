@@ -21,7 +21,7 @@ System::System()
 	m_width = 1280;
 	m_height = 720;
 
-	m_title = "Haunted Light - Pre Beta";
+	m_title = "Haunted Light - BETA";
 
 	m_fullscreen = false;
 	m_borderless = false;
@@ -33,7 +33,10 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
+	m_volume = .25f;
+
 	m_window = nullptr;
+	m_icon = nullptr;
 	m_view = nullptr;
 	m_clock = nullptr;
 
@@ -83,7 +86,7 @@ bool System::Init()
 			}
 		}
 
-		// IF NOT SUPPORTED VIDEO MODE CHANGE TO DEFAULT 
+		// IF NOT SUPPORTED VIDEO MODE CHANGE TO DEFAULT
 		if (!found)
 		{
 			m_width = m_video_modes[0].width;
@@ -93,10 +96,17 @@ bool System::Init()
 	else
 		return false;
 
-	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), "Haunted Light - Alpha",
+	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), m_title,
 		sf::Style::Titlebar | sf::Style::Close);
 	if (m_window == nullptr)
 		return false;
+
+	/*
+	if (!m_icon->loadFromFile("../data/Haunted_Light_Icon.png") )
+	{
+		m_window->setIcon(256,256,m_icon->getPixelsPtr());
+		return EXIT_FAILURE;
+	}*/
 
 	m_vsync = false;
 	m_fullscreen = false;
@@ -125,6 +135,11 @@ bool System::Init()
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
+<<<<<<< HEAD
+=======
+
+	//---------------------BUTTON----------------
+>>>>>>> 0858a095c7dcc24cfd3c8e8705f890cc73f7d337
 	m_sprite_manager->addTexture("Menu/spr_button_play.png");
 	m_sprite_manager->addTexture("Menu/spr_button_credits.png");
 	m_sprite_manager->addTexture("Menu/spr_button_quit.png");
@@ -147,10 +162,11 @@ bool System::Init()
 	// GAME
 	m_sprite_manager->addTexture("curs.png");
 	m_sprite_manager->addTexture("Game/darkness.png");
-	m_sprite_manager->addTexture("Game/wall.png");
+	m_sprite_manager->addTexture("Game/spr_wall_brick.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
+	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
@@ -171,8 +187,8 @@ bool System::Init()
 	tex_player->setSmooth(true);
 
 
-	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/wall.png");
-	tex_wall->setSmooth(true);
+	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
+	//tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS
 	m_font_manager->addFont("pixel.ttf");
@@ -182,14 +198,13 @@ bool System::Init()
 
 	//LOAD ALL THE SOUNDS
 	m_sound_manager->addSoundBuffer("thud.wav");
-	m_sound_manager->addSoundBuffer("snd_Start_Up_screen.wav");
 	m_sound_manager->addSoundBuffer("snd_Main_Menu_blow_out_candle.wav");
-	m_sound_manager->addSoundBuffer("snd_ambiant_alarm.wav");
+	m_sound_manager->addSoundBuffer("snd_ambient_alarm.wav");
 	m_sound_manager->addSoundBuffer("snd_big_monster_1.wav");
 	m_sound_manager->addSoundBuffer("snd_big_monster_2.wav");
 	m_sound_manager->addSoundBuffer("snd_big_monster_3.wav");
 	m_sound_manager->addSoundBuffer("snd_critter_attack.wav");
-	m_sound_manager->addSoundBuffer("snd_critter_walk.wav");
+	m_sound_manager->addSoundBuffer("msc_critter_walk.wav");
 	m_sound_manager->addSoundBuffer("snd_Crunching_sound.wav");
 	m_sound_manager->addSoundBuffer("snd_Door.wav");
 	m_sound_manager->addSoundBuffer("snd_Equipment_selection.wav");
@@ -200,7 +215,7 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_Mining_with_pebbles.wav");
 	m_sound_manager->addSoundBuffer("snd_New_Game_button.wav"); ////////////////
 	m_sound_manager->addSoundBuffer("snd_Pickup_Powerup.wav");
-	m_sound_manager->addSoundBuffer("snd_Player_breathing.wav");
+	m_sound_manager->addSoundBuffer("msc_Player_breathing.wav");
 	m_sound_manager->addSoundBuffer("snd_Player_dies.wav");
 	m_sound_manager->addSoundBuffer("snd_Player_Lighting_Candle.wav");
 	m_sound_manager->addSoundBuffer("snd_Player_walk_test.wav");
@@ -278,4 +293,16 @@ void System::setFps(int _fps)
 int System::getFps()
 {
 	return m_fps;
+}
+
+// Min 0, Max 1
+float System::getVolume()
+{
+	return m_volume;
+}
+
+// Min 0, Max 1
+void System::setVolume(float _newvolume)
+{
+	m_volume = _newvolume;
 }

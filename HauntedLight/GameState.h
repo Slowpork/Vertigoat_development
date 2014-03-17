@@ -69,11 +69,15 @@ private:
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
-
+	AnimatedSprite* spr_monster_big;
 	AnimatedSprite* spr_critter;
+
+	bool critter_spawned;
 
 	// SOUNDS
 	sf::Music* music_main;
+	sf::Music* msc_Player_breathing;
+	sf::Music* msc_critter_walk;
 
 	sf::Sound* snd_thud;
 	sf::Sound* snd_Start_Up_screen;
@@ -83,7 +87,7 @@ private:
 	sf::Sound* snd_big_monster_2;
 	sf::Sound* snd_big_monster_3;
 	sf::Sound* snd_critter_attack;
-	sf::Sound* snd_critter_walk;
+	
 	sf::Sound* snd_Crunching_sound;
 	sf::Sound* snd_Door;
 	sf::Sound* snd_Equipment_selection;
@@ -93,7 +97,6 @@ private:
 	sf::Sound* snd_Mining_Pickaxe;
 	sf::Sound* snd_Mining_with_pebbles;
 	sf::Sound* snd_Pickup_Powerup;
-	sf::Sound* snd_Player_breathing;
 	sf::Sound* snd_Player_dies;
 	sf::Sound* snd_Player_Lighting_Candle;
 	sf::Sound* snd_Player_walk_test;

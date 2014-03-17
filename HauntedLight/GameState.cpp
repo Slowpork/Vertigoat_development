@@ -61,6 +61,7 @@ bool GameState::Enter()
 	//std::cout << m_name << std::endl;
 	m_base = true;
 	m_paused = false;
+	critter_spawned = true;
 
 	m_object_manager = new ObjectManager();
 
@@ -89,6 +90,15 @@ bool GameState::Enter()
 	music_main->setLoop(true);
 	music_main->play();
 
+	msc_Player_breathing = m_system->m_sound_manager->getMusic("msc_Player_breathing.wav");
+	msc_Player_breathing->setVolume(12.f);
+	msc_Player_breathing->setLoop(true);
+	msc_Player_breathing->play();
+
+	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
+	msc_critter_walk->setVolume(25.f);
+	msc_critter_walk->setLoop(true);
+
 	// FONTS
 	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
 
@@ -97,7 +107,7 @@ bool GameState::Enter()
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
 	spr_player_run->setScale(.5,.5);
-	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,400,400);
+	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
@@ -111,6 +121,9 @@ bool GameState::Enter()
 	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
 
+	spr_monster_big = m_system->m_sprite_manager->getSprite("Game/spr_monster_big.png",0,0,256,256,12);
+	spr_monster_big->setRotation(-90);
+
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
@@ -122,21 +135,21 @@ bool GameState::Enter()
 
 	bool map[15][25] = 
 	{
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	};
 
 	int count = 0;
@@ -160,7 +173,7 @@ bool GameState::Enter()
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	player->setPosition(sf::Vector2f(1280/2,720/2));
+	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
@@ -187,6 +200,7 @@ void GameState::Exit(){
 
 	//sounds
 	music_main->stop();
+	msc_Player_breathing->stop();
 	snd_thud->stop();
 }
 
@@ -205,7 +219,7 @@ void GameState::Resume()
 void GameState::addWall(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
-		"Game/wall.png",0,0,128,128);
+		"Game/spr_wall_brick.png",0,0,128,128,16);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
@@ -283,7 +297,7 @@ void GameState::FlickerLight(float _deltatime)
 
 void GameState::drawFloor()
 {
-	const int floor_size = 400;
+	const int floor_size = 256;
 	sf::Vector2f view_pos = sf::Vector2f(
 		m_system->m_view->getCenter().x - m_system->m_view->getSize().x/2,
 		m_system->m_view->getCenter().y - m_system->m_view->getSize().y/2);
@@ -337,15 +351,28 @@ void GameState::playerCollision()
 
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
-	
+
 	playerCollision();
 
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());
 
+	//Citter
 	spr_critter->play(_deltatime);
 
+	spr_monster_big->play(_deltatime*1.2f);
+	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
+
+	if (critter_spawned == true)
+	{
+		msc_critter_walk->play();
+		critter_spawned = false;
+	}
+
 	viewScale(_deltatime);
+	
+	//Player breathing
+	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
 	FlickerLight(_deltatime);
 	m_light_system->logic(player->getPosition());
@@ -356,19 +383,20 @@ bool GameState::Update(float _deltatime){
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
 	
-	if (m_system->m_mouse->IsDownOnce(Left))
+	if (m_system->m_mouse->IsDown(Left))
 	{
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID == -1)
 		{
 			snd_thud->play();
 			addWall(sf::Vector2f(
-				m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128),
-				m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
+				floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+				floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
+				));
 			m_light_system->update();
 		}
 	}
-	else if (m_system->m_mouse->IsDownOnce(Right)) // HIT WALL
+	else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
 	{
 		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 		if ( ID != -1)
@@ -420,6 +448,8 @@ void GameState::Draw()
 	m_system->m_window->draw(*player->getSprite());
 
 	m_system->m_window->draw(*spr_critter);
+
+	m_system->m_window->draw(*spr_monster_big);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);

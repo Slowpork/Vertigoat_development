@@ -8,6 +8,8 @@
 
 class KeyboardObject;
 class MouseObject;
+class System;
+
 
 class PlayerObject : public GameObject
 {
@@ -41,6 +43,9 @@ private:
 	AnimatedSprite* m_spr_walk;
 	AnimatedSprite* m_spr_idle;
 
+	System* m_system;
+
+
 	bool m_running;
 
 	sf::Vector2f m_max_vel;
@@ -50,4 +55,8 @@ private:
 
 	float m_light;
 	bool m_candle;
+	bool  m_moving;
+
+	bool m_breathing;
+
 };

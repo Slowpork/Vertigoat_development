@@ -26,6 +26,8 @@ public:
 	void Cleanup();
 
 	void Add(GameObject* _object, int _depth);
+
+	void tile(int _ID);
 	
 	bool setActiveDepth(int _min, int _max);
 
@@ -40,6 +42,11 @@ public:
 	void destroy(int _ID);
 
 	int getObjects();
+
+private:
+	bool pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point);
+	void proximityTiling(int _ID, GameObject* _object);
+	bool CheckDirection(float _x, float _y, int _dir);
 
 private:
 	std::map<int,GameObject*> m_objects;

@@ -307,7 +307,6 @@ PathNodePool::Block* PathNodePool::NewBlock()
 	return block;
 }
 
-
 unsigned PathNodePool::Hash( void* voidval ) 
 {
 	/*
