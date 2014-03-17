@@ -165,6 +165,9 @@
     <ClCompile Include="micropather.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
+    <ClCompile Include="PickaxeObject.cpp">
+      <Filter>Source Files\Objects\Pickups</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -260,5 +263,27 @@
     <ClInclude Include="micropather.h">
       <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PickaxeObject.h">
+      <Filter>Header Files\Objects\Pickups</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HauntedLight.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\bin\Haunted_Light_Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+=======
+>>>>>>> 2467df947821f30b59a5fa2a8b41b45123d16e91
+>>>>>>> 2d0970261f2f5ed2560cd97b58d765588d65df9c
   </ItemGroup>
 </Project>

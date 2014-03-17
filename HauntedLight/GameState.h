@@ -39,6 +39,7 @@ public:
 private:
 
 	void addWall(sf::Vector2f _pos);
+	void addPickaxe(sf::Vector2f _pos);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
 	void playerCollision();

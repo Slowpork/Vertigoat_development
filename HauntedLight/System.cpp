@@ -18,8 +18,8 @@
 
 System::System()
 {
-	m_width = 1280;
-	m_height = 720;
+	m_width = 1920;
+	m_height = 1080;
 
 	m_title = "Haunted Light - BETA";
 
@@ -33,7 +33,7 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
-	m_volume = .25f;
+	m_volume = .2f;
 
 	m_window = nullptr;
 	m_icon = nullptr;
@@ -161,6 +161,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
+	m_sprite_manager->addTexture("Game/spr_pickaxe_pickup.png");
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
