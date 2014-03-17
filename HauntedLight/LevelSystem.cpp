@@ -35,7 +35,7 @@ LevelSystem::LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_
 	m_object_manager = _object_manager;
 	m_sprite_manager = _sprite_manager;
 
-	
+	m_pather = new micropather::MicroPather(this);
 
 	// reset status
 	for(int X = 0; X < WIDTH; X++)
@@ -170,10 +170,28 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 }
 
 // #################################################################### PATH FINDING
+std::vector<sf::Vector2f>* LevelSystem::getPath(sf::Vector2f _pos, sf::Vector2f _dest)
+{
+	std::cout << "getPath()" << std::endl;
+	int result = 0;
+	std::vector<void*>* path = nullptr;
+	std::cout << "wuuut?" << std::endl;
+	float totalcost;
+	if (atPosition(_dest) == -1)
+	{
+		std::cout << "begin calculate path...";
+		result = m_pather->Solve(XYToNode(_pos.x,_pos.y), XYToNode( _dest.x, _dest.y), *&path, &totalcost);
+		std::cout << "DONE! totalcost: " << totalcost << std::endl;
+		if (result == m_pather->SOLVED)
+			return ConvertPath(path);
+	}
+	return nullptr;
+}
+
 bool LevelSystem::Passable( int nx, int ny )
 {
-	if (    nx >= 0 && nx < WIDTH 
-			&& ny >= 0 && ny < HEIGHT )
+	if ( nx >= 0 && nx < WIDTH 
+	&& ny >= 0 && ny < HEIGHT )
 	{
 		return (m_object_manager->atPosition(sf::Vector2f(nx*SIZE, ny*SIZE)) == -1 );
 		/*
@@ -185,7 +203,6 @@ bool LevelSystem::Passable( int nx, int ny )
 			return 2;*/
 	}		
 	return 0;
-
 }
 
 void LevelSystem::NodeToXY( void* node, int* x, int* y ) 
@@ -198,6 +215,27 @@ void LevelSystem::NodeToXY( void* node, int* x, int* y )
 void* LevelSystem::XYToNode( int x, int y )
 {
 	return (void*) ( y*WIDTH + x );
+}
+
+sf::Vector2f LevelSystem::NodeToCoords(void* _node)
+{
+	int index = (int)_node;
+	int y = index / WIDTH;
+	int x = index - y * WIDTH;
+	return sf::Vector2f(x,y);
+}
+
+std::vector<sf::Vector2f>* LevelSystem::ConvertPath(std::vector<void*>* _path)
+{
+	std::cout << "ConvertPath()" << std::endl;
+	std::vector<sf::Vector2f>* path = nullptr;
+	int x = 0, y = 0;
+	for(auto& pos: *_path)
+	{
+		NodeToXY(pos, &x, &y);
+		path->push_back(sf::Vector2f(x,y));
+	}
+	return path;
 }
 
 float LevelSystem::LeastCostEstimate( void* nodeStart, void* nodeEnd ) 
@@ -220,7 +258,8 @@ void LevelSystem::AdjacentCost( void* node, std::vector< micropather::StateCost 
 	int x, y;
 	const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 	const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-	const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+	//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+	const float cost[8] = { 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX };
 
 	NodeToXY( node, &x, &y );
 
