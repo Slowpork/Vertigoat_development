@@ -1,5 +1,5 @@
 //PickupManager.h
-
+/*
 #pragma once
 
 #include "SFML/System/Vector2.hpp"
@@ -58,3 +58,5 @@ private:
 
 private:
 };
+
+*/
