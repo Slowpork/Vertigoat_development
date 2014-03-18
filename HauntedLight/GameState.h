@@ -42,6 +42,7 @@ private:
 	void addPickaxe(sf::Vector2f _pos);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
+	float LightFactor();
 	void playerCollision();
 	void drawFloor();
 

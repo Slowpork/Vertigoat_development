@@ -263,6 +263,7 @@ int ObjectManager::getObjects()
 
 int ObjectManager::atPosition(sf::Vector2f _pos)
 {
+	//std::cout << "ObjectManager::atPosition()" << std::endl;
 	for(auto& object: m_objects)
 	{
 		sf::Vector2f pos = object.second->getPosition();

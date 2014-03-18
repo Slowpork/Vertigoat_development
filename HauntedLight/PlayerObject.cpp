@@ -42,12 +42,18 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	
 	m_light = 1.f;
 	m_candle = true;
+
+	m_path = nullptr;
 	m_current_node = 0;
 }
 
 PlayerObject::~PlayerObject()
 {
-	
+	if (m_path != nullptr)
+	{
+		delete m_path;
+		m_path = nullptr;
+	}
 }
 
 void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
@@ -131,9 +137,15 @@ void PlayerObject::updateLight(float _deltatime)
 		m_light = 0.3f;
 }
 
-void PlayerObject::setPath(std::vector<sf::Vector2f> _path)
+void PlayerObject::setPath(std::vector<sf::Vector2f>* _path)
 {
-	std::cout << "SetPath" << std::cout;
+	//std::cout << "SetPath" << std::cout;
+	m_current_node = 0;
+	if (m_path != nullptr)
+	{
+		delete m_path;
+		m_path = nullptr;
+	}
 	m_path = _path;
 }
 
@@ -143,7 +155,6 @@ void PlayerObject::Update(float _deltatime)
 	speed = 32.f;
 
 	bool moving = false;
-
 
 	updateLight(_deltatime);
 
@@ -169,27 +180,45 @@ void PlayerObject::Update(float _deltatime)
 		m_vel.y += speed * _deltatime;
 	}
 
-	if (!m_path.empty())
+	if (m_path != nullptr)
 	{
-		sf::Vector2f dest(m_path.at(m_current_node).x,m_path.at(m_current_node).y);
+		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
 		
 		if (m_pos.x < dest.x)
-			m_vel.x += speed *_deltatime;
+			m_pos.x += speed *_deltatime * 10;
 		else if (m_pos.x > dest.x)
-			m_vel.x -= speed *_deltatime;
+			m_pos.x -= speed *_deltatime * 10;
 
 		if (m_pos.y < dest.y)
-			m_vel.y += speed *_deltatime;
+			m_pos.y += speed *_deltatime * 10;
 		else if (m_pos.y > dest.y)
-			m_vel.y -= speed *_deltatime;
+			m_pos.y -= speed *_deltatime * 10;
 
-		if ( abs(m_pos.x - dest.x) < 16 && abs(m_pos.y - dest.y) < 16 )
+
+		int goal_count = 0;
+		if ( abs(m_pos.x - dest.x) < 8 ) // X AXIS DONE
+		{
+			m_pos.x = dest.x;
+			goal_count++;
+		}
+
+		if ( abs(m_pos.y - dest.y) < 8 ) // Y AXIS DONE
+		{
+			m_pos.y = dest.y;
+			goal_count++;
+		}
+
+		if (goal_count == 2) // AT POSITION - set next || clear
 		{
 			m_pos = dest;
-			if (m_current_node == m_path.size())
+			m_current_node++;
+			std::cout << "  Node: " << m_current_node << "  X: " << dest.x << " Y: " << dest.y << std::endl;
+			if (m_current_node == m_path->size())
 			{
-				m_path.clear();
 				m_current_node = 0;
+				m_path->clear();
+				delete m_path;
+				m_path = nullptr;
 			}
 		}
 	}
