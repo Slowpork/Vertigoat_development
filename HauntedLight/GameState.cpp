@@ -389,6 +389,16 @@ void GameState::playerCollision()
 	}
 }
 
+int GameState::pickaxeCollision()
+{
+	sf::Vector2f offset;
+
+
+
+
+	return 5;
+}
+
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
