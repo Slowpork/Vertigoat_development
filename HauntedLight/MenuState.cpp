@@ -320,9 +320,10 @@ bool MenuState::Update(float _deltatime){
 	}
 	if(m_button_credits->Update(_deltatime, m_system->m_mouse))
 	{
-		/*snd_Main_Menu_blow_out_candle->play();
-		m_next = "";
-		return false;*/
+		snd_Main_Menu_blow_out_candle->play();
+		m_next = "CreditsState";
+		Pause();
+		return false;
 	}
 	if (m_button_options->Update(_deltatime, m_system->m_mouse))
 	{

@@ -31,6 +31,7 @@ class System
 	friend class PauseState;
 	friend class MenuState;
 	friend class OptionsState;
+	friend class CreditsState;
 
 	friend class PlayerObject;
 

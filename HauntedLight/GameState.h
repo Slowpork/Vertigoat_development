@@ -8,6 +8,7 @@
 
 class System;
 class ObjectManager;
+class EnemyManager;
 class PickupManager;
 class PlayerObject;
 class PickaxeObject;
@@ -63,6 +64,7 @@ private:
 	float m_timer;
 
 	ObjectManager* m_object_manager;
+	EnemyManager* m_enemy_manager;
 	PickupManager* m_pickup_manager;
 	CollisionManager* m_collision_manager;
 	LightSystem* m_light_system;

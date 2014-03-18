@@ -26,6 +26,7 @@
 #include "System.h"
 
 #include "ObjectManager.h"
+#include "EnemyManager.h"
 #include "PickupManager.h"
 #include "CollisionManager.h"
 #include "SpriteManager.h"
@@ -67,6 +68,8 @@ bool GameState::Enter()
 
 	m_object_manager = new ObjectManager();
 	m_pickup_manager = new PickupManager();
+
+	m_enemy_manager = new EnemyManager();
 
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
 
@@ -410,6 +413,8 @@ bool GameState::Update(float _deltatime){
 	spr_monster_big->play(_deltatime*1.2f);
 	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
 
+	m_enemy_manager->Update(_deltatime, player->getPosition());
+
 	if (critter_spawned == true)
 	{
 		msc_critter_walk->play();
@@ -523,7 +528,11 @@ void GameState::Draw()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
+<<<<<<< HEAD
+	m_enemy_manager->Draw(m_system->m_window);
+=======
 	m_system->m_window->draw(*pickaxe->getSprite());
+>>>>>>> 7dfd78a094c04ae6a781dabb0a604a365ebbd2c9
 
 	m_system->m_window->draw(*spr_critter);
 
