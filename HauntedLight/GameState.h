@@ -11,6 +11,7 @@ class ObjectManager;
 class EnemyManager;
 class PickupManager;
 class PlayerObject;
+class PickaxeObject;
 class CollisionManager;
 class LightSystem;
 class AnimatedSprite;
@@ -70,6 +71,7 @@ private:
 
 	// OBJECTS
 	PlayerObject* player;
+	PickaxeObject* pickaxe;
 	AnimatedSprite* spr_cursor;
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;

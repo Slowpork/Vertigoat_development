@@ -114,6 +114,7 @@
     <ClCompile Include="OptionsState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PickaxeObject.cpp" />
+    <ClCompile Include="PickupManager.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="SoundManager.cpp" />
