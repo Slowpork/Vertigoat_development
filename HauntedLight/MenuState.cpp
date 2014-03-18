@@ -62,7 +62,7 @@ MenuState::MenuState(System* _system)
 
 	state = 0;
 	title_alpha = 0.f;
-	brightness = 0.f;
+	brightness = 0.5f;
 
 	m_system = _system;
 }
@@ -75,7 +75,7 @@ bool MenuState::Enter()
 
 	state = 0;
 	title_alpha = 0.f;
-	brightness =  0.f;
+	brightness =  0.5f;
 
 	object_manager = new ObjectManager();
 
@@ -234,7 +234,7 @@ bool MenuState::Update(float _deltatime){
 	{
 	case 0:
 		if (brightness < 1.f)
-			brightness += _deltatime;
+			brightness += _deltatime/2;
 		else
 		{
 			brightness = 1.f;
@@ -366,8 +366,15 @@ void MenuState::Draw(){
 		break;
 	}
 
-	// TITLE
-	spr_title->setOpacity(title_alpha*255.f);
+	// OPACITY
+	float opactiy = title_alpha*255.f;
+	spr_title->setOpacity(opactiy);
+	m_button_play->getSprite()->setOpacity(opactiy);
+	m_button_credits->getSprite()->setOpacity(opactiy);
+	m_button_options->getSprite()->setOpacity(opactiy);
+	m_button_quit->getSprite()->setOpacity(opactiy);
+
+
 	m_system->m_window->draw(*spr_title);
 
 	if(!m_paused)

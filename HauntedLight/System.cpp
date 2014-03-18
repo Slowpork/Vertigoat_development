@@ -8,6 +8,7 @@
 #include "SFML\Graphics\RectangleShape.hpp"
 
 #include "InputManager.h"
+#include "AnimatedSprite.h"
 
 #include "SpriteManager.h"
 #include "SoundManager.h"
@@ -126,21 +127,33 @@ bool System::Init()
 	m_sprite_manager = new SpriteManager("../data/sprites/");
 	m_font_manager = new FontManager("../data/fonts/");
 
+	m_load_parts = 7;
+	m_load_current = 0;
+
+	// LOADING SPRITES
+	m_sprite_manager->addTexture("Menu/spr_menu_background.png");
+	m_sprite_manager->addTexture("Menu/spr_candle.png");
+	m_sprite_manager->addTexture("Menu/spr_candle_light.png");
+
+	ProcessLoad();
+
 	// LOAD ALL THE TEXTURES #############################################################
 
 	// MAIN MENU
-	m_sprite_manager->addTexture("Menu/spr_menu_background.png");
+	
 	m_sprite_manager->addTexture("Menu/spr_title.png");
-	m_sprite_manager->addTexture("Menu/spr_candle_light.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
-	m_sprite_manager->addTexture("Menu/spr_candle.png");
+
+	ProcessLoad();
 
 	//---------------------BUTTON----------------
 	m_sprite_manager->addTexture("Menu/spr_button_play.png");
 	m_sprite_manager->addTexture("Menu/spr_button_credits.png");
 	m_sprite_manager->addTexture("Menu/spr_button_quit.png");
 	m_sprite_manager->addTexture("Menu/spr_button_options.png");
+
+	ProcessLoad();
 
 	//Options Menu
 	//m_sprite_manager->addTexture("Options/spr_options_background.png");
@@ -153,6 +166,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
 	m_sprite_manager->addTexture("Options/spr_checkbox.png");
 
+	ProcessLoad();
+
 	// GAME
 	m_sprite_manager->addTexture("spr_cursor.png");
 	m_sprite_manager->addTexture("Game/spr_sight.png");
@@ -163,6 +178,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 
+	ProcessLoad();
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
 	tex_critter->setSmooth(true);
@@ -186,6 +202,7 @@ bool System::Init()
 	sf::Texture* tex_pickaxe_pickup = m_sprite_manager->getTexture("Game/spr_pickaxe_pickup.png");
 	tex_pickaxe_pickup->setSmooth(true);
 
+	ProcessLoad();
 
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
 	//tex_wall->setSmooth(true);
@@ -195,6 +212,8 @@ bool System::Init()
 	m_font_manager->addFont("MTCORSVA.TTF");
 
 	m_sound_manager = new SoundManager("../data/sounds/");
+
+	ProcessLoad();
 
 	//LOAD ALL THE SOUNDS
 	m_sound_manager->addSoundBuffer("thud.wav");
@@ -226,7 +245,7 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_wall_monster_4.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_5.wav");
 
-
+	ProcessLoad();
 
 	m_keyboard = new KeyboardObject();
 	m_mouse = new MouseObject();
@@ -264,6 +283,64 @@ void System::setVideoMode()
 		m_window->setVerticalSyncEnabled(false);
 	}
 	m_window->setMouseCursorVisible(false);
+}
+
+void System::ProcessLoad()
+{
+	m_window->clear(sf::Color::Black);
+
+	float height = m_height / 80.f;
+	float width = m_width / 3.f;
+
+	// SCALE
+	sf::Vector2f scale = sf::Vector2f((float)m_width/1280.f,(float)m_height/720.f);
+
+	// BACKGROUND
+	AnimatedSprite* background = m_sprite_manager->getSprite("Menu/spr_menu_background.png",0,0,1280,720);
+	background->setScale(scale.x,scale.y);
+
+	// CANDLE
+	AnimatedSprite* spr_candle = m_sprite_manager->getSprite("Menu/spr_candle.png",0,0,410,410);
+	spr_candle->setScale(scale.x,scale.y);
+	spr_candle->setOrigin(205,205);
+	spr_candle->setPosition(m_width/2, m_height/2 - 54.f*scale.y);
+
+	// Candle light
+	AnimatedSprite* spr_candle_light = m_sprite_manager->getSprite("Menu/spr_candle_light.png",0,0,124,124,6);
+	spr_candle_light->setScale(scale.x,scale.y);
+	spr_candle_light->setOrigin(72,72);
+	spr_candle_light->setPosition(m_width/2 + 6*scale.x, m_height/2 - 54.f*scale.y + 24*scale.y);
+
+
+	// BACKGROUND
+	sf::RectangleShape loading_background(sf::Vector2f( (width/m_load_parts)*m_load_current, height));
+	loading_background.setFillColor(sf::Color(255,255,255,128));
+	loading_background.setPosition(sf::Vector2f(m_width / 3.f,(m_height/8.f)*7.f - height/2.f));
+
+	// OUTLINE
+	sf::RectangleShape loading_bar(sf::Vector2f( width, height));
+	loading_bar.setFillColor(sf::Color(255,255,255,0));
+	loading_bar.setOutlineColor(sf::Color(255,255,255,128));
+	loading_bar.setOutlineThickness(2);
+	loading_bar.setPosition(sf::Vector2f(m_width / 3.f,(m_height/8.f)*7.f - height/2.f));
+
+	// BACKGROUND
+	m_window->draw(*background);
+	m_window->draw(*spr_candle);
+	m_window->draw(*spr_candle_light);
+
+	// BLACK FADE
+	sf::RectangleShape rect_fade(sf::Vector2f( m_width, m_height));
+	rect_fade.setFillColor(sf::Color(0,0,0,128));
+	m_window->draw(rect_fade);
+
+	// BAR
+	m_window->draw(loading_background);
+	m_window->draw(loading_bar);
+
+	m_window->display();
+
+	m_load_current++;
 }
 
 void System::drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size)

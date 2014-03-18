@@ -52,8 +52,13 @@ public:
 
 private:
 	void setFps(int _fps);
+	void ProcessLoad();
 	
 private:
+	// LOADING
+	int m_load_parts;
+	int m_load_current;
+
 	// DATA
 	int m_height, m_width;
 	float m_ticks;

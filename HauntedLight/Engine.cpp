@@ -72,18 +72,25 @@ void Engine::Run()
 		}
 
 		// DRAW 
-		//m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
 		m_system->m_window->clear(sf::Color(0,0,0,255));
 		m_state_manager.Draw();
 
-		// Cursor
-		if (!m_state_manager.isState("GameState") ) {
-			spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
-			m_system->m_window->draw(*spr_cursor);
-		}
-		else {
+		// CURSOR
+		bool isState = m_state_manager.isState("GameState");
+		if ( isState ) // GameState
+		{
 			spr_sight->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
 			m_system->m_window->draw(*spr_sight);
+		}
+		else 
+		{
+			bool isState = m_state_manager.isState("CreditsState");
+
+			if (!isState) // Not Credits
+			{
+				spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+				m_system->m_window->draw(*spr_cursor);
+			}
 		}
 
 		m_system->m_window->display();
@@ -165,8 +172,8 @@ void Engine::updateEvents()
 
 	// ESCAPE TO QUIT
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
-		m_running = false;
-		m_system->m_window->close();
+		//m_running = false;
+		//m_system->m_window->close();
 	}
 
 	// TOGGLE DEBUG
