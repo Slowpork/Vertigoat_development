@@ -1,18 +1,23 @@
 //EnemyObject.h
 #pragma once
 
-#pragma region Includes
 #include <SFML\System\Vector2.hpp>
 
 #include "GameObject.h"
-#pragma endregion
+
+namespace sf
+{
+	class RenderWindow;
+};
 
 class EnemyObject : public GameObject
 {
 public:
 	EnemyObject(AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
 
-	void Update(float _deltatime);
+	virtual void Update(float _deltatime, sf::Vector2f _playerpos) = 0;
+	virtual void Draw(sf::RenderWindow* _window) = 0;
+
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 	void setHealth(float _health);

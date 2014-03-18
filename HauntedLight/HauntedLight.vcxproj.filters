@@ -141,9 +141,6 @@
     <ClCompile Include="Waller.cpp">
       <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
@@ -167,6 +164,12 @@
     </ClCompile>
     <ClCompile Include="PickaxeObject.cpp">
       <Filter>Source Files\Objects\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Source Files\Managers\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CreditsState.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="PickupManager.h">
       <Filter>Header Files\Managers\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Header Files\Managers\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CreditsState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
