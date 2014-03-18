@@ -240,7 +240,7 @@ void GameState::addPickaxe(sf::Vector2f _pos)
 	PickaxeObject* pickaxe = new PickaxeObject(spr_pickaxe,col_Pickaxe);
 	pickaxe->setPosition(_pos);
 	//Pickup_manager istället för object_manager
-	m_pickup_manager->Add(pickaxe,5);
+//	m_pickup_manager->Add(pickaxe,5);
 }
 
 void GameState::viewScale(float _deltatime)
