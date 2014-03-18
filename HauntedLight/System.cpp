@@ -154,7 +154,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_checkbox.png");
 
 	// GAME
-	m_sprite_manager->addTexture("curs.png");
+	m_sprite_manager->addTexture("spr_cursor.png");
+	m_sprite_manager->addTexture("Game/spr_sight.png");
 	m_sprite_manager->addTexture("Game/darkness.png");
 	m_sprite_manager->addTexture("Game/spr_wall_brick.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");

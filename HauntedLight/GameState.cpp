@@ -518,11 +518,8 @@ void GameState::Draw()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
-<<<<<<< HEAD
 	m_enemy_manager->Draw(m_system->m_window);
-=======
 	m_system->m_window->draw(*pickaxe->getSprite());
->>>>>>> 7dfd78a094c04ae6a781dabb0a604a365ebbd2c9
 
 	m_system->m_window->draw(*spr_critter);
 

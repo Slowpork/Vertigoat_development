@@ -36,7 +36,7 @@ bool Engine::Init()
 		return false;
 
 	// LOAD CURSOR
-	spr_cursor = m_system->m_sprite_manager->getSprite("curs.png",0,0,16,16);
+	spr_cursor = m_system->m_sprite_manager->getSprite("spr_cursor.png",0,0,16,16);
 	spr_cursor->setOrigin(8,8);
 
 	FileManager file_manager;
