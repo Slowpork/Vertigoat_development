@@ -27,6 +27,7 @@ private:
 	StateManager m_state_manager;
 
 	AnimatedSprite* spr_cursor;
+	AnimatedSprite* spr_sight;
 
 	bool m_running;
 	float m_deltatime;

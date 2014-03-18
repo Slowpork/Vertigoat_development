@@ -35,9 +35,10 @@ bool Engine::Init()
 	if (!m_system->Init())
 		return false;
 
-	// LOAD CURSOR
+	// LOAD CURSOR & SIGHT
 	spr_cursor = m_system->m_sprite_manager->getSprite("spr_cursor.png",0,0,16,16);
-	spr_cursor->setOrigin(8,8);
+	spr_sight = m_system->m_sprite_manager->getSprite("Game/spr_sight.png",0,0,16,16);
+	spr_sight->setOrigin(8,8);
 
 	FileManager file_manager;
 	file_manager.Write("../bin/Awesome.txt", "#Yolo");
@@ -70,16 +71,20 @@ void Engine::Run()
 			break;
 		}
 
-		// Cursor
-		spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
-
 		// DRAW 
 		//m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
 		m_system->m_window->clear(sf::Color(0,0,0,255));
 		m_state_manager.Draw();
 
 		// Cursor
-		m_system->m_window->draw(*spr_cursor);
+		if (!m_state_manager.isState("GameState") ) {
+			spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+			m_system->m_window->draw(*spr_cursor);
+		}
+		else {
+			spr_sight->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+			m_system->m_window->draw(*spr_sight);
+		}
 
 		m_system->m_window->display();
 
