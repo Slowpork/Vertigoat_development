@@ -146,6 +146,7 @@
     <ClInclude Include="OptionsState.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="PickaxeObject.h" />
+    <ClInclude Include="PickupManager.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="SoundManager.h" />

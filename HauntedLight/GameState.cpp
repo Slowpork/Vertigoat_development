@@ -26,6 +26,7 @@
 #include "System.h"
 
 #include "ObjectManager.h"
+#include "PickupManager.h"
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
@@ -177,6 +178,8 @@ bool GameState::Enter()
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
 
+	addPickaxe(sf::Vector2f(SIZE*128,SIZE*128));
+
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
 
@@ -229,12 +232,15 @@ void GameState::addWall(sf::Vector2f _pos)
 
 void GameState::addPickaxe(sf::Vector2f _pos)
 {
-	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
+	_pos.x = 100, _pos.y = 100;
+
+	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
 		"Game/spr_pickaxe_pickup.png",0,0,128,128,16);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	PickaxeObject* pickaxe = new PickaxeObject(spr_wall,col_Pickaxe);
+	PickaxeObject* pickaxe = new PickaxeObject(spr_pickaxe,col_Pickaxe);
 	pickaxe->setPosition(_pos);
-	m_object_manager->Add(pickaxe,5);
+	//Pickup_manager istället för object_manager
+	m_pickup_manager->Add(pickaxe,5);
 }
 
 void GameState::viewScale(float _deltatime)
