@@ -168,6 +168,9 @@
     <ClCompile Include="PickaxeObject.cpp">
       <Filter>Source Files\Objects\Pickups</Filter>
     </ClCompile>
+    <ClCompile Include="PickupManager.cpp">
+      <Filter>Source Files\Managers\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">

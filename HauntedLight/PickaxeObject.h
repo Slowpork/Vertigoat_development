@@ -23,6 +23,5 @@ private:
 
 private:
 
-	bool pickedup;
 	AnimatedSprite* spr_cracks;
 };

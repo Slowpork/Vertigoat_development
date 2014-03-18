@@ -1,5 +1,5 @@
 //PickupManager.h
-/*
+
 #pragma once
 
 #include "SFML/System/Vector2.hpp"
@@ -14,22 +14,19 @@ namespace sf
 
 class GameObject;
 
-class ObjectManager
+class PickupManager
 {
 	friend class State;
 
 	friend class CollisionManager;
 	friend class LightSystem;
 public:
-	ObjectManager();
+	PickupManager();
 
 	void Cleanup();
 
-	void Add(GameObject* _object, int _depth);
+	void Add(GameObject* _object);
 
-	void tile(int _ID);
-	
-	bool setActiveDepth(int _min, int _max);
 
 	void Draw(sf::RenderWindow* _window, float _alpha = 255);
 
@@ -45,18 +42,14 @@ public:
 
 private:
 	bool pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point);
-	void proximityTiling(int _ID, GameObject* _object);
 	bool CheckDirection(float _x, float _y, int _dir);
 
 private:
 	std::map<int,GameObject*> m_objects;
 
-	int m_max_z;
-	int m_min_z;
 
 	static int ID;
 
 private:
 };
 
-*/

@@ -66,6 +66,7 @@ bool GameState::Enter()
 	critter_spawned = true;
 
 	m_object_manager = new ObjectManager();
+	m_pickup_manager = new PickupManager();
 
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
 
@@ -111,6 +112,9 @@ bool GameState::Enter()
 	spr_player_run->setScale(.5,.5);
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
+	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_pickup.png",0,0,128,128,8);
+	spr_pickaxe->setScale(.5,.5);
+
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
@@ -130,6 +134,7 @@ bool GameState::Enter()
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
+
 
 	
 	// WALLS
@@ -173,10 +178,16 @@ bool GameState::Enter()
 	//std::cout << "\n";
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
+	Collider* col_pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
+
+	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
+	pickaxe->setPosition(sf::Vector2f(100,100));
+	
+
 
 	addPickaxe(sf::Vector2f(SIZE*128,SIZE*128));
 
@@ -201,6 +212,7 @@ void GameState::Exit(){
 
 	m_object_manager->Cleanup();
 	delete m_object_manager; m_object_manager = nullptr;
+	delete m_pickup_manager; m_pickup_manager = nullptr;
 
 	//sounds
 	music_main->stop();
@@ -239,8 +251,7 @@ void GameState::addPickaxe(sf::Vector2f _pos)
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	PickaxeObject* pickaxe = new PickaxeObject(spr_pickaxe,col_Pickaxe);
 	pickaxe->setPosition(_pos);
-	//Pickup_manager istället för object_manager
-//	m_pickup_manager->Add(pickaxe,5);
+	m_pickup_manager->Add(pickaxe);
 }
 
 void GameState::viewScale(float _deltatime)
@@ -501,6 +512,8 @@ void GameState::Draw()
 	player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
+
+	m_system->m_window->draw(*pickaxe->getSprite());
 
 	m_system->m_window->draw(*spr_critter);
 

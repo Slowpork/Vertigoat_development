@@ -10,12 +10,12 @@
 PickaxeObject::PickaxeObject(AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
-	pickedup = false;
+
 }
 
 void PickaxeObject::Pickup()
 {
-	pickedup = true;
+
 	//spr_cracks->setFrame(5 - m_health);
 	
 }
