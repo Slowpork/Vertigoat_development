@@ -128,9 +128,9 @@ void PickupManager::Draw(sf::RenderWindow* _window, float _alpha)
 					 _window->getView().getCenter().y - _window->getSize().y/2);
 	sf::Vector2f size(_window->getSize().x,_window->getSize().y);
 }
-/*
-void CheckCollision(GameObject* _object, sf::Vector2f& _offset)
+
+int CheckCollision(GameObject* _object, sf::Vector2f& _offset)
 {
 
-}a
-*/
+	return 5;
+}
