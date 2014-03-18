@@ -17,6 +17,7 @@ public:
 
 	// PATH FINDING
 	std::vector<sf::Vector2f>* getPath(sf::Vector2f _pos, sf::Vector2f _dest);
+	void pathReset();
 
 private:
 
@@ -24,7 +25,7 @@ private:
 	void NodeToXY( void* node, int* x, int* y );
 	void* XYToNode( int x, int y );
 	std::vector<sf::Vector2f>* ConvertPath(std::vector<void*>* _path);
-	bool Passable( int nx, int ny );
+	bool Passable( int _x, int _y );
 	sf::Vector2f NodeToCoords(void* _node);
 	virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd );
 	virtual void AdjacentCost( void* node, std::vector< micropather::StateCost > *neighbors );
@@ -48,10 +49,10 @@ private:
 	SpriteManager* m_sprite_manager;
 
 	/// CONSTANTS
-	static const int HEIGHT = 7;
-	static const int WIDTH = 7;
+	static const int WIDTH = 30;
+	static const int HEIGHT = 30;
 
-	static const int SIZE = 512;
+	static const int SIZE = 128;
 
 	// GENERATION
 	int m_status[HEIGHT][WIDTH];

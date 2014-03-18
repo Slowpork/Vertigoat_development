@@ -279,6 +279,11 @@ void GameState::viewScale(float _deltatime)
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
 
+float GameState::LightFactor()
+{
+	return 3.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*5.f);
+}
+
 void GameState::FlickerLight(float _deltatime)
 {
 	if (player->hasCandle())
@@ -289,7 +294,9 @@ void GameState::FlickerLight(float _deltatime)
 		//m_timer = 0.f;
 	}
 
-	float factor = abs(sin(m_timer));
+	float factor_x = cos(m_timer);
+	float factor_y = sin(m_timer);
+	float factor_offset = LightFactor()*2;
 
 	float angle = player->getSprite()->getRotation() * (Math::PI/180);
 	sf::Vector2f light_pos;
@@ -303,8 +310,8 @@ void GameState::FlickerLight(float _deltatime)
 	}
 
 	m_light_system->setLightLocation(
-		light_pos.x + player->getPosition().x - 5.f*factor + 10.f*factor,
-		light_pos.y + player->getPosition().y - 5.f*factor + 10.f*factor);
+		light_pos.x + player->getPosition().x + factor_offset*factor_x,
+		light_pos.y + player->getPosition().y + factor_offset*factor_y);
 
 	/*
 	m_light_system->setLightLocation(
@@ -335,6 +342,8 @@ void GameState::drawFloor()
 				X,
 				Y);
 			m_system->m_window->draw(*spr_floor, sf::BlendMultiply);
+			if (m_system->m_debug)
+				m_system->drawDebugRect(sf::Vector2f(X + 64,Y + 64),sf::Vector2f(128,128));
 		}
 	}
 }
@@ -413,6 +422,7 @@ bool GameState::Update(float _deltatime){
 					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
 					));
 				m_light_system->update();
+				m_level_system->pathReset();
 			}
 		}
 		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
@@ -425,7 +435,10 @@ bool GameState::Update(float _deltatime){
 				if (go != nullptr)
 				{
 					//if (static_cast<Wall*> (go)->hit())
+					{
 						m_object_manager->destroy(ID);
+						m_level_system->pathReset();
+					}
 				}
 			}
 			m_light_system->update();
@@ -433,13 +446,20 @@ bool GameState::Update(float _deltatime){
 	}
 	else
 	{
-		if (m_system->m_mouse->IsDown(Left))
+		if (m_system->m_mouse->IsDownOnce(Left))
 		{
+			sf::Vector2f pos(
+					floor(player->getPosition().x - ((int)player->getPosition().x % 128)),
+					floor(player->getPosition().y - ((int)player->getPosition().y % 128))
+					);
 			sf::Vector2f dest(
 					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
 					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
 					);
-			player->setPath(*m_level_system->getPath(player->getPosition(),dest));
+
+			std::vector<sf::Vector2f>* path = m_level_system->getPath(pos,dest);
+				if ( path != nullptr)
+					player->setPath(path);
 		}
 		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
 		{

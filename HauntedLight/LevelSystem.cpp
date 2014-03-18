@@ -46,7 +46,7 @@ LevelSystem::LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_
 		}
 	}
 
-	std::cout << "DONE" << std::endl;
+	//std::cout << "DONE" << std::endl;
 
 	m_player_pos = sf::Vector2f(0.f, 0.f);
 	m_enemy_pos = sf::Vector2f(0.f, 0.f);
@@ -54,9 +54,8 @@ LevelSystem::LevelSystem(ObjectManager* _object_manager, SpriteManager* _sprite_
 
 bool LevelSystem::atPosition(sf::Vector2f _pos)
 {
-	std::cout << "atPosition...";
-	return (  m_object_manager->atPosition(_pos) != -1 ? true : false);
-	
+	//std::cout << "atPosition...";
+	return (m_object_manager->atPosition(_pos) != -1);
 }
 
 void LevelSystem::addWall(sf::Vector2f _pos)
@@ -93,7 +92,7 @@ void LevelSystem::setEnemyPos(sf::Vector2f _pos)
 
 void LevelSystem::generate(int _x, int _y)
 {
-	std::cout << "Generate X:" << _x << " Y: " << _y << std::endl;
+	//std::cout << "Generate X:" << _x << " Y: " << _y << std::endl;
 	/*
 	if ( Random::between(1,3) == 1 )
 	{
@@ -119,11 +118,9 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 	int PlayerX = (int)m_player_pos.x;
 	int PlayerY = (int)m_player_pos.y;
 
-	
-
 	if (PlayerX > WIDTH || PlayerX < 0 || PlayerY < 0 || PlayerY > HEIGHT)
 	{
-		std::cout << "  ERROR: out of bounds!" << std::endl;
+		//std::cout << "  ERROR: out of bounds!" << std::endl;
 		return;
 	}
 	else
@@ -170,32 +167,47 @@ void LevelSystem::Update(sf::Vector2f _player, sf::Vector2f _enemy)
 		}
 	}
 }
-
+/*
+//
 // #################################################################### PATH FINDING
+//
+*/
 std::vector<sf::Vector2f>* LevelSystem::getPath(sf::Vector2f _pos, sf::Vector2f _dest)
 {
-	std::cout << "getPath()" << std::endl;
+	//std::cout << std::endl << "getPath()" << std::endl;
 	int result = 0;
-	std::vector<void*>* path = nullptr;
-	std::cout << "wuuut?" << std::endl;
+	std::vector<void*> path;
 	float totalcost;
-	if (atPosition(_dest) == -1)
-	{std::cout << "DONE!\n";
-		std::cout << "begin calculate path...";
-		result = m_pather->Solve(XYToNode(_pos.x,_pos.y), XYToNode( _dest.x, _dest.y), *&path, &totalcost);
-		std::cout << "DONE! totalcost: " << totalcost << std::endl;
+	_pos /= (float)SIZE;
+	_dest/= (float)SIZE;
+	if ( Passable(_dest.x, _dest.y) )
+	{
+		result = m_pather->Solve(XYToNode(_pos.x,_pos.y), XYToNode( _dest.x, _dest.y), &path, &totalcost);
+		std::cout << "\n  Totalcost: " << totalcost << std::endl << "--------------------" << std::endl;
 		if (result == m_pather->SOLVED)
-			return ConvertPath(path);
+			return ConvertPath(&path);
 	}
 	return nullptr;
 }
 
-bool LevelSystem::Passable( int nx, int ny )
+std::vector<sf::Vector2f>* LevelSystem::ConvertPath(std::vector<void*>* _path)
 {
-	if ( nx >= 0 && nx < WIDTH 
-	&& ny >= 0 && ny < HEIGHT )
+	//std::cout << "ConvertPath()" << std::endl;
+	std::vector<sf::Vector2f>* path = new std::vector<sf::Vector2f>;
+	for(auto& pos: *_path)
 	{
-		return (m_object_manager->atPosition(sf::Vector2f(nx*SIZE, ny*SIZE)) == -1 );
+		path->push_back(NodeToCoords(pos));
+	}
+	//std::reverse(path->begin(),path->end());
+	return path;
+}
+
+bool LevelSystem::Passable( int _x, int _y )
+{
+	if ( _x >= 0 && _x < WIDTH 
+	&& _y >= 0 && _y < HEIGHT )
+	{
+		return !atPosition(sf::Vector2f(_x*SIZE + SIZE*0.5f, _y*SIZE + SIZE*0.5f));
 		/*
 		int index = ny*WIDTH+nx;
 		char c = gMap[ index ];
@@ -222,22 +234,14 @@ void* LevelSystem::XYToNode( int x, int y )
 sf::Vector2f LevelSystem::NodeToCoords(void* _node)
 {
 	int index = (int)_node;
-	int y = index / WIDTH;
-	int x = index - y * WIDTH;
-	return sf::Vector2f(x,y);
+	int x,y;
+	NodeToXY(_node, &x, &y);
+	return sf::Vector2f(x*SIZE,y*SIZE);
 }
 
-std::vector<sf::Vector2f>* LevelSystem::ConvertPath(std::vector<void*>* _path)
+void LevelSystem::pathReset()
 {
-	std::cout << "ConvertPath()" << std::endl;
-	std::vector<sf::Vector2f>* path = nullptr;
-	int x = 0, y = 0;
-	for(auto& pos: *_path)
-	{
-		NodeToXY(pos, &x, &y);
-		path->push_back(sf::Vector2f(x,y));
-	}
-	return path;
+	m_pather->Reset();
 }
 
 float LevelSystem::LeastCostEstimate( void* nodeStart, void* nodeEnd ) 
@@ -258,14 +262,18 @@ float LevelSystem::LeastCostEstimate( void* nodeStart, void* nodeEnd )
 void LevelSystem::AdjacentCost( void* node, std::vector< micropather::StateCost > *neighbors ) 
 {
 	int x, y;
-	const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-	const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+	//const int dx[8] = {  1,  1,  0, -1, -1, -1,  0,  1 };
+	//const int dy[8] = {  0,  1,  1,  1,  0, -1, -1, -1 };
 	//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-	const float cost[8] = { 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX };
+	//const float cost[8] = { 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX, 1.0f, FLT_MAX };
+
+	const int dx[4] = {  1,  0, -1,  0};
+	const int dy[4] = {  0,  1,  0, -1};
+	const float cost[4] = {1.0f, 1.0f, 1.0f, 1.0f };
 
 	NodeToXY( node, &x, &y );
 
-	for( int i=0; i<8; ++i ) 
+	for( int i=0; i<4; ++i )
 	{
 		int nx = x + dx[i];
 		int ny = y + dy[i];
