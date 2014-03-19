@@ -392,10 +392,28 @@ void GameState::playerCollision()
 int GameState::pickaxeCollision()
 {
 	sf::Vector2f offset;
+	if (m_collision_manager->checkCollision(player->getCollider(),offset))
+	{
+		if (offset.x > 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
+		}
+		else if (offset.x < 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
+		}
 
-
-
-
+		if (offset.y > 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
+		}
+		else if (offset.y < 0.0f)
+		{
+			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
+		}
+		
+		player->setPosition(player->getPosition() + offset);
+	}
 	return 5;
 }
 
@@ -403,6 +421,7 @@ bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
 	playerCollision();
+	pickaxeCollision();
 
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());
