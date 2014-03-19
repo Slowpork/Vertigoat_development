@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
@@ -48,8 +47,6 @@ bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
 
 	//state = 0;
-
-	//sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
 	sf::Vector2f scale = m_system->m_scale;
 

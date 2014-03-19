@@ -3,9 +3,16 @@
 #pragma once
 #include "State.h"
 #include <string>
+#include <SFML\Graphics\Text.hpp>
 
 class System;
-class ObjectManager;
+class AnimatedSprite;
+class Button;
+
+namespace sf
+{
+class Font;
+};
 
 class CreditsState : public State {
 public:
@@ -29,5 +36,30 @@ private:
 	bool m_base;
 	System* m_system;
 
-	ObjectManager* object_manager;
+	//STATE SPECIFIC
+
+	//Buttons
+	AnimatedSprite* spr_button_back;
+	Button* m_button_back;
+
+	//Font
+	sf::Font* fnt_credits;
+
+	//Titles
+	sf::Text m_title_leaddesign;
+	sf::Text m_title_producer;
+	sf::Text m_title_leadprogram;
+	sf::Text m_title_leadart;
+	sf::Text m_title_sounddesign;
+	sf::Text m_title_program;
+	sf::Text m_title_art;
+	sf::Text m_title_honorable;
+
+	//Names
+	sf::Text m_name_simonjohansson;
+	sf::Text m_name_prejohansson;
+	sf::Text m_name_carljohansson;
+	sf::Text m_name_jonnajarlsson;
+	sf::Text m_name_anitastenholm;
+	sf::Text m_name_wilhelmjansson;
 };

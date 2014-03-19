@@ -356,35 +356,35 @@ void MenuState::Draw(){
 
 	m_system->m_window->draw(*spr_background);
 
-	m_system->m_window->draw(*spr_candle);
-
-	// CANDLE STATE
-	switch(state)
-	{
-	case 0:
-		m_system->m_window->draw(*spr_candle_light);
-		break;
-	case 1:
-		m_system->m_window->draw(*spr_candle_idle);
-		break;
-	case 2:
-		m_system->m_window->draw(*spr_candle_blow);
-		break;
-	}
-
-	// OPACITY
-	float opactiy = title_alpha*255.f;
-	spr_title->setOpacity(opactiy);
-	m_button_play->getSprite()->setOpacity(opactiy);
-	m_button_credits->getSprite()->setOpacity(opactiy);
-	m_button_options->getSprite()->setOpacity(opactiy);
-	m_button_quit->getSprite()->setOpacity(opactiy);
-
-
-	m_system->m_window->draw(*spr_title);
-
 	if(!m_paused)
 	{
+		m_system->m_window->draw(*spr_candle);
+
+		// CANDLE STATE
+		switch(state)
+		{
+		case 0:
+			m_system->m_window->draw(*spr_candle_light);
+			break;
+		case 1:
+			m_system->m_window->draw(*spr_candle_idle);
+			break;
+		case 2:
+			m_system->m_window->draw(*spr_candle_blow);
+			break;
+		}
+
+		// OPACITY
+		float opactiy = title_alpha*255.f;
+		spr_title->setOpacity(opactiy);
+		m_button_play->getSprite()->setOpacity(opactiy);
+		m_button_credits->getSprite()->setOpacity(opactiy);
+		m_button_options->getSprite()->setOpacity(opactiy);
+		m_button_quit->getSprite()->setOpacity(opactiy);
+
+
+		m_system->m_window->draw(*spr_title);
+
 		//------------BUTTON-------------
 		m_button_play->Draw(m_system->m_window);
 		m_button_credits->Draw(m_system->m_window);
