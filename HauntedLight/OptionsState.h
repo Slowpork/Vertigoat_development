@@ -74,16 +74,13 @@ private:
 	Button* m_button_resolutiondown;
 
 	//Text
-<<<<<<< HEAD
 	sf::Font* m_font_options;
 	sf::Text m_text_resolution;
 	sf::Text m_text_vsync;
 	sf::Text m_text_fullscreen;
 	sf::Text m_text_volume;
 	sf::Text m_text_resolution_options;
-=======
 	sf::Font* fnt_options;
->>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 
 	int m_volbarframe;
 	int m_resolution;
