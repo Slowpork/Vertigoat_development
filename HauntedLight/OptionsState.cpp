@@ -37,8 +37,7 @@ OptionsState::OptionsState(System* _system)
 	std::cout << "  *Created " << m_name << std::endl;
 
 	m_resolution = 0;
-	m_textSize = 48;
-	m_textSize_small = 28;
+	m_textSize = 28;
 
 	m_system = _system;
 }
@@ -150,7 +149,7 @@ bool OptionsState::Enter(){
 
 	m_text_fullscreen.setString("Fullscreen");
 	m_text_fullscreen.setFont(*fnt_options);
-	m_text_fullscreen.setCharacterSize((int)(m_textSize_small*((scale.x + scale.y)/2)));
+	m_text_fullscreen.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_fullscreen.setPosition(m_button_fullscreen->getPosition().x + 
 		(m_button_fullscreen->getSize().x*scale.x)/2 - 
 		(m_text_fullscreen.getGlobalBounds().width/2),
@@ -175,7 +174,7 @@ bool OptionsState::Enter(){
 
 	m_text_vsync.setFont(*fnt_options);
 	m_text_vsync.setString("Vsync");
-	m_text_vsync.setCharacterSize((int)(m_textSize_small*((scale.x + scale.y)/2)));
+	m_text_vsync.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_vsync.setPosition(m_button_vsync->getPosition().x + 
 		(m_button_vsync->getSize().x*scale.x)/2 - (m_text_vsync.getGlobalBounds().width/2),
 		m_button_vsync->getPosition().y - m_text_vsync.getGlobalBounds().height - 5*scale.y);

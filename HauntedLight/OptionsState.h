@@ -80,5 +80,4 @@ private:
 	bool m_vsync;
 	int m_vol;
 	int m_textSize;
-	int m_textSize_small;
 };

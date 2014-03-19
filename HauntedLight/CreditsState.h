@@ -37,6 +37,7 @@ private:
 	System* m_system;
 
 	//STATE SPECIFIC
+	int m_textSize;
 
 	//Buttons
 	AnimatedSprite* spr_button_back;
@@ -57,7 +58,7 @@ private:
 
 	//Names
 	sf::Text m_name_simonjohansson;
-	sf::Text m_name_prejohansson;
+	sf::Text m_name_perjohansson;
 	sf::Text m_name_carljohansson;
 	sf::Text m_name_jonnajarlsson;
 	sf::Text m_name_anitastenholm;
