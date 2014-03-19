@@ -19,7 +19,7 @@ class CollisionManager
 {
 	
 public:
-	CollisionManager(ObjectManager* _object_manager);
+	CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager);
 
 	bool checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type);
 private:

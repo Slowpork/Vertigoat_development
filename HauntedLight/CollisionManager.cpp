@@ -6,7 +6,7 @@
 #include "Collider.h"
 #include <math.h>
 
-CollisionManager::CollisionManager(ObjectManager* _object_manager)
+CollisionManager::CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager)
 {
 	m_object_manager = _object_manager;
 };
@@ -70,49 +70,42 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, 
 {
 	int count = 0;
 	//std::cout << m_object_manager->m_objects.size() << std::endl;
-	if (_type == WALLS)
+
+	std::map<int,GameObject*>::iterator begin;
+	std::map<int,GameObject*>::iterator end;
+	int size;
+
+	switch(_type)
 	{
-		for(auto& object: m_object_manager->m_objects)
-		{
-			//std::cout << object.obj.getCollider() << std::endl;
-			//std::cout << object.obj.m_collider->m_type << std::endl;
-			if (object.second->getCollider())
-			{
-				sf::Vector2f _off;
-				if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
-				{
-					if ( RectvsRect(_object, object.second->getCollider(), _off))
-					{
-						_offset += _off;
-						count++;
-					}
-				}
-				//else if (_object->m_type == Circle)
-			}
-		
-		}
+	case WALLS:
+		begin = m_object_manager->m_objects.begin();
+		size = m_object_manager->m_objects.size();
+		break;
+	case PICKUPS:
+		begin = m_object_manager->m_objects.begin();
+		end = m_object_manager->m_objects.end();
+		break;
 	}
-	else if ( _type == PICKUPS )
+
+	for(std::map<int,GameObject*>::iterator it = begin; it != end; it++)
+	//for(auto& object: m_object_manager->m_objects)
 	{
-		for(auto& object: m_object_manager->m_objects)
+		//std::cout << object.obj.getCollider() << std::endl;
+		//std::cout << object.obj.m_collider->m_type << std::endl;
+		if (it->second->getCollider())
 		{
-			//std::cout << object.obj.getCollider() << std::endl;
-			//std::cout << object.obj.m_collider->m_type << std::endl;
-			if (object.second->getCollider())
+			sf::Vector2f _off;
+			if (_object->m_type == Rect && it->second->getCollider()->m_type == Rect)
 			{
-				sf::Vector2f _off;
-				if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
+				if ( RectvsRect(_object, it->second->getCollider(), _off))
 				{
-					if ( RectvsRect(_object, object.second->getCollider(), _off))
-					{
-						_offset += _off;
-						count++;
-					}
+					_offset += _off;
+					count++;
 				}
-				//else if (_object->m_type == Circle)
 			}
-		
+			//else if (_object->m_type == Circle)
 		}
+		
 	}
 
 	if (count > 0)
