@@ -74,7 +74,7 @@ bool GameState::Enter()
 
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
 
-	m_collision_manager = new CollisionManager(m_object_manager);
+	m_collision_manager = new CollisionManager(m_object_manager, m_pickup_manager);
 
 	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
 

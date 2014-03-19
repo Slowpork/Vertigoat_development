@@ -6,7 +6,7 @@
 #include "Collider.h"
 #include <math.h>
 
-CollisionManager::CollisionManager(ObjectManager* _object_manager)
+CollisionManager::CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager)
 {
 	m_object_manager = _object_manager;
 };
@@ -66,10 +66,11 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 	return false;*/
 }
 
-bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type)
+int CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type)
 {
-	int count = 0;
+	int count = 0, ID = 1;
 	//std::cout << m_object_manager->m_objects.size() << std::endl;
+
 	if (_type == WALLS)
 	{
 		for(auto& object: m_object_manager->m_objects)
@@ -92,9 +93,9 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, 
 		
 		}
 	}
-	else if ( _type == PICKUPS )
+	else if (_type == PICKUPS)
 	{
-		for(auto& object: m_object_manager->m_objects)
+		for(auto& object: m_pickup_manager->m_objects)
 		{
 			//std::cout << object.obj.getCollider() << std::endl;
 			//std::cout << object.obj.m_collider->m_type << std::endl;
@@ -107,6 +108,7 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, 
 					{
 						_offset += _off;
 						count++;
+						ID = object.first;
 					}
 				}
 				//else if (_object->m_type == Circle)
@@ -122,7 +124,7 @@ bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, 
 		_offset.x = floorf(_offset.x);
 		_offset.y = floorf(_offset.y);
 
-		return true;
+		return ID;
 	}
 
 	return false;
