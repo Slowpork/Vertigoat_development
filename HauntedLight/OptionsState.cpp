@@ -108,7 +108,7 @@ bool OptionsState::Enter(){
 	m_vsync = m_system->m_vsync;
 	m_fullscreen = m_system->m_fullscreen;
 
-	// GET CURRENT RESULOTION
+	// GET CURRENT RESOLUTION
 	int counter = -1;
 	for(auto& res: m_system->m_video_modes)
 	{
