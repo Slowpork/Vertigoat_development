@@ -1,19 +1,19 @@
-// PickaxeObject.cpp
+// MatchesObject.cpp
 
-#include "PickaxeObject.h"
+#include "MatchesObject.h"
 
 #include <iostream>
 
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "AnimatedSprite.h"
 
-PickaxeObject::PickaxeObject(AnimatedSprite* _sprite, Collider* _collider)
+MatchesObject::MatchesObject(AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
 
 }
 
-void PickaxeObject::Pickup()
+void MatchesObject::Pickup()
 {
 
 	//spr_cracks->setFrame(5 - m_health);
@@ -21,7 +21,7 @@ void PickaxeObject::Pickup()
 }
 
 
-PickaxeObject::~PickaxeObject()
+MatchesObject::~MatchesObject()
 {
 	std::cout << "X ";
 
