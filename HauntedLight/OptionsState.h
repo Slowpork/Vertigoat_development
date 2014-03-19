@@ -77,9 +77,8 @@ private:
 	Button* m_button_resolutiondown;
 
 	//Text
-	sf::Font* m_font_options;
+	sf::Font* fnt_options;
 
-	int state;
 	int m_volbarframe;
 	int m_resolution;
 	bool m_fullscreen;

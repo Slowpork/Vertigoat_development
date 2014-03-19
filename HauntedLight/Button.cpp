@@ -42,7 +42,7 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 			if(_mouse->IsDown(Left))
 			{
 				m_opacity = 128;
-				std::cout << "pressed";
+				//std::cout << "pressed";
 				return true;
 			}
 			else{
@@ -54,7 +54,7 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 			if(_mouse->IsDownOnce(Left))
 			{
 				m_opacity = 128;
-				std::cout << "pressed";
+				//std::cout << "pressed";
 				return true;
 			}
 			else{

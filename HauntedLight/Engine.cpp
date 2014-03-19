@@ -93,6 +93,11 @@ void Engine::Run()
 			}
 		}
 
+		// DEBUG FPS
+		std::string txt = "FPS: " + std::to_string(m_system->getFps());
+		sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
+		m_system->drawDebugText(sf::Vector2f(16,0),txt,col);
+
 		m_system->m_window->display();
 
 		m_system->m_keyboard->PostUpdate();
@@ -178,7 +183,7 @@ void Engine::updateEvents()
 
 	// TOGGLE DEBUG
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F1))
-		m_system->setDebug(m_system->m_debug = !m_system->m_debug);
+		m_system->toggleDebug();
 	
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11) 

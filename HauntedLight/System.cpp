@@ -6,6 +6,7 @@
 #include "SFML\Graphics\Texture.hpp"
 #include "SFML\Graphics\Font.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
+#include "SFML\Graphics\Text.hpp"
 
 #include "InputManager.h"
 #include "AnimatedSprite.h"
@@ -21,6 +22,7 @@ System::System()
 {
 	m_width = 1280;
 	m_height = 720;
+	m_bit = 32;
 
 	m_title = "Haunted Light - BETA";
 
@@ -74,13 +76,23 @@ bool System::Init()
 		bool found = false;
 		for (unsigned i=0; i<m_video_modes.size(); i++)
 		{
-			/*
-			if (m_video_modes[i].bitsPerPixel == 32)
+			
+			/*if (m_video_modes[i].bitsPerPixel == 32)
 			std::cout << m_video_modes[i].width 
 			<< 'x' << m_video_modes[i].height 
 			<< ' ' << m_video_modes[i].bitsPerPixel << std::endl;*/
 
-			if (m_video_modes[i].width == m_width && m_video_modes[i].height == m_height)
+			// REMOVE non32bit resolutions?
+			/*
+			if (m_video_modes[i].bitsPerPixel != 32)
+			{
+				m_video_modes.erase(m_video_modes.begin() + i);
+				i--;
+			}*/
+
+			if (m_video_modes[i].width == m_width 
+				&& m_video_modes[i].height == m_height 
+				&& m_video_modes[i].bitsPerPixel == m_bit)
 			{
 				found = true;
 				break;
@@ -92,12 +104,13 @@ bool System::Init()
 		{
 			m_width = m_video_modes[0].width;
 			m_height = m_video_modes[0].height;
+			m_bit = m_video_modes[0].bitsPerPixel;
 		}
 	}
 	else
 		return false;
 
-	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), m_title,
+	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height,m_bit), m_title,
 		sf::Style::Titlebar | sf::Style::Close);
 	if (m_window == nullptr)
 		return false;
@@ -127,13 +140,16 @@ bool System::Init()
 	m_sprite_manager = new SpriteManager("../data/sprites/");
 	m_font_manager = new FontManager("../data/fonts/");
 
+	// LOADING DATA
+	// ###########################################################################
 	m_load_parts = 7;
 	m_load_current = 0;
 
-	// LOADING SPRITES
 	m_sprite_manager->addTexture("Menu/spr_menu_background.png");
 	m_sprite_manager->addTexture("Menu/spr_candle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_light.png");
+
+	// ###########################################################################
 
 	ProcessLoad();
 
@@ -250,6 +266,9 @@ bool System::Init()
 	m_keyboard = new KeyboardObject();
 	m_mouse = new MouseObject();
 
+	// DEBUG FONT
+	fnt_debug = m_font_manager->getFont("pixel.ttf");
+
 	return true;
 }
 
@@ -260,7 +279,7 @@ void System::setVideoMode()
 		m_width = m_video_modes[0].width;
 		m_height = m_video_modes[0].height;
 	}
-	sf::VideoMode videomode = sf::VideoMode(m_width,m_height);
+	sf::VideoMode videomode = sf::VideoMode(m_width,m_height,m_bit);
 
 	if (m_fullscreen)
 	m_window->create(videomode,m_title,sf::Style::Fullscreen);
@@ -283,6 +302,8 @@ void System::setVideoMode()
 		m_window->setVerticalSyncEnabled(false);
 	}
 	m_window->setMouseCursorVisible(false);
+
+	m_scale = sf::Vector2f((float)m_width/1280.f,(float)m_height/720.f);
 }
 
 void System::ProcessLoad()
@@ -293,7 +314,7 @@ void System::ProcessLoad()
 	float width = m_width / 3.f;
 
 	// SCALE
-	sf::Vector2f scale = sf::Vector2f((float)m_width/1280.f,(float)m_height/720.f);
+	sf::Vector2f scale = m_scale;
 
 	// BACKGROUND
 	AnimatedSprite* background = m_sprite_manager->getSprite("Menu/spr_menu_background.png",0,0,1280,720);
@@ -345,6 +366,9 @@ void System::ProcessLoad()
 
 void System::drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size)
 {
+	if (!m_debug)
+		return;
+
 	sf::RectangleShape rect_player_box(sf::Vector2f( _size.x, _size.y));
 	rect_player_box.setOrigin(
 		rect_player_box.getLocalBounds().width/2,
@@ -357,9 +381,24 @@ void System::drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size)
 	m_window->draw(rect_player_box);
 }
 
-void System::setDebug(bool _fps)
+void System::drawDebugText(sf::Vector2f _pos, std::string _value, sf::Color _color)
 {
-	m_debug = _fps;
+	if (!m_debug)
+		return;
+	
+	sf::Text txt;
+	txt.setFont(*fnt_debug);
+	txt.setString(_value);
+	txt.setPosition(_pos.x,_pos.y);
+	txt.setColor(_color);
+	txt.setCharacterSize(32);
+
+	m_window->draw(txt);
+}
+
+void System::toggleDebug()
+{
+	m_debug = !m_debug;
 }
 
 void System::setFps(int _fps)
