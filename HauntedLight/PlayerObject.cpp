@@ -89,7 +89,6 @@ bool PlayerObject::addPickaxe()
 	if (m_pickaxe<3)
 	{
 		m_pickaxe++;
-		std::cout << m_pickaxe << std::endl;
 		return true;
 	}
 	return false;
