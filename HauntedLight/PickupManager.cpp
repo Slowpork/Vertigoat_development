@@ -131,6 +131,6 @@ void PickupManager::Draw(sf::RenderWindow* _window, float _alpha)
 
 int CheckCollision(GameObject* _object, sf::Vector2f& _offset)
 {
-
+	std::cout << "lol" << std::endl;
 	return 5;
 }
