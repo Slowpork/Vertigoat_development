@@ -240,20 +240,11 @@ void OptionsState::Exit()
 	delete m_button_vsync;
 	m_button_vsync = nullptr;
 
-	delete spr_button_apply;
-	spr_button_apply = nullptr;
-
-	delete spr_button_back;
-	spr_button_back = nullptr;
-
 	delete m_button_apply;
 	m_button_apply = nullptr;
 
 	delete m_button_back;
 	m_button_back = nullptr;
-
-	delete fnt_options;
-	fnt_options = nullptr;
 
 	m_paused = false;
 }
