@@ -29,6 +29,7 @@ void PickupManager::Cleanup()
 void PickupManager::Add(GameObject* _object)
 {
 	ID++;
+	//std::cout << "ID: " << ID << std::endl;
 	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
 }
 
@@ -38,16 +39,12 @@ void PickupManager::destroy(int _ID)
 
 	if (pos != m_objects.end())
 	{
-		GameObject* temp_obj = new GameObject();
-		sf::Vector2f obj_pos = pos->second->getPosition();
-		temp_obj->setPosition(obj_pos);
+		std::cout << "deleted " << _ID << std::endl;
 
 		delete pos->second;
 		pos->second = nullptr;
 
 		m_objects.erase(pos);
-
-		delete temp_obj;
 
 		return;
 	}
@@ -127,6 +124,22 @@ void PickupManager::Draw(sf::RenderWindow* _window, float _alpha)
 	sf::Vector2f pos(_window->getView().getCenter().x - _window->getSize().x/2,
 					 _window->getView().getCenter().y - _window->getSize().y/2);
 	sf::Vector2f size(_window->getSize().x,_window->getSize().y);
+
+	for(auto& object: m_objects)
+	{
+		for(auto& object: m_objects)
+		{
+			/*if (!pointInside(pos,size,object.second->getPosition()) )
+				continue;*/
+
+			if (object.second->hasSprite())
+			{
+				//std::cout << object.depth << std::endl;
+				object.second->getSprite()->setColor(sf::Color((int)_alpha,(int)_alpha,(int)_alpha,255));
+				_window->draw(*object.second->getSprite());
+			}
+		}
+	}
 }
 
 int CheckCollision(GameObject* _object, sf::Vector2f& _offset)

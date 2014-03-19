@@ -46,7 +46,7 @@ private:
 	void FlickerLight(float _deltatime);
 	float LightFactor();
 	void playerCollision();
-	int pickaxeCollision();
+	void pickaxeCollision();
 	void drawFloor();
 
 private:
