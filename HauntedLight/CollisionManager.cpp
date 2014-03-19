@@ -1,6 +1,7 @@
 // CollisionManager.cpp
 
 #include "ObjectManager.h"
+#include "PickupManager.h"
 #include "CollisionManager.h"
 #include "Collider.h"
 #include <math.h>

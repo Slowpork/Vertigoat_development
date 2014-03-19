@@ -6,6 +6,7 @@
 
 class Collider;
 class ObjectManager;
+class PickupManager;
 
 class CollisionManager
 {
@@ -19,4 +20,5 @@ private:
 	bool RectvsCircle(Collider* _object, Collider* _other, sf::Vector2f& _offset);
 
 	ObjectManager* m_object_manager;
+	PickupManager* m_pickup_manager;
 };

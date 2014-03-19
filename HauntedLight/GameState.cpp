@@ -410,6 +410,7 @@ int GameState::pickaxeCollision()
 		
 		player->setPosition(player->getPosition() + offset);
 	}
+	//Föreberedelse för int-igenkänning
 	return 5;
 }
 
