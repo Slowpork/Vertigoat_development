@@ -108,6 +108,20 @@ bool OptionsState::Enter(){
 	m_vsync = m_system->m_vsync;
 	m_fullscreen = m_system->m_fullscreen;
 
+	// GET CURRENT RESULOTION
+	int counter = -1;
+	for(auto& res: m_system->m_video_modes)
+	{
+		counter++;
+		if (res.height == m_system->m_height 
+			&& res.width == m_system->m_width
+			&& res.bitsPerPixel == m_system->m_bit)
+		{
+			m_resolution = counter;
+			break;
+		}
+	}
+
 	if(m_vsync)
 	{
 		spr_checkbox_vsync->setFrame(1);
