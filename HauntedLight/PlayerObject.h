@@ -27,6 +27,9 @@ public:
 
 	void setSprites(AnimatedSprite* _idle, AnimatedSprite* _run);
 
+	bool addMatch();
+	bool addPickaxe();
+
 	const float getHealth();
 	const float getStamina();
 	const int getMatches();
@@ -57,6 +60,7 @@ private:
 	float m_health;
 	float m_stamina;
 	int m_matches;
+	int m_pickaxe;
 
 	float m_light;
 	bool m_candle;

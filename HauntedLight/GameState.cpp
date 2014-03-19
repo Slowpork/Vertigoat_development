@@ -41,7 +41,6 @@
 
 #include "Wall.h"
 #include "PickaxeObject.h"
-#include "MatchesObject.h"
 #include "PlayerObject.h"
 
 #include "AnimatedSprite.h"
@@ -116,9 +115,6 @@ bool GameState::Enter()
 	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_pickup.png",0,0,128,128,8);
 	spr_pickaxe->setScale(.5,.5);
 
-	AnimatedSprite* spr_matches = m_system->m_sprite_manager->getSprite("Game/spr_matches_pickup.png",0,0,128,128,8);
-	spr_matches->setScale(.5,.5);
-
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
@@ -183,7 +179,6 @@ bool GameState::Enter()
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 	Collider* col_pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
-	Collider* col_matches = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
@@ -191,9 +186,6 @@ bool GameState::Enter()
 
 	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
 	pickaxe->setPosition(sf::Vector2f(100,100));
-
-	matches = new MatchesObject(spr_matches, col_matches);
-	matches->setPosition(sf::Vector2f(100,300));
 	
 
 
@@ -212,7 +204,6 @@ void GameState::Exit(){
 	delete spr_floor; spr_floor = nullptr;
 	delete spr_matches_hud; spr_matches_hud = nullptr;
 	delete spr_darkness; spr_darkness = nullptr;
-	
 
 	delete player; player = nullptr;
 
@@ -253,22 +244,16 @@ void GameState::addWall(sf::Vector2f _pos)
 
 void GameState::addPickaxe(sf::Vector2f _pos)
 {
-	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
-		"Game/spr_pickaxe_pickup.png",0,0,128,128,16);
-	Collider* col_pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	PickaxeObject* pickaxe = new PickaxeObject(spr_pickaxe,col_pickaxe);
-	pickaxe->setPosition(_pos);
-	m_pickup_manager->Add(pickaxe);
-}
+	_pos.x = 100, _pos.y = 100;
 
-void GameState::addMatches(sf::Vector2f _pos)
-{
-	AnimatedSprite* spr_matches = m_system->m_sprite_manager->getSprite(
-		"Game/spr_matches_pickup.png",0,0,128,128,16);
-	Collider* col_matches = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	MatchesObject* matches = new MatchesObject(spr_matches,col_matches);
-	matches->setPosition(_pos);
-	m_pickup_manager->Add(matches);
+	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
+		"Game/spr_pickaxe_pickup.png",0,0,128,128);
+	spr_pickaxe->setScale(0.5f,0.5f);
+	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
+	GameObject* pickaxe = new GameObject(spr_pickaxe,col_Pickaxe);
+	pickaxe->setPosition(_pos);
+	pickaxe->setDepth(1);
+	m_pickup_manager->Add(pickaxe);
 }
 
 void GameState::viewScale(float _deltatime)
@@ -378,7 +363,8 @@ void GameState::drawFloor()
 void GameState::playerCollision()
 {
 	sf::Vector2f offset;
-	if (m_collision_manager->checkCollision(player->getCollider(),offset, WALLS))
+	int ID;
+	if (m_collision_manager->checkCollision(player->getCollider(),offset, WALLS,ID))
 	{
 		if (offset.x > 0.0f)
 		{
@@ -402,33 +388,26 @@ void GameState::playerCollision()
 	}
 }
 
-int GameState::pickaxeCollision()
+void GameState::pickaxeCollision()
 {
 	sf::Vector2f offset;
-	if (m_collision_manager->checkCollision(player->getCollider(),offset, PICKUPS))
+	int ID, object = -1;
+	object = m_collision_manager->checkCollision(player->getCollider(),offset, PICKUPS,ID);
+	if (object != -1)
 	{
-		if (offset.x > 0.0f)
+		//std::cout << "OBJECT: " << object << " ID: " << ID << std::endl;
+		switch (object)
 		{
-			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
+		case 1:
+			if (player->addPickaxe())
+				m_pickup_manager->destroy(ID);
+		break;
+		case 2:
+			if (player->addMatch())
+				m_pickup_manager->destroy(ID);
+		break;
 		}
-		else if (offset.x < 0.0f)
-		{
-			player->setVelocity(sf::Vector2f(0,player->getVelocity().y));
-		}
-
-		if (offset.y > 0.0f)
-		{
-			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
-		}
-		else if (offset.y < 0.0f)
-		{
-			player->setVelocity(sf::Vector2f(player->getVelocity().x,0));
-		}
-		
-		player->setPosition(player->getPosition() + offset);
 	}
-	//Föreberedelse för int-igenkänning
-	return 5;
 }
 
 bool GameState::Update(float _deltatime){
@@ -561,18 +540,13 @@ void GameState::Draw()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
-	//Pickups
-	m_system->m_window->draw(*pickaxe->getSprite());
-	m_system->m_window->draw(*matches->getSprite());
-
-	//Monsters
 	m_enemy_manager->Draw(m_system->m_window);
+	
+	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	m_system->m_window->draw(*spr_critter);
 
 	m_system->m_window->draw(*spr_monster_big);
-
-	
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);

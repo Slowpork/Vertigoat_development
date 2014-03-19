@@ -39,6 +39,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_health = 100.f;
 	m_stamina = 100.f;
 	m_matches = 2;
+	m_pickaxe = 0;
 	
 	m_light = 1.f;
 	m_candle = true;
@@ -70,6 +71,28 @@ void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
 void PlayerObject::setVelocity(sf::Vector2f _vel)
 {
 	m_vel = _vel;
+}
+
+bool PlayerObject::addMatch()
+{
+	if (m_matches<5)
+	{
+		m_matches++;
+		return true;
+	}
+	return false;
+}
+
+
+bool PlayerObject::addPickaxe()
+{
+	if (m_pickaxe<3)
+	{
+		m_pickaxe++;
+		std::cout << m_pickaxe << std::endl;
+		return true;
+	}
+	return false;
 }
 
 const float PlayerObject::getHealth()
