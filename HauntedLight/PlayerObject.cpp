@@ -77,7 +77,11 @@ bool PlayerObject::addMatch()
 {
 	if (m_matches<5)
 	{
-		m_matches++;
+		m_matches += 3;
+
+		if(m_matches > 5)
+			m_matches = 5;
+
 		return true;
 	}
 	return false;

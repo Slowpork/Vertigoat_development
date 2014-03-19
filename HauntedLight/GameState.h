@@ -42,8 +42,7 @@ public:
 private:
 
 	void addWall(sf::Vector2f _pos);
-	void addPickaxe(sf::Vector2f _pos);
-	void addMatches(sf::Vector2f _pos);
+	void addPickup(sf::Vector2f _pos, int _obj);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
 	float LightFactor();

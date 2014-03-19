@@ -187,9 +187,8 @@ bool GameState::Enter()
 	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
 	pickaxe->setPosition(sf::Vector2f(100,100));
 	
-
-
-	addPickaxe(sf::Vector2f(SIZE*128,SIZE*128));
+	addPickup(sf::Vector2f(128,128),1);
+	addPickup(sf::Vector2f(256,256),2);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
@@ -242,18 +241,26 @@ void GameState::addWall(sf::Vector2f _pos)
 	m_object_manager->Add(wall,5);
 }
 
-void GameState::addPickaxe(sf::Vector2f _pos)
+void GameState::addPickup(sf::Vector2f _pos, int _obj)
 {
-	_pos.x = 100, _pos.y = 100;
+	AnimatedSprite* spr = nullptr;
 
-	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
+	if (_obj == 1)
+	{
+		spr = m_system->m_sprite_manager->getSprite(
 		"Game/spr_pickaxe_pickup.png",0,0,128,128);
-	spr_pickaxe->setScale(0.5f,0.5f);
+	}
+	else
+	{
+		spr = m_system->m_sprite_manager->getSprite(
+		"Game/spr_matches_pickup.png",0,0,128,128);
+	}
+	spr->setScale(0.5f,0.5f);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
-	GameObject* pickaxe = new GameObject(spr_pickaxe,col_Pickaxe);
-	pickaxe->setPosition(_pos);
-	pickaxe->setDepth(1);
-	m_pickup_manager->Add(pickaxe);
+	GameObject* obj = new GameObject(spr,col_Pickaxe);
+	obj->setPosition(_pos);
+	obj->setDepth(_obj);
+	m_pickup_manager->Add(obj);
 }
 
 void GameState::viewScale(float _deltatime)
