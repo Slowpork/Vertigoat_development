@@ -21,7 +21,7 @@ class CollisionManager
 public:
 	CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager);
 
-	bool checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type);
+	int checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type);
 private:
 	bool RectvsRect(Collider* _object, Collider* _other, sf::Vector2f& _offset);
 	bool CirclevsCircle(Collider* _object, Collider* _other, sf::Vector2f& _offset);
