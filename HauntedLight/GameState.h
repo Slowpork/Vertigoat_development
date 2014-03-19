@@ -12,6 +12,7 @@ class EnemyManager;
 class PickupManager;
 class PlayerObject;
 class PickaxeObject;
+class MatchesObject;
 class CollisionManager;
 class LightSystem;
 class AnimatedSprite;
@@ -42,6 +43,7 @@ private:
 
 	void addWall(sf::Vector2f _pos);
 	void addPickaxe(sf::Vector2f _pos);
+	void addMatches(sf::Vector2f _pos);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
 	float LightFactor();
@@ -72,6 +74,7 @@ private:
 	// OBJECTS
 	PlayerObject* player;
 	PickaxeObject* pickaxe;
+	MatchesObject* matches;
 	AnimatedSprite* spr_cursor;
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;

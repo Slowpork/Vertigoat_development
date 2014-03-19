@@ -108,6 +108,7 @@
     <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MatchesObject.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="micropather.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightSystem.h" />
     <ClInclude Include="LoadingState.h" />
+    <ClInclude Include="MatchesObject.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="micropather.h" />

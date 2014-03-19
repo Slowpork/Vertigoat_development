@@ -86,11 +86,6 @@ void Button::Draw(sf::RenderWindow* _window)
 	_window->draw(*m_sprite);
 }
 
-void Button::Draw(sf::RenderWindow* _window, int _num)
-{
-	_window->draw(*m_sprite);
-}
-
 void Button::setSprite(AnimatedSprite* _sprite)
 {
 	m_sprite = _sprite;

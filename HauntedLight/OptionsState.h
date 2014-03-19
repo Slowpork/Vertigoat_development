@@ -34,20 +34,12 @@ private:
 
 	std::string m_name;
 	std::string m_next;
-	std::stringstream ss;
-	std::string temp;
 	bool m_paused;
 	bool m_base;
 	System* m_system;
 
 	//STATE SPECIFIC
-
-	AnimatedSprite* spr_background;
 	AnimatedSprite* spr_volume_bar;
-	AnimatedSprite* spr_text_vsync;
-	AnimatedSprite* spr_text_fullscreen;
-	AnimatedSprite* spr_text_resolution;
-	AnimatedSprite* spr_option_resolution;
 
 	//Buttons
 	AnimatedSprite* spr_button_volumeup;
@@ -62,10 +54,13 @@ private:
 	AnimatedSprite* spr_button_back;
 	Button* m_button_back;
 
-	AnimatedSprite* spr_checkbox_empty;
-	AnimatedSprite* spr_checkbox_checked;
-	Button* m_button_vsync;
+	AnimatedSprite* spr_checkbox_empty_fullscreen;
+	AnimatedSprite* spr_checkbox_checked_fullscreen;
 	Button* m_button_fullscreen;
+
+	AnimatedSprite* spr_checkbox_empty_vsync;
+	AnimatedSprite* spr_checkbox_checked_vsync;
+	Button* m_button_vsync;
 
 	AnimatedSprite* spr_button_resolutionup;
 	Button* m_button_resolutionup;
@@ -74,12 +69,10 @@ private:
 	Button* m_button_resolutiondown;
 
 	//Text
-	sf::Font* m_font_options;
 	sf::Text m_text_resolution;
 	sf::Text m_text_vsync;
 	sf::Text m_text_fullscreen;
 	sf::Text m_text_volume;
-	sf::Text m_text_resolution_options;
 	sf::Font* fnt_options;
 
 	int m_volbarframe;
@@ -88,4 +81,5 @@ private:
 	bool m_vsync;
 	int m_vol;
 	int m_textSize;
+	int m_textSize_small;
 };

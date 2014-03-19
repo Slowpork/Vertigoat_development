@@ -219,6 +219,10 @@ bool System::Init()
 	sf::Texture* tex_pickaxe_pickup = m_sprite_manager->getTexture("Game/spr_pickaxe_pickup.png");
 	tex_pickaxe_pickup->setSmooth(true);
 
+	m_sprite_manager->addTexture("Game/spr_matches_pickup.png");
+	sf::Texture* tex_matches_pickup = m_sprite_manager->getTexture("Game/spr_matches_pickup.png");
+	tex_matches_pickup->setSmooth(true);
+
 	ProcessLoad();
 
 	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
