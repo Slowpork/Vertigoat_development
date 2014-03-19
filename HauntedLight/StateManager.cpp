@@ -92,6 +92,20 @@ void StateManager::SetState(const std::string &type)
 	}
 }
 
+bool StateManager::isState(std::string _state)
+{
+	if (!m_current.empty())
+	{
+		for(auto current: m_current)
+		{
+			if (!current->isPaused())
+			{
+				return current->IsType(_state);
+			}
+		}
+	}
+}
+
 void StateManager::ChangeState()
 {
 	// GET NEXT

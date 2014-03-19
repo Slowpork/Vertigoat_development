@@ -3,9 +3,10 @@
 #pragma once
 #include "State.h"
 #include <string>
+#include <sstream>
+#include <SFML\Graphics\Text.hpp>
 
 class System;
-class ObjectManager;
 class AnimatedSprite;
 class Button;
 
@@ -33,11 +34,11 @@ private:
 
 	std::string m_name;
 	std::string m_next;
+	std::stringstream ss;
+	std::string temp;
 	bool m_paused;
 	bool m_base;
 	System* m_system;
-
-	ObjectManager* object_manager;
 
 	//STATE SPECIFIC
 
@@ -54,9 +55,6 @@ private:
 
 	AnimatedSprite* spr_button_volumedown;
 	Button* m_button_volumedown;
-
-	//AnimatedSprite* spr_buttons_volume;
-	//Button* m_buttons_volume[10];
 	
 	AnimatedSprite* spr_button_apply;
 	Button* m_button_apply;
@@ -64,10 +62,9 @@ private:
 	AnimatedSprite* spr_button_back;
 	Button* m_button_back;
 
-	AnimatedSprite* spr_checkbox_vsync;
+	AnimatedSprite* spr_checkbox_empty;
+	AnimatedSprite* spr_checkbox_checked;
 	Button* m_button_vsync;
-
-	AnimatedSprite* spr_checkbox_fullscreen;
 	Button* m_button_fullscreen;
 
 	AnimatedSprite* spr_button_resolutionup;
@@ -78,11 +75,17 @@ private:
 
 	//Text
 	sf::Font* m_font_options;
+	sf::Text m_text_resolution;
+	sf::Text m_text_vsync;
+	sf::Text m_text_fullscreen;
+	sf::Text m_text_volume;
+	sf::Text m_text_resolution_options;
+	sf::Font* fnt_options;
 
-	int state;
 	int m_volbarframe;
 	int m_resolution;
 	bool m_fullscreen;
 	bool m_vsync;
 	int m_vol;
+	int m_textSize;
 };

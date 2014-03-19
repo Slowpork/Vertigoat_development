@@ -3,6 +3,7 @@
 #pragma once
 #include "SFML\System\Vector2.hpp"
 #include "SFML\Window\VideoMode.hpp"
+#include "SFML\Graphics\Color.hpp"
 
 #include <string>
 
@@ -12,6 +13,7 @@ namespace sf
 	class View;
 	class Clock;
 	class Image;
+	class Font;
 };
 
 class SpriteManager;
@@ -43,7 +45,9 @@ public:
 	int getFps();
 
 	void drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size);
-	void setDebug(bool _mode);
+	void drawDebugText(sf::Vector2f _pos, std::string _value, sf::Color _color = sf::Color::Green);
+
+	void toggleDebug();
 
 	void setVideoMode();
 
@@ -52,10 +56,16 @@ public:
 
 private:
 	void setFps(int _fps);
+	void ProcessLoad();
 	
 private:
+	// LOADING
+	int m_load_parts;
+	int m_load_current;
+
 	// DATA
-	int m_height, m_width;
+	int m_height, m_width, m_bit;
+	sf::Vector2f m_scale;
 	float m_ticks;
 	int m_fps;
 
@@ -65,6 +75,7 @@ private:
 	bool m_borderless;
 	bool m_vsync;
 
+	sf::Font* fnt_debug;
 	bool m_debug;
 
 	// SOUND

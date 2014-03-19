@@ -17,6 +17,7 @@ Button::Button(AnimatedSprite* _sprite, int _width, int _height, float _x, float
 
 	m_sprite = _sprite;
 	m_sprite->setPosition(m_position.x, m_position.y);
+	m_sprite->setOpacity(255);
 
 	m_onpress = _onpress;
 
@@ -41,7 +42,7 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 			if(_mouse->IsDown(Left))
 			{
 				m_opacity = 128;
-				std::cout << "pressed";
+				//std::cout << "pressed";
 				return true;
 			}
 			else{
@@ -53,7 +54,7 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 			if(_mouse->IsDownOnce(Left))
 			{
 				m_opacity = 128;
-				std::cout << "pressed";
+				//std::cout << "pressed";
 				return true;
 			}
 			else{
@@ -77,7 +78,7 @@ bool Button::Update(float _deltatime, MouseObject* _mouse)
 void Button::Draw(sf::RenderWindow* _window)
 {
 	m_sprite->setFrame(0);
-	m_sprite->setOpacity(255);
+	m_sprite->setOpacity(m_sprite->getColor().a);
 	_window->draw(*m_sprite);
 	
 	m_sprite->setFrame(1);
@@ -88,6 +89,12 @@ void Button::Draw(sf::RenderWindow* _window)
 void Button::Draw(sf::RenderWindow* _window, int _num)
 {
 	_window->draw(*m_sprite);
+}
+
+void Button::setSprite(AnimatedSprite* _sprite)
+{
+	m_sprite = _sprite;
+	m_sprite->setPosition(m_position.x, m_position.y);
 }
 
 sf::Vector2i Button::getSize(){return sf::Vector2i(m_width, m_height);}

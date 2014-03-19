@@ -20,6 +20,7 @@ public:
 	void Update(float deltatime);
 	void Draw();
 	
+	bool isState(std::string _state);
 	void ChangeState();
 	void PauseState();
 	bool IsRunning();

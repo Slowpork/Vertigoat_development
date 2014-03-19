@@ -21,7 +21,6 @@ namespace sf
 {
 	class Sound;
 	class Music;
-	class Font;
 };
 
 class GameState : public State {
@@ -114,9 +113,6 @@ private:
 	sf::Sound* snd_wall_monster_3;
 	sf::Sound* snd_wall_monster_4;
 	sf::Sound* snd_wall_monster_5;
-
-	// FONTS
-	sf::Font* fnt_small;
 
 	// VARIABLES
 	float m_view_beat;

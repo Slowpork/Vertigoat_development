@@ -61,8 +61,10 @@ MenuState::MenuState(System* _system)
 	std::cout << "  *Created " << m_name << std::endl;
 
 	state = 0;
-	title_alpha = 0.f;
-	brightness = 0.f;
+	title_alpha = 128.f;
+	brightness = 0.5f;
+
+	first_time = true;
 
 	m_system = _system;
 }
@@ -75,11 +77,14 @@ bool MenuState::Enter()
 
 	state = 0;
 	title_alpha = 0.f;
-	brightness =  0.f;
+	if (!first_time)
+	{
+		brightness =  0.0f;
+	}
 
 	object_manager = new ObjectManager();
 
-	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+	sf::Vector2f scale = m_system->m_scale;
 
 	// Background
 	spr_background = m_system->m_sprite_manager->getSprite("Menu/spr_menu_background.png",0,0,1288,720);
@@ -234,7 +239,7 @@ bool MenuState::Update(float _deltatime){
 	{
 	case 0:
 		if (brightness < 1.f)
-			brightness += _deltatime;
+			brightness += _deltatime/(first_time+1);
 		else
 		{
 			brightness = 1.f;
@@ -258,6 +263,7 @@ bool MenuState::Update(float _deltatime){
 		if (brightness < 0.f)
 		{
 			m_next = "GameState";
+			first_time = false;
 			return false;
 		}
 		break;
@@ -366,8 +372,15 @@ void MenuState::Draw(){
 		break;
 	}
 
-	// TITLE
-	spr_title->setOpacity(title_alpha*255.f);
+	// OPACITY
+	float opactiy = title_alpha*255.f;
+	spr_title->setOpacity(opactiy);
+	m_button_play->getSprite()->setOpacity(opactiy);
+	m_button_credits->getSprite()->setOpacity(opactiy);
+	m_button_options->getSprite()->setOpacity(opactiy);
+	m_button_quit->getSprite()->setOpacity(opactiy);
+
+
 	m_system->m_window->draw(*spr_title);
 
 	if(!m_paused)
