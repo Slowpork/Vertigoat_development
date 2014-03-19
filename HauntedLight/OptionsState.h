@@ -3,7 +3,6 @@
 #pragma once
 #include "State.h"
 #include <string>
-#include <sstream>
 #include <SFML\Graphics\Text.hpp>
 
 class System;

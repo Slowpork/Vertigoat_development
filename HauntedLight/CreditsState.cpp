@@ -10,11 +10,11 @@
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 #include "SFML\Graphics\Font.hpp"
+#include "SFML\Graphics\Text.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
 #include "System.h"
 
-#include "ObjectManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
 #include "FontManager.h"
@@ -41,6 +41,15 @@ CreditsState::CreditsState(System* _system)
 
 bool CreditsState::Enter(){
 	std::cout << m_name << std::endl;
+
+	sf::Vector2f scale = m_system->m_scale;
+
+	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
+	spr_button_back->setScale(scale.x, scale.y);
+	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
+		spr_button_back->getSize().y*spr_button_back->getScale().y, 
+		m_system->m_width - spr_button_back->getSize().x*spr_button_back->getScale().x,
+		(m_system->m_height/9)*7 - 32*scale.y);
 
 	return true;
 }
