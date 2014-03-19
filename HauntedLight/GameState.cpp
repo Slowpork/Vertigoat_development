@@ -361,7 +361,7 @@ void GameState::drawFloor()
 void GameState::playerCollision()
 {
 	sf::Vector2f offset;
-	if (m_collision_manager->checkCollision(player->getCollider(),offset))
+	if (m_collision_manager->checkCollision(player->getCollider(),offset, WALLS))
 	{
 		if (offset.x > 0.0f)
 		{
@@ -388,7 +388,7 @@ void GameState::playerCollision()
 int GameState::pickaxeCollision()
 {
 	sf::Vector2f offset;
-	if (m_collision_manager->checkCollision(player->getCollider(),offset))
+	if (m_collision_manager->checkCollision(player->getCollider(),offset, PICKUPS))
 	{
 		if (offset.x > 0.0f)
 		{

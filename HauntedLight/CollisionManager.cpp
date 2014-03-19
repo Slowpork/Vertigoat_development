@@ -65,28 +65,53 @@ bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vecto
 	return false;*/
 }
 
-bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset)
+bool CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type)
 {
 	int count = 0;
 	//std::cout << m_object_manager->m_objects.size() << std::endl;
-	for(auto& object: m_object_manager->m_objects)
+	if (_type == WALLS)
 	{
-		//std::cout << object.obj.getCollider() << std::endl;
-		//std::cout << object.obj.m_collider->m_type << std::endl;
-		if (object.second->getCollider())
+		for(auto& object: m_object_manager->m_objects)
 		{
-			sf::Vector2f _off;
-			if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
+			//std::cout << object.obj.getCollider() << std::endl;
+			//std::cout << object.obj.m_collider->m_type << std::endl;
+			if (object.second->getCollider())
 			{
-				if ( RectvsRect(_object, object.second->getCollider(), _off))
+				sf::Vector2f _off;
+				if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
 				{
-					_offset += _off;
-					count++;
+					if ( RectvsRect(_object, object.second->getCollider(), _off))
+					{
+						_offset += _off;
+						count++;
+					}
 				}
+				//else if (_object->m_type == Circle)
 			}
-			//else if (_object->m_type == Circle)
-		}
 		
+		}
+	}
+	else if ( _type == PICKUPS )
+	{
+		for(auto& object: m_object_manager->m_objects)
+		{
+			//std::cout << object.obj.getCollider() << std::endl;
+			//std::cout << object.obj.m_collider->m_type << std::endl;
+			if (object.second->getCollider())
+			{
+				sf::Vector2f _off;
+				if (_object->m_type == Rect && object.second->getCollider()->m_type == Rect)
+				{
+					if ( RectvsRect(_object, object.second->getCollider(), _off))
+					{
+						_offset += _off;
+						count++;
+					}
+				}
+				//else if (_object->m_type == Circle)
+			}
+		
+		}
 	}
 
 	if (count > 0)
