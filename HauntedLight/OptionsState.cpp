@@ -12,7 +12,10 @@
 #include "SFML\Graphics\RectangleShape.hpp"
 #include "SFML\Graphics\Font.hpp"
 #include "SFML\Graphics\Text.hpp"
+<<<<<<< HEAD
 #include "SFML\System\String.hpp"
+=======
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 
 #include "System.h"
 
@@ -37,7 +40,6 @@ OptionsState::OptionsState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
-	state = 0;
 	m_resolution = 0;
 	m_textSize = 80;
 
@@ -47,9 +49,15 @@ OptionsState::OptionsState(System* _system)
 bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
 
+<<<<<<< HEAD
 	state = 0;
 
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+=======
+	object_manager = new ObjectManager();
+
+	sf::Vector2f scale = m_system->m_scale;
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 
 	spr_button_resolutiondown = m_system->m_sprite_manager->getSprite("Options/spr_button_resolution_low.png",0,0,128,128,2);
 	spr_button_resolutiondown->setScale(0.5*scale.x, 0.5*scale.y);
@@ -107,10 +115,24 @@ bool OptionsState::Enter(){
 		spr_button_apply->getSize().y*spr_button_apply->getScale().y, 
 		m_system->m_width/2 + spr_button_apply->getSize().x*spr_button_apply->getScale().x, (m_system->m_height/9)*7 - 32*scale.y);
 
-	m_font_options = m_system->m_font_manager->getFont("MTCORSVA.TTF");
+	fnt_options = m_system->m_font_manager->getFont("MTCORSVA.TTF");
 
 	m_vsync = m_system->m_vsync;
 	m_fullscreen = m_system->m_fullscreen;
+
+	// GET CURRENT RESOLUTION
+	int counter = -1;
+	for(auto& res: m_system->m_video_modes)
+	{
+		counter++;
+		if (res.height == m_system->m_height 
+			&& res.width == m_system->m_width
+			&& res.bitsPerPixel == m_system->m_bit)
+		{
+			m_resolution = counter;
+			break;
+		}
+	}
 
 	if(m_vsync)
 	{
@@ -306,33 +328,40 @@ bool OptionsState::Update(float _deltatime){
 
 	if(m_resolution > 0)
 	{
-		if(m_button_resolutiondown->Update(_deltatime, m_system->m_mouse))
+		if(m_button_resolutionup->Update(_deltatime, m_system->m_mouse))
 		{
 			m_resolution -= 1;
 
 			//std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+<<<<<<< HEAD
 			
 			/*ss << m_system->m_video_modes[m_resolution].width;
 			temp = ss.str();
 			ss << m_system->m_video_modes[m_resolution].height;
 			m_text_resolution_options.setString(temp + "x" + ss.str());*/
+=======
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 		}
 	}
-	if(m_resolution < m_system->m_video_modes.size())
+	if(m_resolution < m_system->m_video_modes.size() - 1)
 	{
-		if(m_button_resolutionup->Update(_deltatime, m_system->m_mouse))
+		if(m_button_resolutiondown->Update(_deltatime, m_system->m_mouse))
 		{
 			m_resolution += 1;
 
 			//std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+<<<<<<< HEAD
 
 			/*ss << m_system->m_video_modes[m_resolution].width;
 			temp = ss.str();
 			ss << m_system->m_video_modes[m_resolution].height;
 			m_text_resolution_options.setString(temp + "x" + ss.str());*/
+=======
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 		}
 	}
 
+	// APPLY
 	if(m_button_apply->Update(_deltatime, m_system->m_mouse))
 	{
 		m_system->m_volume = m_vol/10;
@@ -340,17 +369,26 @@ bool OptionsState::Update(float _deltatime){
 		m_system->m_fullscreen = m_fullscreen;
 		m_system->m_vsync = m_vsync;
 
+<<<<<<< HEAD
 		/*if(m_system->m_width != m_system->m_video_modes[m_resolution].width && m_system->m_height != m_system->m_video_modes[m_resolution].height)
 		{
 			m_system->m_width = m_system->m_video_modes[m_resolution].width;
 			m_system->m_height = m_system->m_video_modes[m_resolution].height;
 		}*/
+=======
+		m_system->m_width = m_system->m_video_modes[m_resolution].width;
+		m_system->m_height = m_system->m_video_modes[m_resolution].height;
+		m_system->m_bit = m_system->m_video_modes[m_resolution].bitsPerPixel;
+
+		m_system->setVideoMode();
+		m_next = "MenuState";
+		return false;
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 	}
 
 	if(m_button_back->Update(_deltatime, m_system->m_mouse))
 	{
 		m_next = "";
-		Pause();
 		return false;
 	}
 
@@ -395,13 +433,44 @@ void OptionsState::Draw(){
 	//m_system->m_window->draw(*spr_text_fullscreen);
 	//m_system->m_window->draw(*spr_text_resolution);
 
+	m_button_volumedown->getSprite()->setOpacity(255);
 	m_button_volumedown->Draw(m_system->m_window);
+	m_button_volumeup->getSprite()->setOpacity(255);
 	m_button_volumeup->Draw(m_system->m_window);
+<<<<<<< HEAD
 	m_button_fullscreen->Draw(m_system->m_window);
 	m_button_vsync->Draw(m_system->m_window);
+=======
+
+	m_button_fullscreen->getSprite()->setOpacity(255);
+	m_button_fullscreen->Draw(m_system->m_window, 1);
+	m_button_vsync->getSprite()->setOpacity(255);
+	m_button_vsync->Draw(m_system->m_window, 1);
+
+	m_button_apply->getSprite()->setOpacity(255);
+>>>>>>> 0a0154420564d7df91b55db9e3c23da9e7638222
 	m_button_apply->Draw(m_system->m_window);
+	m_button_back->getSprite()->setOpacity(255);
 	m_button_back->Draw(m_system->m_window);
+
+	// RESOLUTION TEXT
+	std::string txt = std::to_string(m_system->m_video_modes[m_resolution].width) + "x"
+		+ std::to_string(m_system->m_video_modes[m_resolution].height) + " "
+		+ std::to_string(m_system->m_video_modes[m_resolution].bitsPerPixel) + "bit";
+
+	sf::Text txt_res;
+	txt_res.setFont(*fnt_options);
+	txt_res.setString(txt);
+	txt_res.setCharacterSize(48);
+	txt_res.setColor(sf::Color(125,118,99));
+	
+	txt_res.setPosition(m_system->m_width/2 - txt_res.getLocalBounds().width/2,m_system->m_height/2 - 250.f);
+
+	m_system->m_window->draw(txt_res);
+
+	m_button_resolutiondown->getSprite()->setOpacity(255);
 	m_button_resolutiondown->Draw(m_system->m_window);
+	m_button_resolutionup->getSprite()->setOpacity(255);
 	m_button_resolutionup->Draw(m_system->m_window);
 
 	m_system->m_window->draw(m_text_fullscreen);

@@ -71,6 +71,7 @@ private:
 	sf::Music* music_main;
 
 	int state;
+	bool first_time;
 	float brightness;
 	float title_alpha;
 };

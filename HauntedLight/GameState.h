@@ -8,7 +8,10 @@
 
 class System;
 class ObjectManager;
+class EnemyManager;
+class PickupManager;
 class PlayerObject;
+class PickaxeObject;
 class CollisionManager;
 class LightSystem;
 class AnimatedSprite;
@@ -18,7 +21,6 @@ namespace sf
 {
 	class Sound;
 	class Music;
-	class Font;
 };
 
 class GameState : public State {
@@ -42,7 +44,9 @@ private:
 	void addPickaxe(sf::Vector2f _pos);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
+	float LightFactor();
 	void playerCollision();
+	int pickaxeCollision();
 	void drawFloor();
 
 private:
@@ -59,12 +63,15 @@ private:
 	float m_timer;
 
 	ObjectManager* m_object_manager;
+	EnemyManager* m_enemy_manager;
+	PickupManager* m_pickup_manager;
 	CollisionManager* m_collision_manager;
 	LightSystem* m_light_system;
 	LevelSystem* m_level_system;
 
 	// OBJECTS
 	PlayerObject* player;
+	PickaxeObject* pickaxe;
 	AnimatedSprite* spr_cursor;
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;
@@ -106,9 +113,6 @@ private:
 	sf::Sound* snd_wall_monster_3;
 	sf::Sound* snd_wall_monster_4;
 	sf::Sound* snd_wall_monster_5;
-
-	// FONTS
-	sf::Font* fnt_small;
 
 	// VARIABLES
 	float m_view_beat;

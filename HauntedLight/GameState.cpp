@@ -26,6 +26,8 @@
 #include "System.h"
 
 #include "ObjectManager.h"
+#include "EnemyManager.h"
+#include "PickupManager.h"
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
@@ -65,6 +67,9 @@ bool GameState::Enter()
 	critter_spawned = true;
 
 	m_object_manager = new ObjectManager();
+	m_pickup_manager = new PickupManager();
+
+	m_enemy_manager = new EnemyManager();
 
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
 
@@ -77,7 +82,7 @@ bool GameState::Enter()
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
 
-	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
+	sf::Vector2f scale = m_system->m_scale;
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -100,15 +105,15 @@ bool GameState::Enter()
 	msc_critter_walk->setVolume(25.f);
 	msc_critter_walk->setLoop(true);
 
-	// FONTS
-	fnt_small =  m_system->m_font_manager->getFont("pixel.ttf");
-
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
 	spr_player_run->setScale(.5,.5);
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
+
+	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_pickup.png",0,0,128,128,8);
+	spr_pickaxe->setScale(.5,.5);
 
 	spr_matches_hud = m_system->m_sprite_manager->getSprite("Game/spr_matches_hud.png",0,0,128,128,6);
 	spr_matches_hud->setScale(.75f*scale.x,.75f*scale.y);
@@ -129,6 +134,7 @@ bool GameState::Enter()
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
+
 
 	
 	// WALLS
@@ -172,10 +178,18 @@ bool GameState::Enter()
 	//std::cout << "\n";
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
+	Collider* col_pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
+
+	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
+	pickaxe->setPosition(sf::Vector2f(100,100));
+	
+
+
+	addPickaxe(sf::Vector2f(SIZE*128,SIZE*128));
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
@@ -198,6 +212,7 @@ void GameState::Exit(){
 
 	m_object_manager->Cleanup();
 	delete m_object_manager; m_object_manager = nullptr;
+	delete m_pickup_manager; m_pickup_manager = nullptr;
 
 	//sounds
 	music_main->stop();
@@ -229,12 +244,14 @@ void GameState::addWall(sf::Vector2f _pos)
 
 void GameState::addPickaxe(sf::Vector2f _pos)
 {
-	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
+	_pos.x = 100, _pos.y = 100;
+
+	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
 		"Game/spr_pickaxe_pickup.png",0,0,128,128,16);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	PickaxeObject* pickaxe = new PickaxeObject(spr_wall,col_Pickaxe);
+	PickaxeObject* pickaxe = new PickaxeObject(spr_pickaxe,col_Pickaxe);
 	pickaxe->setPosition(_pos);
-	m_object_manager->Add(pickaxe,5);
+	m_pickup_manager->Add(pickaxe);
 }
 
 void GameState::viewScale(float _deltatime)
@@ -273,6 +290,11 @@ void GameState::viewScale(float _deltatime)
 	m_system->m_view->setSize(sf::Vector2f(m_system->m_width*scalefactor,m_system->m_height*scalefactor));
 }
 
+float GameState::LightFactor()
+{
+	return 3.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*5.f);
+}
+
 void GameState::FlickerLight(float _deltatime)
 {
 	if (player->hasCandle())
@@ -283,7 +305,9 @@ void GameState::FlickerLight(float _deltatime)
 		//m_timer = 0.f;
 	}
 
-	float factor = abs(sin(m_timer));
+	float factor_x = cos(m_timer);
+	float factor_y = sin(m_timer);
+	float factor_offset = LightFactor()*2;
 
 	float angle = player->getSprite()->getRotation() * (Math::PI/180);
 	sf::Vector2f light_pos;
@@ -297,8 +321,8 @@ void GameState::FlickerLight(float _deltatime)
 	}
 
 	m_light_system->setLightLocation(
-		light_pos.x + player->getPosition().x - 5.f*factor + 10.f*factor,
-		light_pos.y + player->getPosition().y - 5.f*factor + 10.f*factor);
+		light_pos.x + player->getPosition().x + factor_offset*factor_x,
+		light_pos.y + player->getPosition().y + factor_offset*factor_y);
 
 	/*
 	m_light_system->setLightLocation(
@@ -329,6 +353,7 @@ void GameState::drawFloor()
 				X,
 				Y);
 			m_system->m_window->draw(*spr_floor, sf::BlendMultiply);
+			m_system->drawDebugRect(sf::Vector2f(X + 64,Y + 64),sf::Vector2f(128,128));
 		}
 	}
 }
@@ -360,6 +385,16 @@ void GameState::playerCollision()
 	}
 }
 
+int GameState::pickaxeCollision()
+{
+	sf::Vector2f offset;
+
+
+
+
+	return 5;
+}
+
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
@@ -373,6 +408,8 @@ bool GameState::Update(float _deltatime){
 
 	spr_monster_big->play(_deltatime*1.2f);
 	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
+
+	m_enemy_manager->Update(_deltatime, player->getPosition());
 
 	if (critter_spawned == true)
 	{
@@ -407,6 +444,7 @@ bool GameState::Update(float _deltatime){
 					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
 					));
 				m_light_system->update();
+				m_level_system->pathReset();
 			}
 		}
 		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
@@ -419,7 +457,10 @@ bool GameState::Update(float _deltatime){
 				if (go != nullptr)
 				{
 					//if (static_cast<Wall*> (go)->hit())
+					{
 						m_object_manager->destroy(ID);
+						m_level_system->pathReset();
+					}
 				}
 			}
 			m_light_system->update();
@@ -427,13 +468,20 @@ bool GameState::Update(float _deltatime){
 	}
 	else
 	{
-		if (m_system->m_mouse->IsDown(Left))
+		if (m_system->m_mouse->IsDownOnce(Left))
 		{
+			sf::Vector2f pos(
+					floor(player->getPosition().x - ((int)player->getPosition().x % 128)),
+					floor(player->getPosition().y - ((int)player->getPosition().y % 128))
+					);
 			sf::Vector2f dest(
 					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
 					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
 					);
-			player->setPath(*m_level_system->getPath(player->getPosition(),dest));
+
+			std::vector<sf::Vector2f>* path = m_level_system->getPath(pos,dest);
+				if ( path != nullptr)
+					player->setPath(path);
 		}
 		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
 		{
@@ -476,6 +524,9 @@ void GameState::Draw()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
+	m_enemy_manager->Draw(m_system->m_window);
+	m_system->m_window->draw(*pickaxe->getSprite());
+
 	m_system->m_window->draw(*spr_critter);
 
 	m_system->m_window->draw(*spr_monster_big);
@@ -484,16 +535,13 @@ void GameState::Draw()
 	m_object_manager->setActiveDepth(5,5);
 	m_object_manager->Draw(m_system->m_window, brightness);
 
-	// PLAYER COLLISION-BOX
-	if (m_system->m_debug)
-	{
-		m_system->drawDebugRect(player->getPosition(),
+	// DEBUG PLAYER COLLISION-BOX
+	m_system->drawDebugRect(player->getPosition(),
 			sf::Vector2f(player->getCollider()->m_ext.x,
 						player->getCollider()->m_ext.y));
 
-		m_system->drawDebugRect(m_light_system->getLightLocation(),
+	m_system->drawDebugRect(m_light_system->getLightLocation(),
 			sf::Vector2f(4,4));
-	}
 
 	// INTERFACE ##################################
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
@@ -505,20 +553,9 @@ void GameState::Draw()
 	spr_matches_hud->setFrame(player->getMatches());
 	m_system->m_window->draw(*spr_matches_hud);
 
-	if (m_system->m_debug)
-	{
-		sf::Text txt_stats;
-		txt_stats.setFont(*fnt_small);
-		std::string txt = "FPS: " + std::to_string(m_system->getFps()) + "\n " + 
-			std::to_string(m_object_manager->getObjects()) + " walls";
-		sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
-		txt_stats.setString(txt);
-		txt_stats.setPosition(16,0);
-		txt_stats.setColor(col);
-		txt_stats.setCharacterSize(32);
-
-		m_system->m_window->draw(txt_stats);
-	}
+	// DEBUG WALLS
+	std::string txt = std::to_string(m_object_manager->getObjects()) + " walls";
+	m_system->drawDebugText(sf::Vector2f(16,32),txt);
 }
 
 std::string GameState::Next(){

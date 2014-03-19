@@ -14,6 +14,7 @@
 #include "LoadingState.h"
 #include "OptionsState.h"
 #include "GameState.h"
+#include "CreditsState.h"
 #include "PauseState.h"
 
 #include "AnimatedSprite.h"
@@ -34,9 +35,10 @@ bool Engine::Init()
 	if (!m_system->Init())
 		return false;
 
-	// LOAD CURSOR
-	spr_cursor = m_system->m_sprite_manager->getSprite("curs.png",0,0,16,16);
-	spr_cursor->setOrigin(8,8);
+	// LOAD CURSOR & SIGHT
+	spr_cursor = m_system->m_sprite_manager->getSprite("spr_cursor.png",0,0,16,16);
+	spr_sight = m_system->m_sprite_manager->getSprite("Game/spr_sight.png",0,0,16,16);
+	spr_sight->setOrigin(8,8);
 
 	FileManager file_manager;
 	file_manager.Write("../bin/Awesome.txt", "#Yolo");
@@ -45,6 +47,7 @@ bool Engine::Init()
 	m_state_manager.Attach(new MenuState(m_system));
 	m_state_manager.Attach(new LoadingState(m_system));
 	m_state_manager.Attach(new OptionsState(m_system));
+	m_state_manager.Attach(new CreditsState(m_system));
 	m_state_manager.Attach(new PauseState(m_system));
 	m_state_manager.SetState("MenuState");
 
@@ -68,16 +71,32 @@ void Engine::Run()
 			break;
 		}
 
-		// Cursor
-		spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
-
 		// DRAW 
-		//m_system->m_window->clear(/*sf::Color(44,29,23)*/sf::Color::Black);
 		m_system->m_window->clear(sf::Color(0,0,0,255));
 		m_state_manager.Draw();
 
-		// Cursor
-		m_system->m_window->draw(*spr_cursor);
+		// CURSOR
+		bool isState = m_state_manager.isState("GameState");
+		if ( isState ) // GameState
+		{
+			spr_sight->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+			m_system->m_window->draw(*spr_sight);
+		}
+		else 
+		{
+			bool isState = m_state_manager.isState("CreditsState");
+
+			if (!isState) // Not Credits
+			{
+				spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+				m_system->m_window->draw(*spr_cursor);
+			}
+		}
+
+		// DEBUG FPS
+		std::string txt = "FPS: " + std::to_string(m_system->getFps());
+		sf::Color col = (m_system->getFps() >= 60 ? sf::Color::Green : sf::Color::Red);
+		m_system->drawDebugText(sf::Vector2f(16,0),txt,col);
 
 		m_system->m_window->display();
 
@@ -158,13 +177,13 @@ void Engine::updateEvents()
 
 	// ESCAPE TO QUIT
 	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape)){
-		m_running = false;
-		m_system->m_window->close();
+		//m_running = false;
+		//m_system->m_window->close();
 	}
 
 	// TOGGLE DEBUG
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F1))
-		m_system->setDebug(m_system->m_debug = !m_system->m_debug);
+		m_system->toggleDebug();
 	
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11) 
