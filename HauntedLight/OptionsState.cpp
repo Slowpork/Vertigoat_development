@@ -6,14 +6,16 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
 #include "SFML\Graphics\Font.hpp"
+#include "SFML\Graphics\Text.hpp"
+#include "SFML\System\String.hpp"
 
 #include "System.h"
 
-#include "ObjectManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
 #include "FontManager.h"
@@ -37,6 +39,7 @@ OptionsState::OptionsState(System* _system)
 
 	state = 0;
 	m_resolution = 0;
+	m_textSize = 80;
 
 	m_system = _system;
 }
@@ -45,8 +48,6 @@ bool OptionsState::Enter(){
 	std::cout << m_name << std::endl;
 
 	state = 0;
-
-	object_manager = new ObjectManager();
 
 	sf::Vector2f scale = sf::Vector2f((float)m_system->m_width/1280.f,(float)m_system->m_height/720.f);
 
@@ -81,16 +82,17 @@ bool OptionsState::Enter(){
 		(spr_volume_bar->getPosition().x + spr_volume_bar->getSize().x*spr_volume_bar->getScale().x + 20),
 		spr_volume_bar->getPosition().y);
 
-	spr_checkbox_fullscreen = m_system->m_sprite_manager->getSprite("Options/spr_checkbox.png",0,0,128,128,2);
-	spr_checkbox_fullscreen->setScale(0.5*scale.x, 0.5*scale.y);
-	m_button_fullscreen = new Button(spr_checkbox_fullscreen, spr_checkbox_fullscreen->getSize().x*spr_checkbox_fullscreen->getScale().x,
-		spr_checkbox_fullscreen->getSize().y*spr_checkbox_fullscreen->getScale().y, 
+	spr_checkbox_empty = m_system->m_sprite_manager->getSprite("Options/spr_checkbox_empty.png",0,0,128,128,2);
+	spr_checkbox_empty->setScale(scale.x, scale.y);
+	spr_checkbox_checked = m_system->m_sprite_manager->getSprite("Options/spr_checkbox_checked.png",0,0,128,128,2);
+	spr_checkbox_checked->setScale(scale.x, scale.y);
+
+	m_button_fullscreen = new Button(spr_checkbox_empty, spr_checkbox_empty->getSize().x*spr_checkbox_empty->getScale().x,
+		spr_checkbox_empty->getSize().y*spr_checkbox_empty->getScale().y, 
 		m_system->m_width/2 + 150*scale.x, m_system->m_height/2 - 150*scale.y);
 
-	spr_checkbox_vsync = m_system->m_sprite_manager->getSprite("Options/spr_checkbox.png",0,0,128,128,2);
-	spr_checkbox_vsync->setScale(0.5*scale.x, 0.5*scale.y);
-	m_button_vsync = new Button(spr_checkbox_vsync, spr_checkbox_vsync->getSize().x*spr_checkbox_vsync->getScale().x,
-		spr_checkbox_vsync->getSize().y*spr_checkbox_vsync->getScale().y, 
+	m_button_vsync = new Button(spr_checkbox_empty, spr_checkbox_empty->getSize().x*spr_checkbox_empty->getScale().x,
+		spr_checkbox_empty->getSize().y*spr_checkbox_empty->getScale().y, 
 		m_system->m_width/2 - 214*scale.x, m_system->m_height/2 - 150*scale.y);
 
 	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
@@ -112,20 +114,74 @@ bool OptionsState::Enter(){
 
 	if(m_vsync)
 	{
-		spr_checkbox_vsync->setFrame(1);
+		m_button_vsync->setSprite(spr_checkbox_checked);
 	}else{
-		spr_checkbox_vsync->setFrame(0);
+		m_button_vsync->setSprite(spr_checkbox_empty);
 	}
 
 	if(m_fullscreen)
 	{
-		spr_checkbox_fullscreen->setFrame(1);
+		m_button_fullscreen->setSprite(spr_checkbox_checked);
 	}else{
-		spr_checkbox_fullscreen->setFrame(0);
+		m_button_fullscreen->setSprite(spr_checkbox_empty);
 	}
 
 	m_vol = m_system->m_volume*10;
 	spr_volume_bar->setFrame(m_vol);
+
+	m_text_fullscreen.setString("Fullscreen");
+	m_text_fullscreen.setFont(*m_font_options);
+	m_text_fullscreen.setScale(scale.x, scale.y);
+	m_text_fullscreen.setCharacterSize((int)(m_textSize*((scale.x*scale.y)/2)));
+	m_text_fullscreen.setPosition(m_button_fullscreen->getPosition().x + 
+		(m_button_fullscreen->getSize().x*scale.x)/2 - 
+		(m_text_fullscreen.getGlobalBounds().width/2),
+		m_button_fullscreen->getPosition().y - m_text_fullscreen.getGlobalBounds().height);
+
+	m_text_resolution.setString("Resolution");
+	m_text_resolution.setFont(*m_font_options);
+	m_text_resolution.setScale(scale.x, scale.y);
+	m_text_resolution.setCharacterSize((int)(m_textSize*((scale.x*scale.y)/2)));
+	m_text_resolution.setPosition(((spr_button_resolutiondown->getPosition().x + spr_button_resolutionup->getPosition().x +
+		spr_button_resolutionup->getSize().x - spr_button_resolutiondown->getPosition().x)/2 - (m_text_resolution.getGlobalBounds().width/2)),
+		spr_button_resolutiondown->getPosition().y - m_text_resolution.getGlobalBounds().height);
+
+	ss << m_system->m_width;
+	temp = ss.str();
+	ss << m_system->m_height;
+
+	m_text_resolution_options.setString(temp + "x" + ss.str());
+	m_text_resolution_options.setFont(*m_font_options);
+	m_text_resolution_options.setScale(scale.x, scale.y);
+	m_text_resolution_options.setCharacterSize((int)(m_textSize*((scale.x*scale.y)/2)));
+	m_text_resolution_options.setPosition((spr_button_resolutiondown->getPosition().x + spr_button_resolutionup->getPosition().x +
+		(spr_button_resolutionup->getSize().x)/2 - (m_text_resolution_options.getGlobalBounds().width/2)),
+		(spr_button_resolutiondown->getPosition().y + spr_button_resolutionup->getSize().y*spr_button_resolutionup->getScale().y) -
+		m_text_resolution.getGlobalBounds().height/2);
+
+	m_text_volume.setString("Volume");
+	m_text_volume.setFont(*m_font_options);
+	m_text_volume.setScale(scale.x, scale.y);
+	m_text_volume.setCharacterSize((int)(m_textSize*((scale.x*scale.y)/2)));
+	m_text_volume.setPosition(spr_volume_bar->getPosition().x + 
+		(spr_volume_bar->getSize().x*spr_volume_bar->getScale().x)/2 - 
+		(m_text_volume.getGlobalBounds().width/2),
+		spr_volume_bar->getPosition().y - m_text_volume.getGlobalBounds().height);
+
+	m_text_vsync.setString("Vsync");
+	m_text_vsync.setFont(*m_font_options);
+	m_text_vsync.setScale(scale.x, scale.y);
+	m_text_vsync.setCharacterSize((int)(m_textSize*((scale.x*scale.y)/2)));
+	m_text_vsync.setPosition(m_button_vsync->getPosition().x + 
+		(m_button_vsync->getSize().x*scale.x)/2 - (m_text_vsync.getGlobalBounds().width/2),
+		m_button_vsync->getPosition().y - m_text_vsync.getGlobalBounds().height);
+
+	/*for(int i = 0; i < m_system->m_video_modes.size(); i++)
+	{
+		ss << m_system->m_video_modes[m_resolution].width;
+		temp = ss.str();
+		ss << m_system->m_video_modes[m_resolution].height;
+	}*/
 
 	/*#pragma region Volume Buttons
 	spr_buttons_volume = m_system->m_sprite_manager->getSprite("Options/empty.png",0,0,45,128);
@@ -168,17 +224,17 @@ void OptionsState::Exit()
 	delete m_button_volumeup;
 	m_button_volumeup = nullptr;
 
+	delete spr_checkbox_empty;
+	spr_checkbox_empty = nullptr;
+
+	delete spr_checkbox_checked;
+	spr_checkbox_checked = nullptr;
+
 	delete m_button_fullscreen;
 	m_button_fullscreen = nullptr;
 
-	delete spr_checkbox_fullscreen;
-	spr_checkbox_fullscreen = nullptr;
-
 	delete m_button_vsync;
 	m_button_vsync = nullptr;
-
-	delete spr_checkbox_vsync;
-	spr_checkbox_vsync = nullptr;
 
 	delete spr_button_apply;
 	spr_button_apply = nullptr;
@@ -192,17 +248,8 @@ void OptionsState::Exit()
 	delete m_button_back;
 	m_button_back = nullptr;
 
-	/*for(int i = 0; i < 10; i++)
-	{
-		delete m_buttons_volume[i];
-		m_buttons_volume[i] = nullptr;
-	}
-
-	delete spr_buttons_volume;
-	spr_buttons_volume = nullptr;*/
-
-	delete object_manager;
-	object_manager = nullptr;
+	delete m_font_options;
+	m_font_options = nullptr;
 
 	m_paused = false;
 }
@@ -220,7 +267,7 @@ void OptionsState::Resume()
 bool OptionsState::Update(float _deltatime){
 	//std::cout << "OptionsState::Update" << std::endl;
 	
-/*
+	/*
 	switch(state)
 	{
 	case 0:
@@ -263,7 +310,12 @@ bool OptionsState::Update(float _deltatime){
 		{
 			m_resolution -= 1;
 
-			std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+			//std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+			
+			/*ss << m_system->m_video_modes[m_resolution].width;
+			temp = ss.str();
+			ss << m_system->m_video_modes[m_resolution].height;
+			m_text_resolution_options.setString(temp + "x" + ss.str());*/
 		}
 	}
 	if(m_resolution < m_system->m_video_modes.size())
@@ -272,7 +324,12 @@ bool OptionsState::Update(float _deltatime){
 		{
 			m_resolution += 1;
 
-			std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+			//std::cout << m_system->m_video_modes[m_resolution].width << 'x' << m_system->m_video_modes[m_resolution].height;
+
+			/*ss << m_system->m_video_modes[m_resolution].width;
+			temp = ss.str();
+			ss << m_system->m_video_modes[m_resolution].height;
+			m_text_resolution_options.setString(temp + "x" + ss.str());*/
 		}
 	}
 
@@ -283,27 +340,11 @@ bool OptionsState::Update(float _deltatime){
 		m_system->m_fullscreen = m_fullscreen;
 		m_system->m_vsync = m_vsync;
 
-		/*if(m_fullscreen)
-		{
-			m_system->m_fullscreen = !m_system->m_fullscreen;
-		}*/
-
-		if(m_vsync)
-		{
-			if(spr_checkbox_vsync->getFrame() == 0)
-			{
-				m_system->m_window->setVerticalSyncEnabled(false);
-			}else if(spr_checkbox_vsync->getFrame() == 1)
-			{
-				m_system->m_window->setVerticalSyncEnabled(true);
-			}
-		}
-
-		if(m_system->m_width != m_system->m_video_modes[m_resolution].width && m_system->m_height != m_system->m_video_modes[m_resolution].height)
+		/*if(m_system->m_width != m_system->m_video_modes[m_resolution].width && m_system->m_height != m_system->m_video_modes[m_resolution].height)
 		{
 			m_system->m_width = m_system->m_video_modes[m_resolution].width;
 			m_system->m_height = m_system->m_video_modes[m_resolution].height;
-		}
+		}*/
 	}
 
 	if(m_button_back->Update(_deltatime, m_system->m_mouse))
@@ -313,15 +354,23 @@ bool OptionsState::Update(float _deltatime){
 		return false;
 	}
 
-	if(m_button_fullscreen->Update(_deltatime, m_system->m_mouse))
+	if(m_button_fullscreen->Update(_deltatime, m_system->m_mouse) && m_fullscreen)
 	{
-		spr_checkbox_fullscreen->setFrame(!spr_checkbox_fullscreen->getFrame());
+		m_button_fullscreen->setSprite(spr_checkbox_empty);
+		m_fullscreen = !m_fullscreen;
+	}else if(m_button_fullscreen->Update(_deltatime, m_system->m_mouse) && !m_fullscreen)
+	{
+		m_button_fullscreen->setSprite(spr_checkbox_checked);
 		m_fullscreen = !m_fullscreen;
 	}
 
-	if(m_button_vsync->Update(_deltatime, m_system->m_mouse))
+	if(m_button_vsync->Update(_deltatime, m_system->m_mouse) && m_vsync)
 	{
-		spr_checkbox_vsync->setFrame(!spr_checkbox_vsync->getFrame());
+		m_button_vsync->setSprite(spr_checkbox_empty);
+		m_vsync = !m_vsync;
+	}else if(m_button_vsync->Update(_deltatime, m_system->m_mouse) && !m_vsync)
+	{
+		m_button_vsync->setSprite(spr_checkbox_checked);
 		m_vsync = !m_vsync;
 	}
 
@@ -348,14 +397,18 @@ void OptionsState::Draw(){
 
 	m_button_volumedown->Draw(m_system->m_window);
 	m_button_volumeup->Draw(m_system->m_window);
-	m_button_fullscreen->Draw(m_system->m_window, 1);
-	m_button_vsync->Draw(m_system->m_window, 1);
+	m_button_fullscreen->Draw(m_system->m_window);
+	m_button_vsync->Draw(m_system->m_window);
 	m_button_apply->Draw(m_system->m_window);
 	m_button_back->Draw(m_system->m_window);
 	m_button_resolutiondown->Draw(m_system->m_window);
 	m_button_resolutionup->Draw(m_system->m_window);
 
-//	object_manager->Draw(m_system->m_window);
+	m_system->m_window->draw(m_text_fullscreen);
+	m_system->m_window->draw(m_text_resolution);
+	m_system->m_window->draw(m_text_volume);
+	m_system->m_window->draw(m_text_vsync);
+	m_system->m_window->draw(m_text_resolution_options);
 }
 
 std::string OptionsState::Next(){

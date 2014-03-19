@@ -151,7 +151,8 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_button_return.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
-	m_sprite_manager->addTexture("Options/spr_checkbox.png");
+	m_sprite_manager->addTexture("Options/spr_checkbox_empty.png");
+	m_sprite_manager->addTexture("Options/spr_checkbox_checked.png");
 
 	// GAME
 	m_sprite_manager->addTexture("curs.png");

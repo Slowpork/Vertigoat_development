@@ -90,6 +90,12 @@ void Button::Draw(sf::RenderWindow* _window, int _num)
 	_window->draw(*m_sprite);
 }
 
+void Button::setSprite(AnimatedSprite* _sprite)
+{
+	m_sprite = _sprite;
+	m_sprite->setPosition(m_position.x, m_position.y);
+}
+
 sf::Vector2i Button::getSize(){return sf::Vector2i(m_width, m_height);}
 	
 sf::Vector2f Button::getPosition(){return m_position;}
