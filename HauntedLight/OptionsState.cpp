@@ -144,7 +144,7 @@ bool OptionsState::Enter(){
 		m_button_fullscreen->setSprite(spr_checkbox_empty_fullscreen);
 	}
 
-	m_vol = m_system->m_volume*10;
+	m_vol = m_system->m_volume*10.f;
 	spr_volume_bar->setFrame(m_vol);
 
 	m_text_fullscreen.setString("Fullscreen");
@@ -313,7 +313,7 @@ bool OptionsState::Update(float _deltatime){
 	// APPLY
 	if(m_button_apply->Update(_deltatime, m_system->m_mouse))
 	{
-		m_system->m_volume = m_vol/10;
+		m_system->m_volume = (float)m_vol/10.f;
 		
 		m_system->m_fullscreen = m_fullscreen;
 		m_system->m_vsync = m_vsync;
