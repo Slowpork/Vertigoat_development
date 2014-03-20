@@ -15,8 +15,8 @@ class EnemyObject : public GameObject
 public:
 	EnemyObject(AnimatedSprite* _sprite = nullptr, Collider* _collider = nullptr);
 
-	void Update(float _deltatime, sf::Vector2f _playerpos);
-	void Draw(sf::RenderWindow* _window);
+	virtual void Update(float _deltatime, sf::Vector2f _playerpos) = 0;
+	virtual void Draw(sf::RenderWindow* _window) = 0;
 
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();

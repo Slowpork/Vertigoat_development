@@ -2,6 +2,10 @@
 
 #include "Crawler.h"
 
+#include "SFML\Graphics\RenderWindow.hpp"
+
+#include "AnimatedSprite.h"
+
 #include <iostream>
 
 Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
@@ -12,7 +16,7 @@ Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
 
 void Crawler::Draw(sf::RenderWindow* _window)
 {
-
+	_window->draw(*m_sprite);
 }
 
 void Crawler::setSprite(AnimatedSprite* _sprite)

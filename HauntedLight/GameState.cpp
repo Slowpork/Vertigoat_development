@@ -15,6 +15,9 @@
 
 #include "SFML\Window\Keyboard.hpp"
 
+#include "SFML\System\Vector3.hpp"
+
+#include "SFML\Audio\Listener.hpp"
 #include "SFML\Audio\Sound.hpp"
 #include "SFML\Audio\SoundBuffer.hpp"
 #include "SFML\Audio\Music.hpp"
@@ -79,6 +82,9 @@ bool GameState::Enter()
 
 	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
 
+	m_listener = new sf::Listener();
+	m_listener->setGlobalVolume(m_system->m_volume*100);
+
 	m_timer = 0.f;
 
 	m_view_beat = Math::PI_HALF;
@@ -88,7 +94,9 @@ bool GameState::Enter()
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
-	snd_thud->setVolume(25.f);
+	snd_thud->setVolume(100);
+
+	snd_Equipment_selection = m_system->m_sound_manager->getSound("snd_Equipment_selection.wav");
 
 	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
 	snd_Mining_with_pebbles->setVolume(25.f);
@@ -133,8 +141,6 @@ bool GameState::Enter()
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
-
-
 	
 	// WALLS
 	const float SIZE = 128;
@@ -177,7 +183,6 @@ bool GameState::Enter()
 	//std::cout << "\n";
 
 	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
-	Collider* col_pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
@@ -185,6 +190,7 @@ bool GameState::Enter()
 	
 	addPickup(sf::Vector2f(128,128),1);
 	addPickup(sf::Vector2f(256,256),2);
+	addCrawler(sf::Vector2f(128, 512));
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
@@ -249,7 +255,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 
 	crawler->setSprite(spr_crawler_turn);
 	crawler->setPosition(_pos);
-	m_object_manager->Add(crawler,5);
+	m_enemy_manager->Add(crawler);
 }
 
 void GameState::addPickup(sf::Vector2f _pos, int _obj)
@@ -406,7 +412,7 @@ void GameState::playerCollision()
 	}
 }
 
-void GameState::pickaxeCollision()
+void GameState::pickupCollision()
 {
 	sf::Vector2f offset;
 	int ID, object = -1;
@@ -422,20 +428,24 @@ void GameState::pickaxeCollision()
 		break;
 		case 2:
 			if (player->addMatch())
+			{
 				m_pickup_manager->destroy(ID);
+				snd_Equipment_selection->play();
+			}
 		break;
 		}
 	}
-}
+} 
 
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
 	playerCollision();
-	pickaxeCollision();
+	pickupCollision();
 
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());
+	//m_listener->setPosition(sf::Vector3f(player->getPosition().x,player->getPosition().y,0.f));
 
 	//Citter
 	spr_critter->play(_deltatime);
@@ -469,13 +479,15 @@ bool GameState::Update(float _deltatime){
 			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 			if ( ID == -1)
 			{
-				snd_thud->play();
-				addWall(sf::Vector2f(
-					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
-					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
-					));
+				
+				sf::Vector2f pos(floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+								floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
+				addWall(pos);
 				m_light_system->update();
 				m_level_system->pathReset();
+
+				snd_thud->setPosition(m_system->getSoundValue(player->getPosition(),pos));
+				snd_thud->play();
 			}
 		}
 		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL

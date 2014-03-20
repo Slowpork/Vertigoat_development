@@ -2,8 +2,10 @@
 
 #pragma once
 #include "SFML\System\Vector2.hpp"
+#include "SFML\System\Vector3.hpp"
 #include "SFML\Window\VideoMode.hpp"
 #include "SFML\Graphics\Color.hpp"
+
 
 #include <string>
 
@@ -46,6 +48,8 @@ public:
 
 	void drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size);
 	void drawDebugText(sf::Vector2f _pos, std::string _value, sf::Color _color = sf::Color::Green);
+
+	sf::Vector3f getSoundValue(sf::Vector2f _playerpos, sf::Vector2f _source);
 
 	void toggleDebug();
 
