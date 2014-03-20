@@ -40,23 +40,16 @@ private:
 	int m_textSize_title;
 	int m_textSize_name;
 
-	//Buttons
-	AnimatedSprite* spr_button_back;
-	Button* m_button_back;
+	//Candle
+	AnimatedSprite* spr_background;
+	AnimatedSprite* spr_title;
+	AnimatedSprite* spr_candle_idle;
+	AnimatedSprite* spr_candle;
 
 	//Font
 	sf::Font* fnt_credits;
 
 	//Titles
-	sf::Text m_title_leaddesign;
-	sf::Text m_title_producer;
-	sf::Text m_title_leadprogram;
-	sf::Text m_title_leadart;
-	sf::Text m_title_sounddesign;
-	sf::Text m_title_program;
-	sf::Text m_title_art;
-	sf::Text m_title_honorable;
-
 	sf::Text m_title_simonjohansson;
 	sf::Text m_title_perjohansson;
 	sf::Text m_title_carljohansson;
