@@ -50,14 +50,21 @@ bool CreditsState::Enter(){
 	
 	#pragma region Assign String
 	//Titles
-	m_title_art.setString("Artist");
+	/*m_title_art.setString("Artist");
 	m_title_honorable.setString("Honorable mention");
 	m_title_leadart.setString("Lead Artist");
 	m_title_leaddesign.setString("Lead Designer");
 	m_title_leadprogram.setString("Lead Programmer");
 	m_title_producer.setString("Producer");
 	m_title_program.setString("Progammer");
-	m_title_sounddesign.setString("Sound Designer");
+	m_title_sounddesign.setString("Sound Designer");*/
+
+	m_title_simonjohansson.setString("Lead designer/Sound designer");
+	m_title_perjohansson.setString("Lead programmer");
+	m_title_carljohansson.setString("Programmer");
+	m_title_jonnajarlsson.setString("Lead artist");
+	m_title_anitastenholm.setString("Producer/Artist");
+	m_title_wilhelmjansson.setString("Honorable mention");
 
 	//Names
 	m_name_anitastenholm.setString("Anita Stenholm");
@@ -69,71 +76,103 @@ bool CreditsState::Enter(){
 	#pragma endregion
 
 	#pragma region Assign Font
-	m_title_art.setFont(*fnt_credits);
+	/*m_title_art.setFont(*fnt_credits);
 	m_title_honorable.setFont(*fnt_credits);
 	m_title_leadart.setFont(*fnt_credits);
 	m_title_leaddesign.setFont(*fnt_credits);
 	m_title_leadprogram.setFont(*fnt_credits);
 	m_title_producer.setFont(*fnt_credits);
 	m_title_program.setFont(*fnt_credits);
-	m_title_sounddesign.setFont(*fnt_credits);
+	m_title_sounddesign.setFont(*fnt_credits);*/
 	m_name_anitastenholm.setFont(*fnt_credits);
 	m_name_carljohansson.setFont(*fnt_credits);
 	m_name_jonnajarlsson.setFont(*fnt_credits);
 	m_name_perjohansson.setFont(*fnt_credits);
 	m_name_simonjohansson.setFont(*fnt_credits);
 	m_name_wilhelmjansson.setFont(*fnt_credits);
+
+	m_title_anitastenholm.setFont(*fnt_credits);
+	m_title_carljohansson.setFont(*fnt_credits);
+	m_title_jonnajarlsson.setFont(*fnt_credits);
+	m_title_perjohansson.setFont(*fnt_credits);
+	m_title_simonjohansson.setFont(*fnt_credits);
+	m_title_wilhelmjansson.setFont(*fnt_credits);
 	#pragma endregion
 
 	#pragma region Assign Textsize
-	m_title_art.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	/*m_title_art.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_honorable.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_leadart.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_leaddesign.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_leadprogram.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_producer.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	m_title_program.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
-	m_title_sounddesign.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_sounddesign.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));*/
 	m_name_anitastenholm.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	m_name_carljohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	m_name_jonnajarlsson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	m_name_perjohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	m_name_simonjohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	m_name_wilhelmjansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+
+	m_title_anitastenholm.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_carljohansson.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_jonnajarlsson.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_perjohansson.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_simonjohansson.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_wilhelmjansson.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
 	#pragma endregion
 
 	#pragma region Assign Text Color
-	m_title_art.setColor(sf::Color(155,148,129));
+	/*m_title_art.setColor(sf::Color(155,148,129));
 	m_title_honorable.setColor(sf::Color(155,148,129));
 	m_title_leadart.setColor(sf::Color(155,148,129));
 	m_title_leaddesign.setColor(sf::Color(155,148,129));
 	m_title_leadprogram.setColor(sf::Color(155,148,129));
 	m_title_producer.setColor(sf::Color(155,148,129));
 	m_title_program.setColor(sf::Color(155,148,129));
-	m_title_sounddesign.setColor(sf::Color(155,148,129));
+	m_title_sounddesign.setColor(sf::Color(155,148,129));*/
 	m_name_anitastenholm.setColor(sf::Color(155,148,129));
 	m_name_carljohansson.setColor(sf::Color(155,148,129));
 	m_name_jonnajarlsson.setColor(sf::Color(155,148,129));
 	m_name_perjohansson.setColor(sf::Color(155,148,129));
 	m_name_simonjohansson.setColor(sf::Color(155,148,129));
 	m_name_wilhelmjansson.setColor(sf::Color(155,148,129));
+	
+	m_title_anitastenholm.setColor(sf::Color(155,148,129));
+	m_title_carljohansson.setColor(sf::Color(155,148,129));
+	m_title_jonnajarlsson.setColor(sf::Color(155,148,129));
+	m_title_perjohansson.setColor(sf::Color(155,148,129));
+	m_title_simonjohansson.setColor(sf::Color(155,148,129));
+	m_title_wilhelmjansson.setColor(sf::Color(155,148,129));
 	#pragma endregion
 
 	#pragma region Assign Positions
-	m_title_art.setPosition(m_system->m_width/2 - m_title_art.getGlobalBounds().width/2, 0);
+	/*m_title_art.setPosition(m_system->m_width/2 - m_title_art.getGlobalBounds().width/2, 0);
 	m_title_honorable.setPosition(m_system->m_width/2 - m_title_honorable.getGlobalBounds().width, 0);
 	m_title_leadart.setPosition(m_system->m_width/2 - m_title_leadart.getGlobalBounds().width, 0);
 	m_title_leaddesign.setPosition(m_system->m_width/2 - m_title_leaddesign.getGlobalBounds().width, 0);
 	m_title_leadprogram.setPosition(m_system->m_width/2 - m_title_leadprogram.getGlobalBounds().width, 0);
 	m_title_producer.setPosition(m_system->m_width/2 - m_title_producer.getGlobalBounds().width, 0);
 	m_title_program.setPosition(m_system->m_width/2 - m_title_program.getGlobalBounds().width, 0);
-	m_title_sounddesign.setPosition(m_system->m_width/2 - m_title_sounddesign.getGlobalBounds().width, 0);
-	m_name_anitastenholm.setPosition(m_system->m_width/2 - m_name_anitastenholm.getGlobalBounds().width, 0);
+	m_title_sounddesign.setPosition(m_system->m_width/2 - m_title_sounddesign.getGlobalBounds().width, 0);*/
+	m_name_anitastenholm.setPosition(m_system->m_width/2 + 20*scale.x, 0);
 	m_name_carljohansson.setPosition(m_system->m_width/2 - m_name_carljohansson.getGlobalBounds().width, 0);
-	m_name_jonnajarlsson.setPosition(m_system->m_width/2 - m_name_jonnajarlsson.getGlobalBounds().width, 0);
+	m_name_jonnajarlsson.setPosition(m_system->m_width/2 + 20*scale.x, 0);
 	m_name_perjohansson.setPosition(m_system->m_width/2 - m_name_perjohansson.getGlobalBounds().width, 0);
 	m_name_simonjohansson.setPosition(m_system->m_width/2 - m_name_simonjohansson.getGlobalBounds().width, 0);
-	m_name_wilhelmjansson.setPosition(m_system->m_width/2 - m_name_wilhelmjansson.getGlobalBounds().width, 0);
+	m_name_wilhelmjansson.setPosition(m_system->m_width/2 + 20*scale.x, 0);
+
+	m_title_anitastenholm.setPosition(m_name_anitastenholm.getPosition().x + m_name_anitastenholm.getGlobalBounds().width + 0*scale.x,
+		m_name_anitastenholm.getPosition().y + m_name_anitastenholm.getGlobalBounds().height - m_title_anitastenholm.getGlobalBounds().height);
+	m_title_carljohansson.setPosition(m_name_carljohansson.getPosition().x + m_name_carljohansson.getGlobalBounds().width + 0*scale.x,
+		m_name_carljohansson.getPosition().y + m_name_carljohansson.getGlobalBounds().height - m_title_carljohansson.getGlobalBounds().height);
+	m_title_perjohansson.setPosition(m_name_perjohansson.getPosition().x + m_name_perjohansson.getGlobalBounds().width + 0*scale.x,
+		m_name_perjohansson.getPosition().y + m_name_perjohansson.getGlobalBounds().height - m_title_perjohansson.getGlobalBounds().height);
+	m_title_carljohansson.setPosition(m_name_simonjohansson.getPosition().x + m_name_simonjohansson.getGlobalBounds().width + 0*scale.x,
+		m_name_simonjohansson.getPosition().y + m_name_simonjohansson.getGlobalBounds().height - m_title_carljohansson.getGlobalBounds().height);
+	m_title_carljohansson.setPosition(m_name_wilhelmjansson.getPosition().x + m_name_wilhelmjansson.getGlobalBounds().width + 0*scale.x,
+		m_name_wilhelmjansson.getPosition().y + m_name_wilhelmjansson.getGlobalBounds().height - m_title_wilhelmjansson.getGlobalBounds().height);
 	#pragma endregion
 
 	return true;
@@ -179,14 +218,14 @@ void CreditsState::Draw(){
 
 	//m_system->m_window->draw(rect_fade);
 
-	m_system->m_window->draw(m_title_art);
+	/*m_system->m_window->draw(m_title_art);
 	m_system->m_window->draw(m_title_honorable);
 	m_system->m_window->draw(m_title_leadart);
 	m_system->m_window->draw(m_title_leaddesign);
 	m_system->m_window->draw(m_title_leadprogram);
 	m_system->m_window->draw(m_title_producer);
 	m_system->m_window->draw(m_title_program);
-	m_system->m_window->draw(m_title_sounddesign);
+	m_system->m_window->draw(m_title_sounddesign);*/
 	m_system->m_window->draw(m_name_anitastenholm);
 	m_system->m_window->draw(m_name_carljohansson);
 	m_system->m_window->draw(m_name_jonnajarlsson);

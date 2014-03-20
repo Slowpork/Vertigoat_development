@@ -57,6 +57,13 @@ private:
 	sf::Text m_title_art;
 	sf::Text m_title_honorable;
 
+	sf::Text m_title_simonjohansson;
+	sf::Text m_title_perjohansson;
+	sf::Text m_title_carljohansson;
+	sf::Text m_title_jonnajarlsson;
+	sf::Text m_title_anitastenholm;
+	sf::Text m_title_wilhelmjansson;
+
 	//Names
 	sf::Text m_name_simonjohansson;
 	sf::Text m_name_perjohansson;
