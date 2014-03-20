@@ -312,7 +312,7 @@ void GameState::viewScale(float _deltatime)
 
 float GameState::LightFactor()
 {
-	return 3.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*5.f);
+	return 2.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*2.f);
 }
 
 void GameState::FlickerLight(float _deltatime)
@@ -440,9 +440,6 @@ bool GameState::Update(float _deltatime){
 	//Citter
 	spr_critter->play(_deltatime);
 
-	spr_monster_big->play(_deltatime*1.2f);
-	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
-
 	m_enemy_manager->Update(_deltatime, player->getPosition());
 
 	if (critter_spawned == true)
@@ -563,8 +560,6 @@ void GameState::Draw()
 	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	m_system->m_window->draw(*spr_critter);
-
-	m_system->m_window->draw(*spr_monster_big);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);

@@ -80,7 +80,6 @@ private:
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
-	AnimatedSprite* spr_monster_big;
 	AnimatedSprite* spr_critter;
 
 	bool critter_spawned;
