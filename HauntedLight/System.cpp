@@ -194,6 +194,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
+	m_sprite_manager->addTexture("Game/spr_monster_big_turn.png");
 
 	ProcessLoad();
 

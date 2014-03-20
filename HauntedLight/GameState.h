@@ -42,8 +42,8 @@ public:
 private:
 
 	void addWall(sf::Vector2f _pos);
-	void addPickaxe(sf::Vector2f _pos);
-	void addMatches(sf::Vector2f _pos);
+	void addCrawler(sf::Vector2f _pos);
+	void addPickup(sf::Vector2f _pos, int _obj);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
 	float LightFactor();
@@ -80,7 +80,6 @@ private:
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_player_shadow;
-	AnimatedSprite* spr_monster_big;
 	AnimatedSprite* spr_critter;
 
 	bool critter_spawned;

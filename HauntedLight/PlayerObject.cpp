@@ -64,7 +64,7 @@ void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
 	m_spr_walk = m_sprite;
 
 	m_spr_walk->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
-	m_spr_run->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
+	m_spr_run->setOrigin(m_sprite->getSize().x/2,m_sprite->getSize().y/2);
 	m_spr_idle->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 }
 
@@ -77,7 +77,11 @@ bool PlayerObject::addMatch()
 {
 	if (m_matches<5)
 	{
-		m_matches++;
+		m_matches += 3;
+
+		if(m_matches > 5)
+			m_matches = 5;
+
 		return true;
 	}
 	return false;
@@ -273,7 +277,7 @@ void PlayerObject::Update(float _deltatime)
 			if ( moving)
 			{
 				m_running = true;
-				m_stamina -= _deltatime*25.f;
+				//m_stamina -= _deltatime*25.f;
 			}
 		}
 	}
@@ -293,13 +297,16 @@ void PlayerObject::Update(float _deltatime)
 		m_stamina = 100.f;
 	}
 
+	if (abs(m_vel.x) > 0.2 || (m_vel.y) > 0.2 )
+		moving = true;
+
 	// ANIMATE
 	if (moving)
 	{
 		if ( m_running)
 		{
 			setState("run");
-			m_sprite->play(_deltatime*2);
+			m_sprite->play(_deltatime);
 		}
 		else
 		{

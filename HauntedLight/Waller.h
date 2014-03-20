@@ -9,7 +9,7 @@ namespace sf
 	class RenderWindow;
 };
 
-class Waller : EnemyObject
+class Waller : public EnemyObject
 {
 public:
 	Waller(AnimatedSprite* _sprite = nullptr, Collider* _col = nullptr);

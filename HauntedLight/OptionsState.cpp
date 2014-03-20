@@ -144,7 +144,7 @@ bool OptionsState::Enter(){
 		m_button_fullscreen->setSprite(spr_checkbox_empty_fullscreen);
 	}
 
-	m_vol = m_system->m_volume*10;
+	m_vol = m_system->m_volume*10.f;
 	spr_volume_bar->setFrame(m_vol);
 
 	m_text_fullscreen.setString("Fullscreen");
@@ -313,22 +313,31 @@ bool OptionsState::Update(float _deltatime){
 	// APPLY
 	if(m_button_apply->Update(_deltatime, m_system->m_mouse))
 	{
-		m_system->m_volume = m_vol/10;
-		
-		m_system->m_fullscreen = m_fullscreen;
-		m_system->m_vsync = m_vsync;
+		m_system->m_volume = (float)m_vol/10.f;
 
-		m_system->m_width = m_system->m_video_modes[m_resolution].width;
-		m_system->m_height = m_system->m_video_modes[m_resolution].height;
-		m_system->m_bit = m_system->m_video_modes[m_resolution].bitsPerPixel;
+		// CHANGE VIDEO SETTINGS
+		if (m_system->m_width != m_system->m_video_modes[m_resolution].width
+		||  m_system->m_height != m_system->m_video_modes[m_resolution].height
+		||  m_system->m_bit != m_system->m_video_modes[m_resolution].bitsPerPixel
+		||  m_system->m_vsync != m_vsync
+		||  m_system->m_fullscreen != m_fullscreen)
+		{
+			m_system->m_width = m_system->m_video_modes[m_resolution].width;
+			m_system->m_height = m_system->m_video_modes[m_resolution].height;
+			m_system->m_bit = m_system->m_video_modes[m_resolution].bitsPerPixel;
 
-		m_system->setVideoMode();
-		m_next = "MenuState";
-		return false;
+			m_system->m_fullscreen = m_fullscreen;
+			m_system->m_vsync = m_vsync;
+
+			m_system->setVideoMode();
+			m_next = "MenuState";
+			return false;
+		}
 	}
 
 	if(m_button_back->Update(_deltatime, m_system->m_mouse))
 	{
+		m_system->m_volume = (float)m_vol/10.f;
 		m_next = "";
 		return false;
 	}

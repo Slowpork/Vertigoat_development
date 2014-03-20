@@ -82,7 +82,7 @@ void Button::Draw(sf::RenderWindow* _window)
 	_window->draw(*m_sprite);
 	
 	m_sprite->setFrame(1);
-	m_sprite->setOpacity(m_opacity);
+	m_sprite->setOpacity((m_sprite->getColor().a/255.f)*m_opacity);
 	_window->draw(*m_sprite);
 }
 

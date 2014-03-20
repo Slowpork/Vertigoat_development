@@ -32,6 +32,7 @@ public:
 	Collider* getCollider();
 
 	sf::Vector2f getVelocity();
+
 	float getSpeed();
 
 protected:

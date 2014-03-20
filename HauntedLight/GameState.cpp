@@ -40,8 +40,10 @@
 #include "Random.h"
 
 #include "Wall.h"
-#include "PickaxeObject.h"
 #include "PlayerObject.h"
+#include "Crawler.h"
+#include "Waller.h"
+#include "Critter.h"
 
 #include "AnimatedSprite.h"
 #include "Collider.h"
@@ -108,7 +110,7 @@ bool GameState::Enter()
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
 	spr_player->setScale(.5,.5);
-	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
 	spr_player_run->setScale(.5,.5);
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
@@ -126,9 +128,6 @@ bool GameState::Enter()
 	spr_critter = m_system->m_sprite_manager->getSprite("Game/spr_critter_walk.png",0,0,128,128,7);
 	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
-
-	spr_monster_big = m_system->m_sprite_manager->getSprite("Game/spr_monster_big.png",0,0,256,256,12);
-	spr_monster_big->setRotation(-90);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
@@ -183,13 +182,9 @@ bool GameState::Enter()
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
-
-	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
-	pickaxe->setPosition(sf::Vector2f(100,100));
 	
-
-
-	addPickaxe(sf::Vector2f(SIZE*128,SIZE*128));
+	addPickup(sf::Vector2f(128,128),1);
+	addPickup(sf::Vector2f(256,256),2);
 
 	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
 	m_light_system->update();
@@ -242,18 +237,41 @@ void GameState::addWall(sf::Vector2f _pos)
 	m_object_manager->Add(wall,5);
 }
 
-void GameState::addPickaxe(sf::Vector2f _pos)
+void GameState::addCrawler(sf::Vector2f _pos)
 {
-	_pos.x = 100, _pos.y = 100;
+	AnimatedSprite* spr_crawler = m_system->m_sprite_manager->getSprite(
+		"Game/spr_monster_big.png",0,0,256,256,12);
+	AnimatedSprite* spr_crawler_turn = m_system->m_sprite_manager->getSprite(
+		"Game/spr_monster_big_turn.png",0,0,256,256,22);
 
-	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite(
+	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
+
+	crawler->setSprite(spr_crawler_turn);
+	crawler->setPosition(_pos);
+	m_object_manager->Add(crawler,5);
+}
+
+void GameState::addPickup(sf::Vector2f _pos, int _obj)
+{
+	AnimatedSprite* spr = nullptr;
+
+	if (_obj == 1)
+	{
+		spr = m_system->m_sprite_manager->getSprite(
 		"Game/spr_pickaxe_pickup.png",0,0,128,128);
-	spr_pickaxe->setScale(0.5f,0.5f);
+	}
+	else
+	{
+		spr = m_system->m_sprite_manager->getSprite(
+		"Game/spr_matches_pickup.png",0,0,128,128);
+	}
+	spr->setScale(0.5f,0.5f);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
-	GameObject* pickaxe = new GameObject(spr_pickaxe,col_Pickaxe);
-	pickaxe->setPosition(_pos);
-	pickaxe->setDepth(1);
-	m_pickup_manager->Add(pickaxe);
+	GameObject* obj = new GameObject(spr,col_Pickaxe);
+	obj->setPosition(_pos);
+	obj->setDepth(_obj);
+	m_pickup_manager->Add(obj);
 }
 
 void GameState::viewScale(float _deltatime)
@@ -294,7 +312,7 @@ void GameState::viewScale(float _deltatime)
 
 float GameState::LightFactor()
 {
-	return 3.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*5.f);
+	return 2.f + sin(m_timer*7.f) + sin(m_timer*3.f) + cos(m_timer*2.f);
 }
 
 void GameState::FlickerLight(float _deltatime)
@@ -422,9 +440,6 @@ bool GameState::Update(float _deltatime){
 	//Citter
 	spr_critter->play(_deltatime);
 
-	spr_monster_big->play(_deltatime*1.2f);
-	spr_monster_big->setPosition(sf::Vector2f(128.f, player->getPosition().y + 512 + 64));
-
 	m_enemy_manager->Update(_deltatime, player->getPosition());
 
 	if (critter_spawned == true)
@@ -545,8 +560,6 @@ void GameState::Draw()
 	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	m_system->m_window->draw(*spr_critter);
-
-	m_system->m_window->draw(*spr_monster_big);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(5,5);

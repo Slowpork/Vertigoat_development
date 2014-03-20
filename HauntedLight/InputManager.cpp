@@ -22,6 +22,16 @@ bool KeyboardObject::IsDownOnce(int _key) const
 	return current[_key] && !previous[_key];
 }
 
+bool KeyboardObject::IsDownOnceAny() const 
+{
+	for(int i = 0; i < 256; i++)
+	{
+		if (current[i] && !previous[i])
+			return true;
+	}
+	return false;
+};
+
 void KeyboardObject::PostUpdate()
 {
 	for(int i = 0; i < 256; i++)
@@ -68,6 +78,16 @@ bool MouseObject::IsDownOnce(EMouseButton _button) const
 {
 	return current[_button] && !previous[_button];
 }
+
+bool MouseObject::IsDownOnceAny() const 
+{
+	for(int i = 0; i < ButtonCount; i++)
+	{
+		if (current[i] && !previous[i])
+			return true;
+	}
+	return false;
+};
 
 void MouseObject::PostUpdate()
 {
