@@ -40,7 +40,6 @@
 #include "Random.h"
 
 #include "Wall.h"
-#include "PickaxeObject.h"
 #include "PlayerObject.h"
 #include "Crawler.h"
 #include "Waller.h"
@@ -183,9 +182,6 @@ bool GameState::Enter()
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run);
-
-	pickaxe = new PickaxeObject(spr_pickaxe, col_pickaxe);
-	pickaxe->setPosition(sf::Vector2f(100,100));
 	
 	addPickup(sf::Vector2f(128,128),1);
 	addPickup(sf::Vector2f(256,256),2);

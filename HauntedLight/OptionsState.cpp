@@ -362,12 +362,6 @@ bool OptionsState::Update(float _deltatime){
 		m_vsync = !m_vsync;
 	}
 
-	if (m_system->m_keyboard->IsDownOnceAny() || m_system->m_mouse->IsDownOnceAny())
-	{
-		m_next = "";
-		return false;
-	}
-
 	return true;
 }
 

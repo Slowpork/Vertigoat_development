@@ -55,12 +55,6 @@
     <Filter Include="Source Files\Objects\Enemies">
       <UniqueIdentifier>{d164f19d-f6a1-48bb-a553-6f256bde617f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects\Pickups">
-      <UniqueIdentifier>{a8880c08-9e11-4627-bf55-3c241994a208}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects\Pickups">
-      <UniqueIdentifier>{11ed3f36-d8fc-48ce-acbe-b4bd7e57637b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Managers\Objects">
       <UniqueIdentifier>{a8494d22-ab3d-4467-8885-c2ef5fee84a6}</UniqueIdentifier>
     </Filter>
@@ -171,15 +165,9 @@
     <ClCompile Include="PickupManager.cpp">
       <Filter>Source Files\Managers\Objects</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="MatchesObject.cpp">
-      <Filter>Source Files\Objects\Pickups</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-=======
->>>>>>> bb41b7bf0b145054fda9aab073b8fdd7ade8885f
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
