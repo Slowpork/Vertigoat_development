@@ -87,7 +87,8 @@ bool OptionsState::Enter(){
 	m_button_fullscreen = new Button(spr_checkbox_empty_fullscreen, 
 		spr_checkbox_empty_fullscreen->getSize().x*spr_checkbox_empty_fullscreen->getScale().x,
 		spr_checkbox_empty_fullscreen->getSize().y*spr_checkbox_empty_fullscreen->getScale().y, 
-		m_system->m_width/2 + 150*scale.x, m_system->m_height/2 - 120*scale.y);
+		m_system->m_width/2 + (150*scale.x - spr_checkbox_empty_fullscreen->getSize().x*spr_checkbox_empty_fullscreen->getScale().x),
+		m_system->m_height/2 - 120*scale.y);
 
 	spr_checkbox_empty_vsync = m_system->m_sprite_manager->getSprite("Options/spr_checkbox_empty.png",0,0,128,128,2);
 	spr_checkbox_empty_vsync->setScale(0.75*scale.x, 0.75*scale.y);
@@ -96,7 +97,7 @@ bool OptionsState::Enter(){
 	m_button_vsync = new Button(spr_checkbox_empty_vsync, 
 		spr_checkbox_empty_vsync->getSize().x*spr_checkbox_empty_vsync->getScale().x,
 		spr_checkbox_empty_vsync->getSize().y*spr_checkbox_empty_vsync->getScale().y, 
-		m_system->m_width/2 - 214*scale.x, m_system->m_height/2 - 120*scale.y);
+		m_system->m_width/2 - 150*scale.x, m_system->m_height/2 - 120*scale.y);
 
 	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
 	spr_button_back->setScale(scale.x, scale.y);
@@ -151,8 +152,7 @@ bool OptionsState::Enter(){
 	m_text_fullscreen.setFont(*fnt_options);
 	m_text_fullscreen.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_fullscreen.setPosition(m_button_fullscreen->getPosition().x + 
-		(m_button_fullscreen->getSize().x*scale.x)/2 - 
-		(m_text_fullscreen.getLocalBounds().width/2),
+		m_button_fullscreen->getSize().x/2 - (m_text_fullscreen.getLocalBounds().width/2),
 		m_button_fullscreen->getPosition().y - m_text_fullscreen.getLocalBounds().height - 5*scale.y);
 	m_text_fullscreen.setColor(sf::Color(155,148,129));
 
@@ -169,14 +169,14 @@ bool OptionsState::Enter(){
 	m_text_volume.setPosition(spr_volume_bar->getPosition().x + 
 		(spr_volume_bar->getSize().x*spr_volume_bar->getScale().x)/2 - 
 		(m_text_volume.getLocalBounds().width/2),
-		spr_volume_bar->getPosition().y - m_text_volume.getLocalBounds().height - 20*scale.y);
+		spr_volume_bar->getPosition().y - m_text_volume.getGlobalBounds().height - 20*scale.y);
 	m_text_volume.setColor(sf::Color(155,148,129));
 
 	m_text_vsync.setFont(*fnt_options);
 	m_text_vsync.setString("Vsync");
 	m_text_vsync.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_vsync.setPosition(m_button_vsync->getPosition().x + 
-		(m_button_vsync->getSize().x*scale.x)/2 - (m_text_vsync.getLocalBounds().width/2),
+		m_button_vsync->getSize().x/2 - (m_text_vsync.getGlobalBounds().width/2),
 		m_button_vsync->getPosition().y - m_text_vsync.getLocalBounds().height - 5*scale.y);
 	m_text_vsync.setColor(sf::Color(155,148,129));
 

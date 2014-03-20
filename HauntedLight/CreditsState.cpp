@@ -191,7 +191,7 @@ void CreditsState::Resume()
 bool CreditsState::Update(float _deltatime){
 	//std::cout << "CreditsState::Update" << std::endl;
 
-	if(m_system->m_keyboard->IsDownOnceAny())
+	if(m_system->m_keyboard->IsDownOnceAny() || m_system->m_mouse->IsDownOnceAny())
 	{
 		m_next = "";
 		return false;
