@@ -162,9 +162,6 @@
     <ClCompile Include="micropather.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
-    <ClCompile Include="PickaxeObject.cpp">
-      <Filter>Source Files\Objects\Pickups</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Source Files\Managers\Objects</Filter>
     </ClCompile>
@@ -174,12 +171,15 @@
     <ClCompile Include="PickupManager.cpp">
       <Filter>Source Files\Managers\Objects</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="MatchesObject.cpp">
       <Filter>Source Files\Objects\Pickups</Filter>
     </ClCompile>
     <ClCompile Include="EnemyObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+=======
+>>>>>>> bb41b7bf0b145054fda9aab073b8fdd7ade8885f
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -275,9 +275,6 @@
     <ClInclude Include="micropather.h">
       <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
-    <ClInclude Include="PickaxeObject.h">
-      <Filter>Header Files\Objects\Pickups</Filter>
-    </ClInclude>
     <ClInclude Include="PickupManager.h">
       <Filter>Header Files\Managers\Objects</Filter>
     </ClInclude>
@@ -286,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="CreditsState.h">
       <Filter>Header Files\States</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchesObject.h">
-      <Filter>Header Files\Objects\Pickups</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
