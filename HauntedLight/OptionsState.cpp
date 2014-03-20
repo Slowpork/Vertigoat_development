@@ -152,15 +152,15 @@ bool OptionsState::Enter(){
 	m_text_fullscreen.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_fullscreen.setPosition(m_button_fullscreen->getPosition().x + 
 		(m_button_fullscreen->getSize().x*scale.x)/2 - 
-		(m_text_fullscreen.getGlobalBounds().width/2),
-		m_button_fullscreen->getPosition().y - m_text_fullscreen.getGlobalBounds().height - 5*scale.y);
+		(m_text_fullscreen.getLocalBounds().width/2),
+		m_button_fullscreen->getPosition().y - m_text_fullscreen.getLocalBounds().height - 5*scale.y);
 	m_text_fullscreen.setColor(sf::Color(155,148,129));
 
 	m_text_resolution.setString("Resolution");
 	m_text_resolution.setFont(*fnt_options);
 	m_text_resolution.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_text_resolution.setPosition((m_system->m_width/2 - (m_text_resolution.getGlobalBounds().width/2)),
-		spr_button_resolutiondown->getPosition().y - m_text_resolution.getGlobalBounds().height - 20*scale.y);
+	m_text_resolution.setPosition((m_system->m_width/2 - (m_text_resolution.getLocalBounds().width/2)),
+		spr_button_resolutiondown->getPosition().y - m_text_resolution.getLocalBounds().height - 20*scale.y);
 	m_text_resolution.setColor(sf::Color(155,148,129));
 
 	m_text_volume.setString("Volume");
@@ -168,16 +168,16 @@ bool OptionsState::Enter(){
 	m_text_volume.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_volume.setPosition(spr_volume_bar->getPosition().x + 
 		(spr_volume_bar->getSize().x*spr_volume_bar->getScale().x)/2 - 
-		(m_text_volume.getGlobalBounds().width/2),
-		spr_volume_bar->getPosition().y - m_text_volume.getGlobalBounds().height - 20*scale.y);
+		(m_text_volume.getLocalBounds().width/2),
+		spr_volume_bar->getPosition().y - m_text_volume.getLocalBounds().height - 20*scale.y);
 	m_text_volume.setColor(sf::Color(155,148,129));
 
 	m_text_vsync.setFont(*fnt_options);
 	m_text_vsync.setString("Vsync");
 	m_text_vsync.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
 	m_text_vsync.setPosition(m_button_vsync->getPosition().x + 
-		(m_button_vsync->getSize().x*scale.x)/2 - (m_text_vsync.getGlobalBounds().width/2),
-		m_button_vsync->getPosition().y - m_text_vsync.getGlobalBounds().height - 5*scale.y);
+		(m_button_vsync->getSize().x*scale.x)/2 - (m_text_vsync.getLocalBounds().width/2),
+		m_button_vsync->getPosition().y - m_text_vsync.getLocalBounds().height - 5*scale.y);
 	m_text_vsync.setColor(sf::Color(155,148,129));
 
 	/*#pragma region Volume Buttons
@@ -381,8 +381,6 @@ void OptionsState::Draw(){
 
 	m_system->m_window->draw(rect_fade);
 
-	//m_system->m_window->draw(*spr_background);
-
 	m_system->m_window->draw(*spr_volume_bar);
 
 	m_button_volumedown->getSprite()->setOpacity(255);
@@ -420,7 +418,7 @@ void OptionsState::Draw(){
 	txt_res.setCharacterSize((int)(48*((m_system->m_scale.x + m_system->m_scale.y)/2)));
 	txt_res.setColor(sf::Color(125,118,99));
 	
-	txt_res.setPosition(m_system->m_width/2 - txt_res.getLocalBounds().width/2,m_system->m_height/2 - 235.f*m_system->m_scale.y);
+	txt_res.setPosition(m_system->m_width/2 - txt_res.getLocalBounds().width/2, m_system->m_height/2 - 235.f*m_system->m_scale.y);
 
 	m_system->m_window->draw(txt_res);
 

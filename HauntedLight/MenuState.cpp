@@ -383,15 +383,12 @@ void MenuState::Draw(){
 		m_button_options->getSprite()->setOpacity(opactiy);
 		m_button_quit->getSprite()->setOpacity(opactiy);
 
-
 		m_system->m_window->draw(*spr_title);
 
-		//------------BUTTON-------------
 		m_button_play->Draw(m_system->m_window);
 		m_button_credits->Draw(m_system->m_window);
 		m_button_options->Draw(m_system->m_window);
 		m_button_quit->Draw(m_system->m_window);
-		//--------------------------------------
 	}
 
 	// BLACK FADE
