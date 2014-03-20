@@ -7,11 +7,11 @@
 #include <iostream>
 #include <string>
 
-#include "SFML\Graphics\RenderWindow.hpp"
-#include "SFML\Graphics\RectangleShape.hpp"
-#include "SFML\Graphics\Font.hpp"
-#include "SFML\Graphics\Text.hpp"
-#include "SFML/Window/Keyboard.hpp"
+#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML\Graphics\RectangleShape.hpp>
+#include <SFML\Graphics\Font.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Window\Keyboard.hpp>
 
 #include "System.h"
 
@@ -36,7 +36,8 @@ CreditsState::CreditsState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
-	m_textSize = 40;
+	m_textSize_title = 32;
+	m_textSize_name = 40;
 
 	m_system = _system;
 }
@@ -45,13 +46,6 @@ bool CreditsState::Enter(){
 	std::cout << m_name << std::endl;
 
 	sf::Vector2f scale = m_system->m_scale;
-
-	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
-	spr_button_back->setScale(scale.x, scale.y);
-	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
-		spr_button_back->getSize().y*spr_button_back->getScale().y, 
-		m_system->m_width - spr_button_back->getSize().x*spr_button_back->getScale().x,
-		(m_system->m_height/9)*7 - 32*scale.y);
 
 	
 	#pragma region Assign String
@@ -92,20 +86,20 @@ bool CreditsState::Enter(){
 	#pragma endregion
 
 	#pragma region Assign Textsize
-	m_title_art.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_honorable.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_leadart.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_leaddesign.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_leadprogram.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_producer.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_program.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_title_sounddesign.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_anitastenholm.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_carljohansson.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_jonnajarlsson.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_perjohansson.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_simonjohansson.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
-	m_name_wilhelmjansson.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
+	m_title_art.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_honorable.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_leadart.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_leaddesign.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_leadprogram.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_producer.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_program.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_title_sounddesign.setCharacterSize((int)(m_textSize_title*((scale.x + scale.y)/2)));
+	m_name_anitastenholm.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+	m_name_carljohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+	m_name_jonnajarlsson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+	m_name_perjohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+	m_name_simonjohansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
+	m_name_wilhelmjansson.setCharacterSize((int)(m_textSize_name*((scale.x + scale.y)/2)));
 	#pragma endregion
 
 	#pragma region Assign Text Color
@@ -148,6 +142,9 @@ void CreditsState::Exit()
 {
 	std::cout << "  " << m_name << "->";
 
+	delete m_button_back;
+	m_button_back = nullptr;
+
 	m_paused = false;
 }
 
@@ -163,8 +160,8 @@ void CreditsState::Resume()
 
 bool CreditsState::Update(float _deltatime){
 	//std::cout << "CreditsState::Update" << std::endl;
-
-	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::C) )
+	
+	if(m_system->m_keyboard->IsDownOnce(sf::Keyboard::C))
 	{
 		m_next = "";
 		return false;
@@ -180,7 +177,22 @@ void CreditsState::Draw(){
 	sf::RectangleShape rect_fade(sf::Vector2f(m_system->m_width, m_system->m_height));
 	rect_fade.setFillColor(sf::Color(0,0,0,128));
 
-	m_system->m_window->draw(rect_fade);
+	//m_system->m_window->draw(rect_fade);
+
+	m_system->m_window->draw(m_title_art);
+	m_system->m_window->draw(m_title_honorable);
+	m_system->m_window->draw(m_title_leadart);
+	m_system->m_window->draw(m_title_leaddesign);
+	m_system->m_window->draw(m_title_leadprogram);
+	m_system->m_window->draw(m_title_producer);
+	m_system->m_window->draw(m_title_program);
+	m_system->m_window->draw(m_title_sounddesign);
+	m_system->m_window->draw(m_name_anitastenholm);
+	m_system->m_window->draw(m_name_carljohansson);
+	m_system->m_window->draw(m_name_jonnajarlsson);
+	m_system->m_window->draw(m_name_perjohansson);
+	m_system->m_window->draw(m_name_simonjohansson);
+	m_system->m_window->draw(m_name_wilhelmjansson);
 }
 
 std::string CreditsState::Next(){

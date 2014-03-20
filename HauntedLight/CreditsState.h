@@ -37,7 +37,8 @@ private:
 	System* m_system;
 
 	//STATE SPECIFIC
-	int m_textSize;
+	int m_textSize_title;
+	int m_textSize_name;
 
 	//Buttons
 	AnimatedSprite* spr_button_back;
