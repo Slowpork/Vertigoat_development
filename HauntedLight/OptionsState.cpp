@@ -310,17 +310,22 @@ bool OptionsState::Update(float _deltatime){
 		}
 	}
 
+	// CHANGE VIDEO SETTINGS
+	if (m_system->m_width != m_system->m_video_modes[m_resolution].width
+	||  m_system->m_height != m_system->m_video_modes[m_resolution].height
+	||  m_system->m_bit != m_system->m_video_modes[m_resolution].bitsPerPixel
+	||  m_system->m_vsync != m_vsync
+	||  m_system->m_fullscreen != m_fullscreen)
+	m_changed = true;
+	else
+	m_changed = false;
+
 	// APPLY
 	if(m_button_apply->Update(_deltatime, m_system->m_mouse))
 	{
 		m_system->m_volume = (float)m_vol/10.f;
 
-		// CHANGE VIDEO SETTINGS
-		if (m_system->m_width != m_system->m_video_modes[m_resolution].width
-		||  m_system->m_height != m_system->m_video_modes[m_resolution].height
-		||  m_system->m_bit != m_system->m_video_modes[m_resolution].bitsPerPixel
-		||  m_system->m_vsync != m_vsync
-		||  m_system->m_fullscreen != m_fullscreen)
+		if (m_changed)
 		{
 			m_system->m_width = m_system->m_video_modes[m_resolution].width;
 			m_system->m_height = m_system->m_video_modes[m_resolution].height;
@@ -392,8 +397,15 @@ void OptionsState::Draw(){
 	m_button_vsync->getSprite()->setOpacity(255);
 	m_button_vsync->Draw(m_system->m_window);
 
-	m_button_apply->getSprite()->setOpacity(255);
-	m_button_apply->Draw(m_system->m_window);
+	m_button_apply->getSprite()->setOpacity(64 + m_changed*191);
+	if (m_changed)
+		m_button_apply->Draw(m_system->m_window);
+	else
+	{
+		m_button_apply->getSprite()->setFrame(0);
+		m_system->m_window->draw(*m_button_apply->getSprite());
+	}
+
 	m_button_back->getSprite()->setOpacity(255);
 	m_button_back->Draw(m_system->m_window);
 
@@ -405,7 +417,7 @@ void OptionsState::Draw(){
 	sf::Text txt_res;
 	txt_res.setFont(*fnt_options);
 	txt_res.setString(txt);
-	txt_res.setCharacterSize(48);
+	txt_res.setCharacterSize((int)(48*((m_system->m_scale.x + m_system->m_scale.y)/2)));
 	txt_res.setColor(sf::Color(125,118,99));
 	
 	txt_res.setPosition(m_system->m_width/2 - txt_res.getLocalBounds().width/2,m_system->m_height/2 - 235.f*m_system->m_scale.y);

@@ -67,7 +67,7 @@ private:
 	//Sounds
 	sf::Sound* snd_Start_Up_screen;
 	sf::Sound* snd_Main_Menu_blow_out_candle;
-	sf::Sound* snd_New_Game_button;
+	sf::Sound* snd_button;
 	sf::Music* music_main;
 
 	int state;

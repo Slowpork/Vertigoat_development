@@ -35,6 +35,7 @@ private:
 	std::string m_next;
 	bool m_paused;
 	bool m_base;
+	bool m_changed;
 	System* m_system;
 
 	//STATE SPECIFIC

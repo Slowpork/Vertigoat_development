@@ -22,6 +22,7 @@ namespace sf
 {
 	class Sound;
 	class Music;
+	class Listener;
 };
 
 class GameState : public State {
@@ -48,7 +49,7 @@ private:
 	void FlickerLight(float _deltatime);
 	float LightFactor();
 	void playerCollision();
-	void pickaxeCollision();
+	void pickupCollision();
 	void drawFloor();
 
 private:
@@ -85,6 +86,8 @@ private:
 	bool critter_spawned;
 
 	// SOUNDS
+	sf::Listener* m_listener;
+
 	sf::Music* music_main;
 	sf::Music* msc_Player_breathing;
 	sf::Music* msc_critter_walk;

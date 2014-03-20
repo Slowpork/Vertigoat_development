@@ -250,7 +250,6 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_Door.wav");
 	m_sound_manager->addSoundBuffer("snd_Equipment_selection.wav");
 	m_sound_manager->addSoundBuffer("snd_Equipment_selection_2.wav");
-	m_sound_manager->addSoundBuffer("snd_Game_Over_screen.wav");
 	m_sound_manager->addSoundBuffer("snd_Mining_not_hitting_anything.wav");
 	m_sound_manager->addSoundBuffer("snd_Mining_Pickaxe.wav");
 	m_sound_manager->addSoundBuffer("snd_Mining_with_pebbles.wav");
@@ -264,7 +263,6 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_wall_monster_1.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_2.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_3.wav");
-	m_sound_manager->addSoundBuffer("snd_wall_monster_4.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_5.wav");
 
 	ProcessLoad();
@@ -368,6 +366,23 @@ void System::ProcessLoad()
 	m_window->display();
 
 	m_load_current++;
+}
+
+sf::Vector3f System::getSoundValue(sf::Vector2f _playerpos, sf::Vector2f _source)
+{
+	sf::Vector3f value;
+	value.x = abs(_playerpos.x - _source.x) / ( m_width / 2 );
+	if ( _playerpos.x > _source.x )
+		value.x *= -1;
+	value.y = abs(_playerpos.y - _source.y) / ( m_height / 2 );
+	if ( _playerpos.y > _source.y )
+		value.y *= -1;
+
+	value.z = 0;
+
+	std::cout << "SoundValue X: " << value.x << " Y: " << value.y << std::endl;
+
+	return value;
 }
 
 void System::drawDebugRect(sf::Vector2f _pos, sf::Vector2f _size)
