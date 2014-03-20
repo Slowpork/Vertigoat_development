@@ -98,6 +98,7 @@
     <ClCompile Include="CreditsState.cpp" />
     <ClCompile Include="Critter.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="FontManager.cpp" />

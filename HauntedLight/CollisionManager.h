@@ -12,6 +12,7 @@ enum Manager
 {
 	WALLS,
 	PICKUPS,
+	ENEMY,
 	COUNT
 };
 

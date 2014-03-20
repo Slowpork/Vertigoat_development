@@ -9,7 +9,7 @@ namespace sf
 	class RenderWindow;
 };
 
-class Critter : EnemyObject
+class Critter : public EnemyObject
 {
 public:
 	Critter(AnimatedSprite* _sprite = nullptr, Collider* _col = nullptr);

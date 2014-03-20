@@ -33,6 +33,7 @@ public:
 
 	bool IsDown(int _key) const;
 	bool IsDownOnce(int _key) const;
+	bool IsDownOnceAny() const;
 	
 	void PostUpdate();
 private:
@@ -52,6 +53,7 @@ public:
 	sf::Vector2f getPos() const;
 	bool IsDown(EMouseButton _button) const;
 	bool IsDownOnce(EMouseButton _button) const;
+	bool IsDownOnceAny() const;
 
 	void PostUpdate();
 

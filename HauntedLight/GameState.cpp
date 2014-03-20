@@ -42,6 +42,9 @@
 #include "Wall.h"
 #include "PickaxeObject.h"
 #include "PlayerObject.h"
+#include "Crawler.h"
+#include "Waller.h"
+#include "Critter.h"
 
 #include "AnimatedSprite.h"
 #include "Collider.h"
@@ -108,7 +111,7 @@ bool GameState::Enter()
 	// SPRITES
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
 	spr_player->setScale(.5,.5);
-	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,132,132,12);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
 	spr_player_run->setScale(.5,.5);
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
@@ -126,9 +129,6 @@ bool GameState::Enter()
 	spr_critter = m_system->m_sprite_manager->getSprite("Game/spr_critter_walk.png",0,0,128,128,7);
 	spr_critter->setPosition(640,640);
 	//spr_critter->setRotation(270);
-
-	spr_monster_big = m_system->m_sprite_manager->getSprite("Game/spr_monster_big.png",0,0,256,256,12);
-	spr_monster_big->setRotation(-90);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
@@ -239,6 +239,21 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
 	m_object_manager->Add(wall,5);
+}
+
+void GameState::addCrawler(sf::Vector2f _pos)
+{
+	AnimatedSprite* spr_crawler = m_system->m_sprite_manager->getSprite(
+		"Game/spr_monster_big.png",0,0,256,256,12);
+	AnimatedSprite* spr_crawler_turn = m_system->m_sprite_manager->getSprite(
+		"Game/spr_monster_big_turn.png",0,0,256,256,22);
+
+	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
+
+	crawler->setSprite(spr_crawler_turn);
+	crawler->setPosition(_pos);
+	m_object_manager->Add(crawler,5);
 }
 
 void GameState::addPickup(sf::Vector2f _pos, int _obj)
