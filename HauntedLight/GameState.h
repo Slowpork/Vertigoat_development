@@ -42,7 +42,8 @@ public:
 
 private:
 
-	void addWall(sf::Vector2f _pos);
+	bool LoadLevel(const std::string _filename);
+	void addWall(sf::Vector2f _pos, int _depth);
 	void addCrawler(sf::Vector2f _pos);
 	void addPickup(sf::Vector2f _pos, int _obj);
 	void viewScale(float _deltatime);
@@ -66,6 +67,8 @@ private:
 	float m_timer;
 
 	float m_ui_alpha;
+	float WIDTH;
+	float HEIGHT;
 
 	ObjectManager* m_object_manager;
 	EnemyManager* m_enemy_manager;

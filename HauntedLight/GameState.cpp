@@ -51,6 +51,9 @@
 #include "AnimatedSprite.h"
 #include "Collider.h"
 
+#include <fstream>
+#include <sstream>
+
 void addWall(sf::Vector2f _pos);
 
 GameState::GameState(System* _system)
@@ -84,6 +87,9 @@ bool GameState::Enter()
 
 	m_listener = new sf::Listener();
 	m_listener->setGlobalVolume(m_system->m_volume*100);
+
+	WIDTH = 0.f;
+	HEIGHT = 0.f;
 
 	m_timer = 0.f;
 
@@ -150,10 +156,22 @@ bool GameState::Enter()
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
 	spr_darkness->setPosition((float)m_system->m_width/2,(float)m_system->m_height/2);
-	
-	// WALLS
+
 	const float SIZE = 128;
 
+	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
+
+	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
+	player->setPosition(sf::Vector2f(256,10*SIZE));
+	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
+	
+	if (!LoadLevel("../data/levels/level1.txt"))
+		return false;
+
+	
+	// WALLS
+	
+	/*
 	bool map[15][25] = 
 	{
 		{1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -186,22 +204,17 @@ bool GameState::Enter()
 			}
 		}
 	}
+	*/
 
 	//std::cout << "  " << count;
 
 	//std::cout << "\n";
-
-	Collider* col_player = new Collider(sf::Vector2f(0,0),sf::Vector2f(96,96));
-
-	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
-	player->setPosition(sf::Vector2f(256,10*SIZE));
-	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
 	
 	addPickup(sf::Vector2f(128,128),1);
 	addPickup(sf::Vector2f(256,256),2);
-	addCrawler(sf::Vector2f(128, 512));
 
-	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
+	//m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
+	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(WIDTH,HEIGHT));
 	m_light_system->update();
 
 	return true;
@@ -242,10 +255,68 @@ void GameState::Resume()
 	m_paused = false;
 }
 
-void GameState::addWall(sf::Vector2f _pos)
+bool GameState::LoadLevel(const std::string _filename)
 {
-	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
-		"Game/spr_wall_brick.png",0,0,128,128,16);
+	std::ifstream file;
+	file.open(_filename);
+	if (!file.is_open())
+		return false;
+
+	const float SIZE = 128.f;
+
+	std::string row;
+	float X = -SIZE;
+	float Y = -SIZE;
+
+	while(!file.eof())
+	{
+		Y += SIZE;
+		X = -SIZE;
+		std::getline(file,row,'\n');
+		if (row.length() == 0)
+			continue;
+
+		for(unsigned int i = 0; i < row.length(); i++)
+		{
+			X += SIZE;
+
+			bool update = true;
+
+			switch(row[i])
+			{
+			case 'P': player->setPosition(sf::Vector2f(X,Y)); break;
+			case 'C': addCrawler(sf::Vector2f(X,Y)); break;
+			case '#': addWall(sf::Vector2f(X,Y),5); break;
+			case '@': addWall(sf::Vector2f(X,Y),4); break;
+			case 'M': addPickup(sf::Vector2f(X,Y),2); break;
+			case 'A': addPickup(sf::Vector2f(X,Y),1); break;
+			default:
+				update = false;
+			}
+
+			if (X + 128.f > WIDTH)
+				WIDTH = X + 128.f;
+
+			if (Y + 128.f > HEIGHT)
+				HEIGHT = Y + 128.f;
+
+		}
+	}
+}
+
+void GameState::addWall(sf::Vector2f _pos, int _depth)
+{
+	AnimatedSprite* spr_wall = nullptr;
+	if (_depth == 5)
+	{
+		spr_wall = m_system->m_sprite_manager->getSprite(
+			"Game/spr_wall_brick.png",0,0,128,128,16);
+	}
+	else
+	{
+		spr_wall = m_system->m_sprite_manager->getSprite(
+			"Game/spr_wall_stone.png",0,0,128,128,16);
+	}
 	AnimatedSprite* spr_wall_cracks = m_system->m_sprite_manager->getSprite(
 		"Game/spr_crack_overlay.png",0,0,128,128,5);
 	spr_wall_cracks->setOrigin(64.f,64.f);
@@ -253,7 +324,7 @@ void GameState::addWall(sf::Vector2f _pos)
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
 	wall->setCracks(spr_wall_cracks);
-	m_object_manager->Add(wall,5);
+	m_object_manager->Add(wall,_depth);
 }
 
 void GameState::addCrawler(sf::Vector2f _pos)
@@ -392,7 +463,7 @@ void GameState::drawFloor()
 				X,
 				Y);
 			m_system->m_window->draw(*spr_floor, sf::BlendMultiply);
-			m_system->drawDebugRect(sf::Vector2f(X + 64,Y + 64),sf::Vector2f(128,128));
+			//m_system->drawDebugRect(sf::Vector2f(X + 64,Y + 64),sf::Vector2f(128,128));
 		}
 	}
 }
@@ -507,7 +578,7 @@ bool GameState::Update(float _deltatime){
 	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
 	FlickerLight(_deltatime);
-	m_light_system->logic(player->getPosition());
+	m_light_system->logic();
 	spr_player_shadow->setPosition(player->getPosition());
 	spr_player_shadow->turnToPoint(m_light_system->getLightLocation());
 	
@@ -525,7 +596,7 @@ bool GameState::Update(float _deltatime){
 				
 				sf::Vector2f pos(floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
 								floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
-				addWall(pos);
+				addWall(pos, 5);
 				m_light_system->update();
 				m_level_system->pathReset();
 
@@ -559,7 +630,7 @@ bool GameState::Update(float _deltatime){
 							}
 							else
 								snd_Mining_Pickaxe->play();
-
+								
 							m_light_system->update();
 						}
 					}
@@ -632,7 +703,7 @@ void GameState::Draw()
 	m_system->m_window->draw(*spr_critter);
 
 	// OBJECTS
-	m_object_manager->setActiveDepth(5,5);
+	m_object_manager->setActiveDepth(4,5);
 	m_object_manager->Draw(m_system->m_window, brightness);
 
 	// DEBUG PLAYER COLLISION-BOX

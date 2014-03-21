@@ -55,7 +55,7 @@ public:
 	LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager);
 	~LightSystem();
 
-	void logic(sf::Vector2f _pos = sf::Vector2f(0,0));
+	void logic();
 	void Draw(sf::Vector2f _pos = sf::Vector2f(0,0));
 
 	// Updates all the lists
@@ -82,7 +82,7 @@ private:
 	bool pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point);
 	bool _segment_in_front_of(Segment* a, Segment* b, sf::Vector2f relativeTo);
 	bool leftOf(Segment* a, sf::Vector2f point);
-	void sweep(sf::Vector2f _pos);
+	void sweep();
 	void addSegment(float x1, float y1, float x2, float y2);
 	void deleteSegment(float x1, float y1, float x2, float y2);
 	void LightSystem::addTriangle(float angle1, float angle2, Segment* segment);
@@ -111,7 +111,7 @@ private:
 	sf::Vector2f center; // Light center
 	sf::VertexArray field_of_view;
 
-	sf::RenderWindow* mWindow;
+	sf::RenderWindow* m_window;
 	ObjectManager* m_object_manager;
 
 	sf::View* m_view;
