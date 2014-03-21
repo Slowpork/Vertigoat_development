@@ -20,10 +20,23 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	m_pos = m_sprite->getPosition();
 	const float speed = 32.f;
+	
+	if(m_pos == m_homePos)
+	{
+		m_vel = sf::Vector2f(0,0);
+		m_home = true;
+	}else{
+		m_home = false;
+	}
 
-	if(getDistance(m_pos, _playerpos) < 150.f)
+	if(getDistance(m_pos, _playerpos) < 150.f && m_home)
 	{
 		m_chase = true;
+	}
+
+	if(m_timer > 5.f)
+	{
+		m_chase = false;
 	}
 
 	if(m_chase)
@@ -35,24 +48,28 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 
 		m_vel.x += speed * m_dir.x * _deltatime;
 		m_vel.y += speed * m_dir.y * _deltatime;
+
+		m_sprite->play(_deltatime);
 	}
 
-	if(m_timer > 5.f)
+	if(!m_chase)
 	{
-		m_timer = 0;
-		m_chase = false;
-
+		m_timer = 0.f;
+		
 		turnToPoint(m_homePos);
 		m_dir = getDirection(m_pos, m_homePos);
 
 		m_vel.x += speed*m_dir.x*_deltatime;
 		m_vel.y += speed*m_dir.y*_deltatime;
+		m_sprite->play(_deltatime);
 	}
-
+	
 	doFriction();
 	m_pos += m_vel;
 	setPosition(m_pos);
-}void Critter::Draw(sf::RenderWindow* _window)
+}
+
+void Critter::Draw(sf::RenderWindow* _window)
 {
 	_window->draw(*m_sprite);
 }

@@ -19,6 +19,7 @@ public:
 
 private:
 	bool m_chase;
+	bool m_home;
 	sf::Vector2f m_homePos;
 	float m_timer;
 	sf::Vector2f m_dir;
