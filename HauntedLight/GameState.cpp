@@ -687,7 +687,7 @@ void GameState::Draw()
 	m_light_system->Draw(player->getPosition());
 
 	// PLAYER SHADOW
-	if (player->hasCandle() )
+	//if (player->hasCandle() )
 	{
 		//spr_player_shadow->setColor(sf::Color(255,255,255,(int)brightness));
 		//std::cout << m_light_system->getLightBrightness() << std::endl;

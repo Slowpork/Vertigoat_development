@@ -134,6 +134,7 @@ bool PlayerObject::addPickaxe()
 
 void PlayerObject::removePickaxe()
 {
+	m_mining = false;
 	//std::cout << "pick: " << m_pickaxe << std::endl;
 	if (m_pickaxe > 0)
 		m_pickaxe--;
@@ -178,11 +179,6 @@ const bool PlayerObject::hasCandle()
 void PlayerObject::doFriction()
 {
 	m_vel *= m_friction;
-}
-
-void PlayerObject::resetMining()
-{
-	m_mining = false;
 }
 
 void PlayerObject::setState(std::string _state)
