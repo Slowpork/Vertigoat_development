@@ -189,6 +189,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("spr_cursor.png");
 	m_sprite_manager->addTexture("Game/spr_sight.png");
 	m_sprite_manager->addTexture("Game/darkness.png");
+	m_sprite_manager->addTexture("Game/spr_crack_overlay.png");
 	m_sprite_manager->addTexture("Game/spr_wall_brick.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
@@ -207,6 +208,10 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_matches_hud.png");
 	sf::Texture* tex_matches_hud = m_sprite_manager->getTexture("Game/spr_matches_hud.png");
 	tex_matches_hud->setSmooth(true);
+
+	m_sprite_manager->addTexture("Game/spr_pickaxe_hud.png");
+	sf::Texture* tex_pickaxe_hud = m_sprite_manager->getTexture("Game/spr_pickaxe_hud.png");
+	tex_pickaxe_hud->setSmooth(true);
 
 	m_sprite_manager->addTexture("Game/spr_player_walk.png");
 	sf::Texture* tex_player = m_sprite_manager->getTexture("Game/spr_player_walk.png");
@@ -380,7 +385,7 @@ sf::Vector3f System::getSoundValue(sf::Vector2f _playerpos, sf::Vector2f _source
 
 	value.z = 0;
 
-	std::cout << "SoundValue X: " << value.x << " Y: " << value.y << std::endl;
+	//std::cout << "SoundValue X: " << value.x << " Y: " << value.y << std::endl;
 
 	return value;
 }

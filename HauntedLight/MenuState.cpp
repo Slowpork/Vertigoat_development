@@ -232,6 +232,7 @@ void MenuState::Pause()
 void MenuState::Resume()
 {
 	m_paused = false;
+	music_main->setVolume(m_system->m_volume*100);
 }
 
 bool MenuState::Update(float _deltatime){

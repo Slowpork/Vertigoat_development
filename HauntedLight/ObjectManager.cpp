@@ -110,139 +110,44 @@ void ObjectManager::tile(int _ID)
 	GameObject* obj = getObject(_ID);
 	sf::Vector2f objPos = obj->getPosition();
 
-	//std::cout << "pos X: " << objPos.x << " Y: " << objPos.y << std::endl;
+	bool at[4];
+	at[0] = ( atPosition(sf::Vector2f(objPos.x + 64.f, objPos.y - 64.f)) != -1 );
+	at[1] = ( atPosition(sf::Vector2f(objPos.x + 64.f + 128.f, objPos.y + 64.f)) != -1 );
+	at[2] = ( atPosition(sf::Vector2f(objPos.x + 64.f, objPos.y + 64.f + 128.f)) != -1 );
+	at[3] = ( atPosition(sf::Vector2f(objPos.x - 64.f, objPos.y + 64.f)) != -1 );
 
-	if (!CheckDirection(objPos.x, objPos.y, 1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0) )
-	{
+	if      (!at[1] && !at[2] && !at[3] && !at[0] )
 		image_index = 0;
-	}
-	// 1
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0) )
-	{
+	else if ( at[1] &&  at[2] && !at[3] && !at[0] )
 		image_index = 1;
-	}
-	// 2
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] &&  at[2] &&  at[3] && !at[0])
 		image_index = 2;
-	}
-	// 3
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] &&  at[2] &&  at[3] && !at[0])
 		image_index = 3;
-	}
-	// 4
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] &&  at[2] && !at[3] &&  at[0])
 		image_index = 4;
-	}
-	// 5
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] &&  at[2] &&  at[3] &&  at[0])
 		image_index = 5;
-	}
-	// 6
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] &&  at[2] &&  at[3] &&  at[0])
 		image_index = 6;
-	}
-	// 7
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] && !at[2] && !at[3] &&  at[0])
 		image_index = 7;
-	}
-	// 8
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] && !at[2] &&  at[3] &&  at[0])
 		image_index = 8;
-	}
-	// 9
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] && !at[2] &&  at[3] &&  at[0])
 		image_index = 9;
-	}
-	// 10 Hor
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] && !at[2] &&  at[3] && !at[0])
 		image_index = 10;
-	}
-	// 11 Vert
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] &&  at[2] && !at[3] &&  at[0])
 		image_index = 11;
-	}
-	// 12 vänster
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] && !at[2] &&  at[3] && !at[0])
 		image_index = 12;
-	}
-	// 13 ner
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] && !at[2] && !at[3] &&  at[0])
 		image_index = 13;
-	}
-	// 14 vänster
-	else if (CheckDirection(objPos.x, objPos.y,1)
-	&& !CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if ( at[1] && !at[2] && !at[3] && !at[0])
 		image_index = 14;
-	}
-	// 15 upp
-	else if (!CheckDirection(objPos.x, objPos.y,1)
-	&& CheckDirection(objPos.x, objPos.y,2)
-	&& !CheckDirection(objPos.x, objPos.y,3)
-	&& !CheckDirection(objPos.x, objPos.y,0))
-	{
+	else if (!at[1] &&  at[2] && !at[3] && !at[0])
 		image_index = 15;
-	}
-
-	//image_index -= 1;
-
-	//std::cout << image_index << std::endl;
 
 	obj->getSprite()->setFrame(image_index);
 }
@@ -254,6 +159,32 @@ GameObject* ObjectManager::getObject(int _ID)
 	if (pos != m_objects.end())
 		return pos->second;
 	return nullptr;
+}
+
+sf::Vector2f ObjectManager::getPosition(int _ID)
+{
+	GameObject* obj = getObject(_ID);
+	if (obj != nullptr)
+		return obj->getPosition();
+	else
+		return sf::Vector2f(-1,-1);
+}
+
+float ObjectManager::getDistance(sf::Vector2f _pos, int _ID)
+{
+	GameObject* obj = getObject(_ID);
+	if (obj == nullptr)
+	{
+		std::cout << "Object with ID: " << _ID << "doesn't exists!" << std::endl;
+		return -1.f;
+	}
+
+	sf::Vector2f pos = getObject(_ID)->getPosition();
+	pos.x += 64.f;
+	pos.y += 64.f;
+	float dist = sqrt( pow(_pos.x - pos.x,2) + pow(_pos.y - pos.y,2));
+	//std::cout << "Distance: " << dist << std::endl;
+	return dist;
 }
 
 int ObjectManager::getObjects()
@@ -320,14 +251,9 @@ void ObjectManager::Draw(sf::RenderWindow* _window, float _alpha)
 				_window->draw(*object.second->getSprite());
 
 				if (z == 5){
-					//static_cast<Wall*> (object.second)->drawCracks(_window);
+					static_cast<Wall*> (object.second)->drawCracks(_window);
 				}
 			}
 		}
 	}
-}
-
-void CheckCollision(GameObject* _object, sf::Vector2f& _offset)
-{
-
 }

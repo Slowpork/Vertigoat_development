@@ -51,6 +51,7 @@ private:
 	void playerCollision();
 	void pickupCollision();
 	void drawFloor();
+	sf::Vector2f getSide(sf::Vector2f _pos);
 
 private:
 
@@ -62,8 +63,9 @@ private:
 	System* m_system;
 	
 	// SYSTEMS
-	
 	float m_timer;
+
+	float m_ui_alpha;
 
 	ObjectManager* m_object_manager;
 	EnemyManager* m_enemy_manager;
@@ -80,6 +82,7 @@ private:
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;
+	AnimatedSprite* spr_pickaxe_hud;
 	AnimatedSprite* spr_player_shadow;
 	AnimatedSprite* spr_critter;
 

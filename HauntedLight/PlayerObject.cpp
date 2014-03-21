@@ -33,13 +33,15 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_friction = m_max_friction;
 
 	m_running = false;
+	m_mining = false;
+	m_hold_match = true;
 
 	m_sprite->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 
 	m_health = 100.f;
 	m_stamina = 100.f;
 	m_matches = 2;
-	m_pickaxe = 0;
+	m_pickaxe = 3;
 	
 	m_light = 1.f;
 	m_candle = true;
@@ -57,15 +59,17 @@ PlayerObject::~PlayerObject()
 	}
 }
 
-void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run)
+void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run, AnimatedSprite* _mine)
 {
 	m_spr_run = _run;
 	m_spr_idle = m_sprite;
 	m_spr_walk = m_sprite;
+	m_spr_mine = _mine;
 
 	m_spr_walk->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 	m_spr_run->setOrigin(m_sprite->getSize().x/2,m_sprite->getSize().y/2);
 	m_spr_idle->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
+	m_spr_mine->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 }
 
 void PlayerObject::setVelocity(sf::Vector2f _vel)
@@ -73,14 +77,39 @@ void PlayerObject::setVelocity(sf::Vector2f _vel)
 	m_vel = _vel;
 }
 
+bool PlayerObject::doMine(float _deltatime)
+{
+	if (m_pickaxe > 0)
+	{
+		m_hold_match = false;
+		m_mining = true;
+		m_sprite = m_spr_mine;
+		int prev_frame = m_sprite->getFrame();
+		m_sprite->play(_deltatime);
+		int cur_frame = m_sprite->getFrame();
+		if (cur_frame != prev_frame && cur_frame == 3)
+		{
+			return true;
+		}
+	}
+	else
+		m_mining = false;
+
+		return false;
+}
+
 bool PlayerObject::addMatch()
 {
-	if (m_matches<5)
+	const int CAP = 5;
+	const int ADD = 3;
+
+	m_hold_match = true;
+	if (m_matches<CAP)
 	{
 		m_matches += 3;
 
-		if(m_matches > 5)
-			m_matches = 5;
+		if(m_matches > CAP)
+			m_matches = CAP;
 
 		return true;
 	}
@@ -90,12 +119,29 @@ bool PlayerObject::addMatch()
 
 bool PlayerObject::addPickaxe()
 {
-	if (m_pickaxe<3)
+	const int CAP = 3;
+
+	m_hold_match = false;
+	if (m_pickaxe<CAP)
 	{
-		m_pickaxe++;
+		m_pickaxe += CAP;
+		if (m_pickaxe > CAP)
+			m_pickaxe = CAP;
 		return true;
 	}
 	return false;
+}
+
+void PlayerObject::removePickaxe()
+{
+	std::cout << "pick: " << m_pickaxe << std::endl;
+	if (m_pickaxe > 0)
+		m_pickaxe--;
+}
+
+bool PlayerObject::holdMatch()
+{
+	return m_hold_match;
 }
 
 const float PlayerObject::getHealth()
@@ -111,6 +157,12 @@ const float PlayerObject::getStamina()
 const int PlayerObject::getMatches()
 {
 	return m_matches;
+}
+
+const int PlayerObject::getPickaxe()
+{
+	return m_pickaxe;
+	//return (int)((float)m_pickaxe*0.333f);
 }
 
 const float PlayerObject::getLight()
@@ -184,26 +236,36 @@ void PlayerObject::Update(float _deltatime)
 
 	updateLight(_deltatime);
 
+	// RESET MINING
+	if (m_mining)
+	{
+		if (!m_mouse->IsDown(Left))
+			m_mining = false;
+	}
+
 	// MOVE
-	if (m_keyboard->IsDown(sf::Keyboard::A))
+	if (!m_mining)
 	{
-		moving = true;
-		m_vel.x -= speed * _deltatime;
-	}
-	else if (m_keyboard->IsDown(sf::Keyboard::D))
-	{
-		moving = true;
-		m_vel.x += speed * _deltatime;
-	}
-	if (m_keyboard->IsDown(sf::Keyboard::W))
-	{
-		moving = true;
-		m_vel.y -= speed * _deltatime;
-	}
-	else if (m_keyboard->IsDown(sf::Keyboard::S))
-	{
-		moving = true;
-		m_vel.y += speed * _deltatime;
+		if (m_keyboard->IsDown(sf::Keyboard::A))
+		{
+			moving = true;
+			m_vel.x -= speed * _deltatime;
+		}
+		else if (m_keyboard->IsDown(sf::Keyboard::D))
+		{
+			moving = true;
+			m_vel.x += speed * _deltatime;
+		}
+		if (m_keyboard->IsDown(sf::Keyboard::W))
+		{
+			moving = true;
+			m_vel.y -= speed * _deltatime;
+		}
+		else if (m_keyboard->IsDown(sf::Keyboard::S))
+		{
+			moving = true;
+			m_vel.y += speed * _deltatime;
+		}
 	}
 
 	if (m_path != nullptr)
@@ -301,23 +363,26 @@ void PlayerObject::Update(float _deltatime)
 		moving = true;
 
 	// ANIMATE
-	if (moving)
+	if (!m_mining)
 	{
-		if ( m_running)
+		if (moving)
 		{
-			setState("run");
-			m_sprite->play(_deltatime);
+			if ( m_running)
+			{
+				setState("run");
+				m_sprite->play(_deltatime);
+			}
+			else
+			{
+				setState("walk");
+				m_sprite->play(_deltatime);
+			}
 		}
 		else
 		{
-			setState("walk");
-			m_sprite->play(_deltatime);
+			setState("idle");
+			//m_sprite->play(_deltatime);
 		}
-	}
-	else
-	{
-		setState("idle");
-		//m_sprite->play(_deltatime);
 	}
 
 	// UPDATE

@@ -15,8 +15,9 @@ public:
 	Wall(AnimatedSprite* _sprite, Collider* _collider = nullptr);
 	~Wall();
 
-	bool hit();
+	bool hit(sf::Vector2f _side);
 	void drawCracks(sf::RenderWindow* _window);
+	void setCracks(AnimatedSprite* _sprite);
 private:
 
 private:

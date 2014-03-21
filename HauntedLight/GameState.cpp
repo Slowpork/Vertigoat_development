@@ -87,6 +87,8 @@ bool GameState::Enter()
 
 	m_timer = 0.f;
 
+	m_ui_alpha = 0.f;
+
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
 
@@ -100,6 +102,8 @@ bool GameState::Enter()
 
 	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
 	snd_Mining_with_pebbles->setVolume(25.f);
+	snd_Mining_Pickaxe = m_system->m_sound_manager->getSound("snd_Mining_Pickaxe.wav");
+	snd_Mining_Pickaxe->setVolume(25.f);
 
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
 	music_main->setVolume(25.f);
@@ -130,12 +134,16 @@ bool GameState::Enter()
 	spr_matches_hud->setColor(sf::Color(255,255,255,128));
 	spr_matches_hud->setPosition((float)m_system->m_width - 128.f*1.5f*scale.x,(float)m_system->m_height - 128.f*scale.y);
 
+	spr_pickaxe_hud = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_hud.png",0,0,128,128,3);
+	spr_pickaxe_hud->setScale(.75f*scale.x,.75f*scale.y);
+	spr_pickaxe_hud->setColor(sf::Color(255,255,255,128));
+	spr_pickaxe_hud->setPosition((float)m_system->m_width - 128.f*1.5f*scale.x,(float)m_system->m_height - 128.f*scale.y);
+
 	spr_player_shadow = m_system->m_sprite_manager->getSprite("Game/spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
 
 	spr_critter = m_system->m_sprite_manager->getSprite("Game/spr_critter_walk.png",0,0,128,128,7);
 	spr_critter->setPosition(640,640);
-	//spr_critter->setRotation(270);
 
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
@@ -186,7 +194,7 @@ bool GameState::Enter()
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
-	player->setSprites(spr_player_run, spr_player_run);
+	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
 	
 	addPickup(sf::Vector2f(128,128),1);
 	addPickup(sf::Vector2f(256,256),2);
@@ -237,9 +245,13 @@ void GameState::addWall(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_wall = m_system->m_sprite_manager->getSprite(
 		"Game/spr_wall_brick.png",0,0,128,128,16);
+	AnimatedSprite* spr_wall_cracks = m_system->m_sprite_manager->getSprite(
+		"Game/spr_crack_overlay.png",0,0,128,128,5);
+	spr_wall_cracks->setOrigin(64.f,64.f);
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
+	wall->setCracks(spr_wall_cracks);
 	m_object_manager->Add(wall,5);
 }
 
@@ -424,18 +436,40 @@ void GameState::pickupCollision()
 		{
 		case 1:
 			if (player->addPickaxe())
+			{
+				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
+			}
 		break;
 		case 2:
 			if (player->addMatch())
 			{
+				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
 				snd_Equipment_selection->play();
 			}
 		break;
 		}
 	}
-} 
+}
+
+sf::Vector2f GameState::getSide(sf::Vector2f _pos)
+{
+	sf::Vector2f value(0,0);
+	sf::Vector2f p_pos = player->getPosition();
+
+	if (p_pos.x > _pos.x + 128.f)
+		value.x = 1;
+	if (p_pos.x < _pos.x)
+		value.x = -1;
+
+	if (p_pos.y > _pos.y + 128.f)
+		value.y = 1;
+	if (p_pos.y < _pos.y)
+		value.y = -1;
+
+	return value;
+}
 
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
@@ -459,6 +493,13 @@ bool GameState::Update(float _deltatime){
 	}
 
 	viewScale(_deltatime);
+
+	if (m_ui_alpha > 0.f)
+	{
+		m_ui_alpha -= _deltatime * 50;
+		if (m_ui_alpha < 0.f)
+			m_ui_alpha = 0.f;
+	}
 	
 	//Player breathing
 	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
@@ -474,7 +515,7 @@ bool GameState::Update(float _deltatime){
 	
 	if (!m_system->m_keyboard->IsDown(sf::Keyboard::LControl))
 	{
-		if (m_system->m_mouse->IsDown(Left))
+		if (m_system->m_mouse->IsDown(Right))
 		{
 			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 			if ( ID == -1)
@@ -490,23 +531,38 @@ bool GameState::Update(float _deltatime){
 				snd_thud->play();
 			}
 		}
-		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
+		else if (m_system->m_mouse->IsDown(Left)) // HIT WALL
 		{
 			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 			if ( ID != -1)
 			{
-				snd_Mining_with_pebbles->play();
-				GameObject* go = m_object_manager->getObject(ID);
-				if (go != nullptr)
+				if (m_object_manager->getDistance(player->getPosition(),ID) < 128.f)
 				{
-					//if (static_cast<Wall*> (go)->hit())
+					if (player->doMine(_deltatime))
 					{
-						m_object_manager->destroy(ID);
-						m_level_system->pathReset();
+						m_ui_alpha = 128.f;
+						sf::Vector2f side = getSide(m_object_manager->getPosition(ID));
+						GameObject* go = m_object_manager->getObject(ID);
+						if (go != nullptr)
+						{
+							if (static_cast<Wall*> (go)->hit(side))
+							{
+								player->removePickaxe();
+								if(player->getPickaxe() == 0)
+									snd_thud->play();
+
+								snd_Mining_with_pebbles->play();
+								m_object_manager->destroy(ID);
+								m_level_system->pathReset();
+							}
+							else
+								snd_Mining_Pickaxe->play();
+
+							m_light_system->update();
+						}
 					}
 				}
 			}
-			m_light_system->update();
 		}
 	}
 	else
@@ -592,8 +648,18 @@ void GameState::Draw()
 	m_system->m_window->draw(*spr_darkness);
 
 	// MATCHES
-	spr_matches_hud->setFrame(player->getMatches());
-	m_system->m_window->draw(*spr_matches_hud);
+	if (player->holdMatch())
+	{
+		spr_matches_hud->setOpacity(m_ui_alpha);
+		spr_matches_hud->setFrame(player->getMatches());
+		m_system->m_window->draw(*spr_matches_hud);
+	}
+	else if (player->getPickaxe() > 0)
+	{
+		spr_pickaxe_hud->setOpacity(m_ui_alpha);
+		spr_pickaxe_hud->setFrame(4 - player->getPickaxe());
+		m_system->m_window->draw(*spr_pickaxe_hud);
+	}
 
 	// DEBUG WALLS
 	std::string txt = std::to_string(m_object_manager->getObjects()) + " walls";

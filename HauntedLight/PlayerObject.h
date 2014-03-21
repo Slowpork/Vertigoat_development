@@ -25,14 +25,19 @@ public:
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 
-	void setSprites(AnimatedSprite* _idle, AnimatedSprite* _run);
+	bool doMine(float _deltatime);
+
+	void setSprites(AnimatedSprite* _idle, AnimatedSprite* _run, AnimatedSprite * _mine);
 
 	bool addMatch();
 	bool addPickaxe();
+	void removePickaxe();
+	bool holdMatch();
 
 	const float getHealth();
 	const float getStamina();
 	const int getMatches();
+	const int getPickaxe();
 	const float getLight();
 	const bool hasCandle();
 private:
@@ -50,11 +55,13 @@ private:
 	AnimatedSprite* m_spr_run;
 	AnimatedSprite* m_spr_walk;
 	AnimatedSprite* m_spr_idle;
+	AnimatedSprite* m_spr_mine;
 
 	System* m_system;
 
 
 	bool m_running;
+	bool m_hold_match;
 
 	sf::Vector2f m_max_vel;
 	float m_health;
@@ -65,7 +72,6 @@ private:
 	float m_light;
 	bool m_candle;
 	bool  m_moving;
-
-	bool m_breathing;
+	bool m_mining;
 
 };

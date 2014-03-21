@@ -33,9 +33,10 @@ public:
 
 	void Draw(sf::RenderWindow* _window, float _alpha = 255);
 
-	void CheckCollision(GameObject* _object, sf::Vector2f& _offset);
-
 	int atPosition(sf::Vector2f _pos);
+
+	sf::Vector2f getPosition(int _ID);
+	float getDistance(sf::Vector2f _pos, int _ID);
 
 	GameObject* getObject(int _ID);
 
