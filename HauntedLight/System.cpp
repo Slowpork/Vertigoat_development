@@ -83,19 +83,18 @@ bool System::Init()
 			<< ' ' << m_video_modes[i].bitsPerPixel << std::endl;*/
 
 			// REMOVE non32bit resolutions?
-			/*
 			if (m_video_modes[i].bitsPerPixel != 32)
 			{
 				m_video_modes.erase(m_video_modes.begin() + i);
 				i--;
-			}*/
+			}
 
 			if (m_video_modes[i].width == m_width 
 				&& m_video_modes[i].height == m_height 
 				&& m_video_modes[i].bitsPerPixel == m_bit)
 			{
 				found = true;
-				break;
+				//break;
 			}
 		}
 

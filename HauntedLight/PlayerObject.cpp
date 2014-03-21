@@ -29,7 +29,7 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 	m_vel = sf::Vector2f(0.f,0.f);
 
 	m_min_friction = 0.92f;
-	m_max_friction = 0.88f;
+	m_max_friction = 0.84f;
 	m_friction = m_max_friction;
 
 	m_running = false;
@@ -178,6 +178,11 @@ const bool PlayerObject::hasCandle()
 void PlayerObject::doFriction()
 {
 	m_vel *= m_friction;
+}
+
+void PlayerObject::resetMining()
+{
+	m_mining = false;
 }
 
 void PlayerObject::setState(std::string _state)

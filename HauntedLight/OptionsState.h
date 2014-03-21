@@ -36,6 +36,8 @@ private:
 	bool m_paused;
 	bool m_base;
 	bool m_changed;
+	bool m_can_inc;
+	bool m_can_dec;
 	System* m_system;
 
 	//STATE SPECIFIC

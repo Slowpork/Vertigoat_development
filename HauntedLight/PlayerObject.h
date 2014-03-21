@@ -32,6 +32,7 @@ public:
 	bool addMatch();
 	bool addPickaxe();
 	void removePickaxe();
+	void resetMining();
 	bool holdMatch();
 
 	const float getHealth();

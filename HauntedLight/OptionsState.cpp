@@ -295,14 +295,19 @@ bool OptionsState::Update(float _deltatime){
 		}
 	}
 
-	if(m_resolution > 0)
+	m_can_dec = (m_resolution > 0);
+
+	if (m_can_dec)
 	{
 		if(m_button_resolutionup->Update(_deltatime, m_system->m_mouse))
 		{
 			m_resolution -= 1;
 		}
 	}
-	if(m_resolution < m_system->m_video_modes.size() - 1)
+
+	m_can_inc = (m_resolution < m_system->m_video_modes.size() - 1);
+
+	if (m_can_inc)
 	{
 		if(m_button_resolutiondown->Update(_deltatime, m_system->m_mouse))
 		{
@@ -410,7 +415,7 @@ void OptionsState::Draw(){
 	// RESOLUTION TEXT
 	std::string txt = std::to_string(m_system->m_video_modes[m_resolution].width) + "x"
 		+ std::to_string(m_system->m_video_modes[m_resolution].height) + " "
-		+ std::to_string(m_system->m_video_modes[m_resolution].bitsPerPixel) + "bit";
+		/*+ std::to_string(m_system->m_video_modes[m_resolution].bitsPerPixel) + "bit"*/;
 
 	sf::Text txt_res;
 	txt_res.setFont(*fnt_options);
@@ -422,10 +427,23 @@ void OptionsState::Draw(){
 
 	m_system->m_window->draw(txt_res);
 
-	m_button_resolutiondown->getSprite()->setOpacity(255);
-	m_button_resolutiondown->Draw(m_system->m_window);
-	m_button_resolutionup->getSprite()->setOpacity(255);
-	m_button_resolutionup->Draw(m_system->m_window);
+	m_button_resolutiondown->getSprite()->setOpacity(64 + m_can_inc*191);
+	if (m_can_inc)
+		m_button_resolutiondown->Draw(m_system->m_window);
+	else
+	{
+		m_button_resolutiondown->getSprite()->setFrame(0);
+		m_system->m_window->draw(*m_button_resolutiondown->getSprite());
+	}
+
+	m_button_resolutionup->getSprite()->setOpacity(64 + m_can_dec*191);
+	if (m_can_dec)
+		m_button_resolutionup->Draw(m_system->m_window);
+	else
+	{
+		m_button_resolutionup->getSprite()->setFrame(0);
+		m_system->m_window->draw(*m_button_resolutionup->getSprite());
+	}
 
 	m_system->m_window->draw(m_text_fullscreen);
 	m_system->m_window->draw(m_text_resolution);

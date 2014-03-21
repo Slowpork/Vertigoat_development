@@ -334,6 +334,12 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	AnimatedSprite* spr_crawler_turn = m_system->m_sprite_manager->getSprite(
 		"Game/spr_monster_big_turn.png",0,0,256,256,22);
 
+	spr_crawler->setScale(.5f,.5f);
+	spr_crawler_turn->setScale(.5f,.5f);
+
+	spr_crawler->setOrigin(128.f,128.f);
+	spr_crawler_turn->setOrigin(128.f,128.f);
+
 	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
 
@@ -609,7 +615,7 @@ bool GameState::Update(float _deltatime){
 			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
 			if ( ID != -1)
 			{
-				if (m_object_manager->getDistance(player->getPosition(),ID) < 128.f)
+				if (m_object_manager->getDistance(player->getPosition(),ID) < 140.f)
 				{
 					if (player->doMine(_deltatime))
 					{

@@ -16,6 +16,7 @@ Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
 
 void Crawler::Draw(sf::RenderWindow* _window)
 {
+	m_sprite->setPosition(sf::Vector2f(getPosition().x - 64.f, getPosition().y - 64.f));
 	_window->draw(*m_sprite);
 }
 
