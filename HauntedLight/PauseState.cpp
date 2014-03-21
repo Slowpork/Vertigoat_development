@@ -18,6 +18,10 @@
 #include "CollisionManager.h"
 #include "SpriteManager.h"
 #include "InputManager.h"
+#include "FontManager.h"
+
+#include "AnimatedSprite.h"
+#include "Button.h"
 
 #include "SFML\Window\Keyboard.hpp"
 
@@ -34,17 +38,46 @@ PauseState::PauseState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
+	m_textSize = 28;
+
 	m_system = _system;
 	object_manager = new ObjectManager();
 }
 
 bool PauseState::Enter(){
 	//std::cout << m_name << std::endl;
+
+	sf::Vector2f scale = m_system->m_scale;
+
+	spr_button_back = m_system->m_sprite_manager->getSprite("Options/spr_button_return.png",0,0,219,64,2);
+	spr_button_back->setScale(scale.x, scale.y);
+	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
+		spr_button_back->getSize().y*spr_button_back->getScale().y, 
+		m_system->m_width/2 - spr_button_back->getSize().x*spr_button_back->getScale().x,
+		(m_system->m_height/12)*7 - 32*scale.y);
+
+	spr_button_quit = m_system->m_sprite_manager->getSprite("Menu/spr_button_quit.png",0,0,219,64,2);
+	spr_button_quit->setScale(scale.x, scale.y);
+	m_button_quit = new Button(spr_button_quit, spr_button_quit->getSize().x*spr_button_quit->getScale().x, 
+		spr_button_quit->getSize().y*spr_button_quit->getScale().y, 
+		m_system->m_width/2, (m_system->m_height/12)*7 - 32*scale.y);
+
+	fnt_options = m_system->m_font_manager->getFont("MTCORSVA.TTF");
+
+
 	m_paused = false;
 	return true;
 }
 void PauseState::Exit(){
 	//std::cout << "  " << m_name << "->";
+
+	delete m_button_quit;
+	m_button_quit = nullptr;
+
+	delete m_button_back;
+	m_button_back = nullptr;
+
+	m_paused = false;
 }
 
 void PauseState::Pause()
@@ -57,9 +90,21 @@ void PauseState::Resume()
 	m_paused = false;
 }
 
-bool PauseState::Update(float deltatime){
+bool PauseState::Update(float _deltatime){
 	//std::cout << "PauseState::Update" << std::endl;
 
+	if(m_button_back->Update(_deltatime, m_system->m_mouse))
+	{
+		m_next = "";
+		return false;
+	}
+
+	if(m_button_quit->Update(_deltatime, m_system->m_mouse))
+	{
+		m_next = "MenuState";
+		return false;
+	}
+/*
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
 	{
 		m_next = "";
@@ -69,7 +114,7 @@ bool PauseState::Update(float deltatime){
 		m_next = "MenuState";
 		return false;
 	}
-
+*/
 	return true;
 }
 void PauseState::Draw(){
@@ -80,6 +125,12 @@ void PauseState::Draw(){
 	rect_fade.setFillColor(sf::Color(0,0,0,128));
 
 	m_system->m_window->draw(rect_fade);
+
+	m_button_quit->getSprite()->setOpacity(255);
+	m_button_quit->Draw(m_system->m_window);
+
+	m_button_back->getSprite()->setOpacity(255);
+	m_button_back->Draw(m_system->m_window);
 
 	object_manager->Draw(m_system->m_window);
 }

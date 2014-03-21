@@ -661,7 +661,7 @@ bool GameState::Update(float _deltatime){
 		}
 	}
 
-	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::P))
+	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape))
 	return true;
 	else
 	{
