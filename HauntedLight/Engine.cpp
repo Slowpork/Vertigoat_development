@@ -85,14 +85,9 @@ void Engine::Run()
 		}
 		else 
 		{
-			bool isState = m_state_manager.isState("CreditsState");
-
-			if (!isState) // Not Credits
-			{
-				spr_cursor->setScale(m_system->m_scale.x,m_system->m_scale.y);
-				spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
-				m_system->m_window->draw(*spr_cursor);
-			}
+			spr_cursor->setScale(m_system->m_scale.x,m_system->m_scale.y);
+			spr_cursor->setPosition((float)m_system->m_mouse->GetX(), (float)m_system->m_mouse->GetY());
+			m_system->m_window->draw(*spr_cursor);
 		}
 
 		// DEBUG FPS
