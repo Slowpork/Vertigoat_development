@@ -99,6 +99,7 @@ bool GameState::Enter()
 	snd_thud->setVolume(100);
 
 	snd_Equipment_selection = m_system->m_sound_manager->getSound("snd_Equipment_selection.wav");
+	snd_pickaxe_pickup		= m_system->m_sound_manager->getSound("snd_pickaxe_pickup.wav");
 
 	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
 	snd_Mining_with_pebbles->setVolume(25.f);
@@ -439,6 +440,7 @@ void GameState::pickupCollision()
 			{
 				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
+				snd_pickaxe_pickup->play();
 			}
 		break;
 		case 2:

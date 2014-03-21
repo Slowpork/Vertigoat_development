@@ -269,6 +269,7 @@ bool System::Init()
 	m_sound_manager->addSoundBuffer("snd_wall_monster_2.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_3.wav");
 	m_sound_manager->addSoundBuffer("snd_wall_monster_5.wav");
+	m_sound_manager->addSoundBuffer("snd_pickaxe_pickup.wav");
 
 	ProcessLoad();
 

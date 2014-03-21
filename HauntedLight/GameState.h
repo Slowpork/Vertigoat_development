@@ -103,6 +103,7 @@ private:
 	sf::Sound* snd_big_monster_2;
 	sf::Sound* snd_big_monster_3;
 	sf::Sound* snd_critter_attack;
+	sf::Sound* snd_pickaxe_pickup;
 	
 	sf::Sound* snd_Crunching_sound;
 	sf::Sound* snd_Door;
