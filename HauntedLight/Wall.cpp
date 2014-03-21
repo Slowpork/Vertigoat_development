@@ -17,6 +17,9 @@ bool Wall::hit(sf::Vector2f _side)
 {
 	//std::cout << "hit X: " << _side.x << " Y: " << _side.y << std::endl;
 
+	if (m_depth != 5)
+		return false;
+
 	float prev_rot = spr_cracks->getRotation();
 
 	if (_side.x > 0)

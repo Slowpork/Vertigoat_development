@@ -67,7 +67,7 @@ void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run, Anima
 	m_spr_mine = _mine;
 
 	m_spr_walk->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
-	m_spr_run->setOrigin(m_sprite->getSize().x/2,m_sprite->getSize().y/2);
+	m_spr_run->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 	m_spr_idle->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 	m_spr_mine->setOrigin(m_sprite->getSize().x/3,m_sprite->getSize().y/2);
 }
@@ -134,7 +134,7 @@ bool PlayerObject::addPickaxe()
 
 void PlayerObject::removePickaxe()
 {
-	std::cout << "pick: " << m_pickaxe << std::endl;
+	//std::cout << "pick: " << m_pickaxe << std::endl;
 	if (m_pickaxe > 0)
 		m_pickaxe--;
 }

@@ -9,6 +9,7 @@
 #include "SFML\Graphics\RectangleShape.hpp"
 #include "SFML\Graphics\CircleShape.hpp"
 #include "SFML\Graphics\RenderWindow.hpp"
+#include "SFML\Graphics\View.hpp"
 
 #include "Random.h"
 #include "Math.h"
@@ -18,7 +19,7 @@
 
 LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager)
 {
-	mWindow = _window;
+	m_window = _window;
 	m_view = _view;
 	m_object_manager = _object_manager;
 
@@ -64,31 +65,35 @@ void LightSystem::addWall(sf::Vector2f pos, sf::Vector2f size)
 	//loadMap(sf::Vector2f(0.f, 0.f), sf::Vector2f(800.f, 600.f));
 }
 
-void LightSystem::logic(sf::Vector2f _pos)
+void LightSystem::logic()
 {
 	/*
-	float size = 16.f;
+	sf::Vector2f size = m_window->getView().getSize();
+	size.x /= 2;
+	size.y /= 2;
+	size.x -= 128;
+	size.y -= 128;
+	sf::Vector2f _pos = m_window->getView().getCenter();
 	
-	addSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
-	addSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
-	addSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
-	addSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
-	*/
+	addSegment(_pos.x - size.x, _pos.y - size.y, _pos.x + size.x, _pos.y - size.y);
+	addSegment(_pos.x + size.x, _pos.y - size.y, _pos.x + size.x, _pos.y + size.y);
+	addSegment(_pos.x + size.x, _pos.y + size.y, _pos.x - size.x, _pos.y + size.y);
+	addSegment(_pos.x - size.x, _pos.y + size.y, _pos.x - size.x, _pos.y - size.y);*/
+	
 
-	sweep(_pos);
+	sweep();
 
 	/*
-	deleteSegment(_pos.x - size, _pos.y - size, _pos.x + size, _pos.y - size);
-	deleteSegment(_pos.x + size, _pos.y - size, _pos.x + size, _pos.y + size);
-	deleteSegment(_pos.x + size, _pos.y + size, _pos.x - size, _pos.y + size);
-	deleteSegment(_pos.x - size, _pos.y + size, _pos.x - size, _pos.y - size);
-	*/
+	deleteSegment(_pos.x - size.x, _pos.y - size.y, _pos.x + size.x, _pos.y - size.y);
+	deleteSegment(_pos.x + size.x, _pos.y - size.y, _pos.x + size.x, _pos.y + size.y);
+	deleteSegment(_pos.x + size.x, _pos.y + size.y, _pos.x - size.x, _pos.y + size.y);
+	deleteSegment(_pos.x - size.x, _pos.y + size.y, _pos.x - size.x, _pos.y - size.y);*/
 }
 
 void LightSystem::Draw(sf::Vector2f _pos)
 {
-	/*mWindow->clear(); // Clear the window
-	mWindow->draw(*guard); // Draw the guard(light)*/
+	/*m_window->clear(); // Clear the window
+	m_window->draw(*guard); // Draw the guard(light)*/
 
 	for (auto point: points) // FIX ME! draw walls
 	{
@@ -101,12 +106,12 @@ void LightSystem::Draw(sf::Vector2f _pos)
 		rect.setOutlineThickness(2.f);
 		rect.setFillColor(sf::Color(40,60,80,128));
 
-		mWindow->draw(rect);*/
+		m_window->draw(rect);*/
 	}
 
 	field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
-	mWindow->draw(field_of_view ,sf::BlendAlpha); // Draw the light itself
-	//mWindow->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
+	m_window->draw(field_of_view ,sf::BlendAlpha); // Draw the light itself
+	//m_window->draw(&light[0], static_cast<unsigned int>(light.size()), sf::PrimitiveType::TrianglesFan);
 
 	/*
 	for (auto segment : segments)
@@ -117,7 +122,7 @@ void LightSystem::Draw(sf::Vector2f _pos)
 			sf::Vertex(sf::Vector2f(segment->b->x, segment->b->y))
 		};
 
-		mWindow->draw(line, 2, sf::Lines);
+		m_window->draw(line, 2, sf::Lines);
 	}*/
 }
 
@@ -125,10 +130,12 @@ void LightSystem::setBounds(sf::Vector2f position, sf::Vector2f size)
 {
 	mapPos = position;
 	mapSize = size;
+	
 	addSegment(position.x, position.y, position.x + size.x, position.y); // Upper left to upper right
 	addSegment(position.x + size.x, position.y, position.x + size.x, position.y + size.y); // Upper right to lower right
 	addSegment(position.x + size.x, position.y + size.y, position.x, position.y + size.y); // Lower right to lower left
 	addSegment(position.x, position.y + size.y, position.x, position.y); // Lower left to upper left
+	
 }
 
 void LightSystem::update()
@@ -139,17 +146,20 @@ void LightSystem::update()
 	
 	for(auto& object: m_object_manager->m_objects)
 	{
-		sf::Vector2f point1(object.second->getPosition().x, object.second->getPosition().y);
-		sf::Vector2f point2(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y);
-		sf::Vector2f point3(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
-		sf::Vector2f point4(object.second->getPosition().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
+		if (object.second->getDepth() == 5)
+		{
+			sf::Vector2f point1(object.second->getPosition().x, object.second->getPosition().y);
+			sf::Vector2f point2(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y);
+			sf::Vector2f point3(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
+			sf::Vector2f point4(object.second->getPosition().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
 	
-		addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
-		addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right
-		addSegment(point3.x , point3.y , point4.x , point4.y ); // Lower right to lower left
-		addSegment(point4.x , point4.y , point1.x , point1.y ); // Lower left to upper left
+			addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
+			addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right
+			addSegment(point3.x , point3.y , point4.x , point4.y ); // Lower right to lower left
+			addSegment(point4.x , point4.y , point1.x , point1.y ); // Lower left to upper left
 
-		//std::cout << "woo";
+			//std::cout << "woo";
+		}
 	}
 }
 
@@ -298,16 +308,13 @@ bool LightSystem::pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2
 	   _point.y > _pos.y && _point.y < _pos.y + _size.y);
 }
 
-void LightSystem::sweep(sf::Vector2f _pos)
+void LightSystem::sweep()
 {
 	std::sort(endPoints.begin(), endPoints.end(), sortEndPoints);
 
 	field_of_view.clear(); // Clear all vertex becuase we will have new ones from our addTriangle();
 	open.clear();
 	float startingAngle = 0.0f;
-
-	sf::Vector2f pos(_pos.x - mWindow->getSize().x/2,_pos.y - mWindow->getSize().y/2);
-	sf::Vector2f size(mWindow->getSize().x,mWindow->getSize().y);
 
 	for (unsigned int i = 0; i <= 1; i++)
 	{

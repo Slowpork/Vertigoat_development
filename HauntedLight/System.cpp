@@ -191,6 +191,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/darkness.png");
 	m_sprite_manager->addTexture("Game/spr_crack_overlay.png");
 	m_sprite_manager->addTexture("Game/spr_wall_brick.png");
+	m_sprite_manager->addTexture("Game/spr_wall_stone.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");

@@ -14,6 +14,10 @@ GameObject::GameObject(AnimatedSprite *_sprite, Collider *_collider)
 	m_collider = _collider;
 	m_depth = 0;
 
+	float m_friction = 0.f;
+	float m_min_friction = 0.f;
+	float m_max_friction = 0.f;
+
 	//std::cout << "  GameObject\n";
 }
 
