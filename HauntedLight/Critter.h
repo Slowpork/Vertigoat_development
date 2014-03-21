@@ -16,4 +16,10 @@ public:
 
 	void Update(float _deltatime, sf::Vector2f _playerpos);
 	void Draw(sf::RenderWindow* _window);
+
+private:
+	bool m_chase;
+	sf::Vector2f m_homePos;
+	float m_timer;
+	sf::Vector2f m_dir;
 };
