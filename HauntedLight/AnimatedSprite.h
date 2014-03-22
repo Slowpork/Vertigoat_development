@@ -13,7 +13,6 @@ public:
 	void setFrame(int _frame);
 	int getFrame();
 	void play(float _deltatime);
-	bool isPlaying();
 
 	sf::Vector2f getSize();
 	void turnToPoint(sf::Vector2f _point, float _speed = 0.f);
@@ -38,8 +37,6 @@ private:
 
 	int m_current;
 	float m_time;
-
-	bool m_playing;
 
 	// REGULAR
 	int m_x;

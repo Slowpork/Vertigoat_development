@@ -72,8 +72,6 @@ void AnimatedSprite::play(float _deltatime)
 		m_current = ++m_current % m_frames;
 
 		setFrame(m_current);
-
-		m_playing = true;
 	}
 }
 
@@ -122,9 +120,4 @@ void AnimatedSprite::turnToPoint(sf::Vector2f _point, float _speed)
 	}
 
 	//std::cout << "X: " << getPosition().x << " Y:"  << getPosition().y << std::endl;
-}
-
-bool AnimatedSprite::isPlaying()
-{
-	return m_playing;
 }
