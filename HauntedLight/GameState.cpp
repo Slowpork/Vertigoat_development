@@ -82,7 +82,7 @@ bool GameState::Enter()
 
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
 
-	m_collision_manager = new CollisionManager(m_object_manager, m_pickup_manager);
+	m_collision_manager = new CollisionManager(m_object_manager, m_pickup_manager, m_enemy_manager);
 
 	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager,m_system);
 
@@ -536,6 +536,17 @@ void GameState::pickupCollision()
 	}
 }
 
+void GameState::enemyCollision()
+{
+	sf::Vector2f offset;
+	int ID, object = -1;
+	object = m_collision_manager->checkCollision(player->getCollider(),offset, ENEMY,ID);
+	if (object != -1)
+	{
+		std::cout << "COLLIDE!";
+	}
+}
+
 sf::Vector2f GameState::getSide(sf::Vector2f _pos)
 {
 	sf::Vector2f value(0,0);
@@ -561,6 +572,7 @@ bool GameState::Update(float _deltatime){
 
 	playerCollision();
 	pickupCollision();
+	enemyCollision();
 
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());

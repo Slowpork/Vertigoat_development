@@ -21,7 +21,7 @@ class CollisionManager
 {
 	
 public:
-	CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager);
+	CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager, EnemyManager* _enemy_manager);
 
 	int checkCollision(Collider* _object, sf::Vector2f& _offset, Manager _type, int& _ID);
 private:
@@ -31,4 +31,5 @@ private:
 
 	ObjectManager* m_object_manager;
 	PickupManager* m_pickup_manager;
+	EnemyManager* m_enemy_manager;
 };

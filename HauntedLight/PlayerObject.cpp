@@ -181,6 +181,11 @@ void PlayerObject::doFriction()
 	m_vel *= m_friction;
 }
 
+void PlayerObject::blowout()
+{
+	m_candle = false;
+}
+
 void PlayerObject::setState(std::string _state)
 {
 	if (_state == "idle")

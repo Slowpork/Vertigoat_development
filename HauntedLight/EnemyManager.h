@@ -11,7 +11,7 @@ namespace sf
 	class RenderWindow;
 };
 
-class EnemyObject;
+class GameObject;
 
 class EnemyManager
 {
@@ -21,7 +21,7 @@ public:
 	EnemyManager();
 	~EnemyManager();
 
-	void Add(EnemyObject* _object);
+	void Add(GameObject* _object);
 	void destroy(int _ID);
 	void Update(float _deltatime, sf::Vector2f _playerpos);
 	void Draw(sf::RenderWindow* _window);
@@ -31,6 +31,6 @@ private:
 
 private:
 
-	std::map<int,EnemyObject*> m_objects;
+	std::map<int,GameObject*> m_objects;
 	static int ID;
 };

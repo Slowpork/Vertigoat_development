@@ -21,15 +21,15 @@ EnemyManager::~EnemyManager()
 	}
 }
 
-void EnemyManager::Add(EnemyObject* _object)
+void EnemyManager::Add(GameObject* _object)
 {
 	ID++;
-	m_objects.insert( std::pair<int, EnemyObject*>(ID, _object));
+	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
 }
 
 void EnemyManager::destroy(int _ID)
 {
-	std::map<int, EnemyObject*>::iterator pos = m_objects.find(_ID);
+	std::map<int, GameObject*>::iterator pos = m_objects.find(_ID);
 
 	if (pos != m_objects.end())
 	{
@@ -47,7 +47,7 @@ void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	for(auto& obj: m_objects)
 	{
-		obj.second->Update(_deltatime, _playerpos);
+		static_cast<EnemyObject*> (obj.second)->Update(_deltatime, _playerpos);
 	}
 }
 
@@ -55,6 +55,6 @@ void EnemyManager::Draw(sf::RenderWindow* _window)
 {
 	for(auto& obj: m_objects)
 	{
-		obj.second->Draw(_window);
+		static_cast<EnemyObject*> (obj.second)->Draw(_window);
 	}
 }

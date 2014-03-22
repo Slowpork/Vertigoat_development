@@ -4,13 +4,15 @@
 #include "PickupManager.h"
 #include "EnemyManager.h"
 #include "CollisionManager.h"
+#include "EnemyManager.h"
 #include "Collider.h"
 #include <math.h>
 
-CollisionManager::CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager)
+CollisionManager::CollisionManager(ObjectManager* _object_manager, PickupManager* _pickup_manager, EnemyManager* _enemy_manager)
 {
 	m_object_manager = _object_manager;
 	m_pickup_manager = _pickup_manager;
+	m_enemy_manager = _enemy_manager;
 };
 
 bool CollisionManager::RectvsRect(Collider* _object, Collider* _other, sf::Vector2f& _offset)
@@ -86,6 +88,10 @@ int CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, M
 		start = m_pickup_manager->m_objects.begin();
 		end = m_pickup_manager->m_objects.end();
 	break;
+	case ENEMY:
+		start = m_enemy_manager->m_objects.begin();
+		end = m_enemy_manager->m_objects.end();
+	break;
 	}
 	
 	for(std::map<int,GameObject*>::iterator object = start; object != end; object++)
@@ -119,5 +125,5 @@ int CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, M
 		return VALUE;
 	}
 
-	return false;
+	return -1;
 }

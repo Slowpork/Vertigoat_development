@@ -51,6 +51,7 @@ private:
 	float LightFactor();
 	void playerCollision();
 	void pickupCollision();
+	void enemyCollision();
 	void drawFloor();
 	sf::Vector2f getSide(sf::Vector2f _pos);
 

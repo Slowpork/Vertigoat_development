@@ -47,6 +47,8 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	float speed = 44.f;
 
+	m_sprite->play(_deltatime);
+
 	if (m_path != nullptr) // PATHFINDING
 	{
 		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
