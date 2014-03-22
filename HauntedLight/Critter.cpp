@@ -4,6 +4,8 @@
 #include "AnimatedSprite.h"
 #include <SFML\Graphics\RenderWindow.hpp>
 
+#include <iostream>
+
 Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
 {
 	m_sprite = _sprite;
@@ -36,8 +38,9 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		m_vel = sf::Vector2f(0,0);
 	}
 
-	if(getDistance(m_pos, _playerpos) < 150.f && m_home)
+	if(getDistance(m_pos, _playerpos) < 100.f && m_home)
 	{
+		std::cout << "chase";
 		m_chase = true;
 	}
 
