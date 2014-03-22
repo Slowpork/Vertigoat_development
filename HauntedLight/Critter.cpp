@@ -4,7 +4,10 @@
 #include "AnimatedSprite.h"
 #include <SFML\Graphics\RenderWindow.hpp>
 
+#include <iostream>
+
 Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
+	: EnemyObject(_sprite, _collider)
 {
 	m_sprite = _sprite;
 	m_collider = _collider;
@@ -20,6 +23,8 @@ Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
 
 void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 {
+	std::cout << "update" << std::endl;
+
 	m_pos = m_sprite->getPosition();
 	const float speed = 32.f;
 

@@ -162,6 +162,8 @@ bool GameState::Enter()
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
+
+	//addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
 	if (!LoadLevel("../data/levels/level1.txt"))
 		return false;
