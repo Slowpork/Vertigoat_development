@@ -21,12 +21,17 @@ public:
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 	void setHealth(float _health);
+	void hasCollided(bool _collided);
 
 	float getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2);
 	sf::Vector2f getDirection(sf::Vector2f _obj1, sf::Vector2f _obj2);
+
 private:
 
 private:
 	float m_health;
+
+protected:
+	bool m_collided;
 };
 

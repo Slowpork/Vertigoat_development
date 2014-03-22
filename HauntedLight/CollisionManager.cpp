@@ -2,6 +2,7 @@
 
 #include "ObjectManager.h"
 #include "PickupManager.h"
+#include "EnemyManager.h"
 #include "CollisionManager.h"
 #include "Collider.h"
 #include <math.h>
@@ -106,7 +107,6 @@ int CollisionManager::checkCollision(Collider* _object, sf::Vector2f& _offset, M
 			}
 			//else if (_object->m_type == Circle)
 		}
-		
 	}
 
 	if (count > 0)

@@ -24,6 +24,11 @@ void EnemyObject::setHealth(float _health)
 	m_health = _health;
 }
 
+void EnemyObject::hasCollided(bool _collided)
+{
+	m_collided = _collided;
+}
+
 float EnemyObject::getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2)
 {
 	float dif;

@@ -10,6 +10,7 @@ Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
 	m_collider = _collider;
 
 	m_chase = false;
+	m_collided = false;
 	m_dir = sf::Vector2f(0,0);
 
 	m_sprite->setOrigin((m_sprite->getSize().x/2)*m_sprite->getScale().x, (m_sprite->getSize().y)*m_sprite->getScale().y);
@@ -25,6 +26,7 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 	{
 		m_vel = sf::Vector2f(0,0);
 		m_home = true;
+		m_collided = false;
 	}else{
 		m_home = false;
 	}
@@ -34,7 +36,7 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		m_chase = true;
 	}
 
-	if(m_timer > 5.f)
+	if(m_timer > 5.f || m_collided)
 	{
 		m_chase = false;
 	}

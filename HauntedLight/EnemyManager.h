@@ -4,6 +4,7 @@
 
 #include <map>
 #include <SFML\System\Vector2.hpp>
+#include "EnemyObject.h"
 
 namespace sf
 {
@@ -14,6 +15,7 @@ class EnemyObject;
 
 class EnemyManager
 {
+	friend class CollisionManager;
 public:
 
 	EnemyManager();

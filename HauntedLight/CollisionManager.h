@@ -7,6 +7,7 @@
 class Collider;
 class ObjectManager;
 class PickupManager;
+class EnemyManager;
 
 enum Manager
 {
