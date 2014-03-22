@@ -573,13 +573,13 @@ void GameState::enemyCollision()
 			if( static_cast<EnemyObject*>(enemyobject)->getSprite()->getFrame() < 7 &&
 				static_cast<EnemyObject*>(enemyobject)->getSprite()->getFrame() > 3)
 			{
-				static_cast<EnemyObject*>(enemyobject)->hasCollided(true);
+				static_cast<EnemyObject*>(enemyobject)->hasCollided();
 				player->blowout();
 			}
 		break;
 		case 3:
 			player->blowout();
-			static_cast<EnemyObject*>(enemyobject)->hasCollided(true);
+			static_cast<EnemyObject*>(enemyobject)->hasCollided();
 		break;
 		}
 		std::cout << "COLLIDE!";
