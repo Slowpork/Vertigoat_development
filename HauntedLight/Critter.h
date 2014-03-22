@@ -23,4 +23,5 @@ private:
 	sf::Vector2f m_homePos;
 	float m_timer;
 	sf::Vector2f m_dir;
+	sf::Vector2f m_prevpos;
 };

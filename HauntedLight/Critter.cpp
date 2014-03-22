@@ -22,14 +22,18 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	m_pos = m_sprite->getPosition();
 	const float speed = 32.f;
-	
+
 	if(m_pos == m_homePos)
 	{
-		m_vel = sf::Vector2f(0,0);
 		m_home = true;
 		m_collided = false;
 	}else{
 		m_home = false;
+	}
+
+	if(m_home && m_prevpos != m_homePos)
+	{
+		m_vel = sf::Vector2f(0,0);
 	}
 
 	if(getDistance(m_pos, _playerpos) < 150.f && m_home)
@@ -67,6 +71,7 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		m_sprite->play(_deltatime);
 	}
 	
+	m_prevpos = m_pos;
 	doFriction();
 	m_pos += m_vel;
 	setPosition(m_pos);
