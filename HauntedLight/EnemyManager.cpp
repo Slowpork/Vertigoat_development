@@ -2,6 +2,7 @@
 
 #include "EnemyManager.h"
 #include "EnemyObject.h"
+#include "Collider.h"
 
 #include <iostream>
 
@@ -41,6 +42,15 @@ void EnemyManager::destroy(int _ID)
 		return;
 	}
 	std::cout << _ID << " Does not exist!" << std::endl;
+}
+
+GameObject* EnemyManager::getObject(int _ID)
+{
+	std::map<int, GameObject*>::iterator pos = m_objects.find(_ID);
+
+	if (pos != m_objects.end())
+		return pos->second;
+	return nullptr;
 }
 
 void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
