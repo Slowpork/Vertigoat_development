@@ -347,6 +347,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 
 	crawler->setSprite(spr_crawler_turn);
 	crawler->setPosition(_pos);
+	crawler->setDepth(1);
 	m_enemy_manager->Add(crawler);
 }
 
@@ -368,6 +369,7 @@ void GameState::addCritter(sf::Vector2f _pos)
 
 	//critter->setSprite(spr_critter_idle,spr_critter_attack);
 	critter->setPosition(_pos);
+	critter->setDepth(3);
 	m_enemy_manager->Add(critter);
 }
 
@@ -582,7 +584,7 @@ void GameState::enemyCollision()
 			static_cast<EnemyObject*>(enemyobject)->hasCollided();
 		break;
 		}
-		std::cout << "COLLIDE!";
+		std::cout << object;
 
 	}
 }
