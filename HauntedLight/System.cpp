@@ -17,6 +17,7 @@
 #include "FontManager.h"
 
 #include <iostream>
+#include <sstream>
 
 System::System()
 {
@@ -67,9 +68,48 @@ System::~System()
 	delete m_mouse; m_mouse = nullptr;
 }
 
+void System::writeSettings()
+{
+	std::string temp;
+	
+	temp = std::to_string(m_fullscreen) + "\n";
+	m_file_manager->Write("../bin/settings.ini",temp);
+
+	temp = std::to_string(m_vsync) + "\n";
+	m_file_manager->Append("../bin/settings.ini",temp);
+
+	temp = std::to_string(m_width) + "\n";
+	m_file_manager->Append("../bin/settings.ini",temp);
+
+	temp = std::to_string(m_height) + "\n";
+	m_file_manager->Append("../bin/settings.ini",temp);
+
+	temp = std::to_string(m_volume) + "\n";
+	m_file_manager->Append("../bin/settings.ini",temp);
+}
+
+void System::readSettings()
+{
+	std::string temp;
+	
+	temp = m_file_manager->Read("../bin/settings.ini", 0);
+	std::istringstream (temp) >> m_fullscreen;
+	temp = m_file_manager->Read("../bin/settings.ini", 1);
+	std::istringstream (temp) >> m_vsync;
+	temp = m_file_manager->Read("../bin/settings.ini", 2);
+	std::istringstream (temp) >> m_width;
+	temp = m_file_manager->Read("../bin/settings.ini", 3);
+	std::istringstream (temp) >> m_height;
+	temp = m_file_manager->Read("../bin/settings.ini", 4);
+	std::istringstream (temp) >> m_volume;
+}
+
+
 bool System::Init()
 {
 	m_file_manager = new FileManager();
+
+	readSettings();
 
 	if (!m_video_modes.empty())
 	{
@@ -121,8 +161,6 @@ bool System::Init()
 		return EXIT_FAILURE;
 	}*/
 
-	m_vsync = false;
-	m_fullscreen = false;
 	setVideoMode();
 
 	// VIEW
@@ -176,6 +214,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_volume_high.png");
 	m_sprite_manager->addTexture("Options/spr_volume_bars.png");
 	m_sprite_manager->addTexture("Options/spr_button_apply.png");
+	m_sprite_manager->addTexture("Menu/spr_button_resume.png");
 	m_sprite_manager->addTexture("Options/spr_button_return.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
@@ -230,9 +269,6 @@ bool System::Init()
 	tex_matches_pickup->setSmooth(true);
 
 	ProcessLoad();
-
-	sf::Texture* tex_wall = m_sprite_manager->getTexture("Game/spr_wall_brick.png");
-	//tex_wall->setSmooth(true);
 
 	// LOAD ALL THE FONTS
 	m_font_manager->addFont("pixel.ttf");

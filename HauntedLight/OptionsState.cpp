@@ -242,6 +242,8 @@ void OptionsState::Exit()
 	delete m_button_back;
 	m_button_back = nullptr;
 
+	m_system->writeSettings();
+
 	m_paused = false;
 }
 
