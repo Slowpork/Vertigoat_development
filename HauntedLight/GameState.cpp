@@ -543,7 +543,28 @@ void GameState::enemyCollision()
 	object = m_collision_manager->checkCollision(player->getCollider(),offset, ENEMY,ID);
 	if (object != -1)
 	{
+		
+		GameObject* enemyobject = m_enemy_manager->getObject(ID);
+		switch(object)
+		{
+		case 1:
+
+		break;
+		case 2:
+			if( static_cast<EnemyObject*>(enemyobject)->getSprite()->getFrame() < 7 &&
+				static_cast<EnemyObject*>(enemyobject)->getSprite()->getFrame() > 3)
+			{
+				static_cast<EnemyObject*>(enemyobject)->hasCollided(true);
+				player->blowout();
+			}
+		break;
+		case 3:
+			player->blowout();
+			static_cast<EnemyObject*>(enemyobject)->hasCollided(true);
+		break;
+		}
 		std::cout << "COLLIDE!";
+
 	}
 }
 

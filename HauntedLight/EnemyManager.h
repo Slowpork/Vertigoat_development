@@ -23,6 +23,7 @@ public:
 
 	void Add(GameObject* _object);
 	void destroy(int _ID);
+	GameObject* getObject(int _ID);
 	void Update(float _deltatime, sf::Vector2f _playerpos);
 	void Draw(sf::RenderWindow* _window);
 

@@ -12,6 +12,7 @@ Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
 	m_chase = false;
 	m_collided = false;
 	m_dir = sf::Vector2f(0,0);
+	m_timer = 0.f;
 
 	m_sprite->setOrigin((m_sprite->getSize().x/2)*m_sprite->getScale().x, (m_sprite->getSize().y)*m_sprite->getScale().y);
 	m_homePos = m_sprite->getPosition();
