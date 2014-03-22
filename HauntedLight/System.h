@@ -55,12 +55,15 @@ public:
 
 	void setVideoMode();
 
+	void writeSettings();
+
 	float getVolume();
 	void setVolume(float _newvolume);
 
 private:
 	void setFps(int _fps);
 	void ProcessLoad();
+	void readSettings();
 	
 private:
 	// LOADING
