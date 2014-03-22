@@ -73,6 +73,7 @@ bool GameState::Enter()
 	m_base = true;
 	m_paused = false;
 	critter_spawned = true;
+	m_light_updated = false;
 
 	m_object_manager = new ObjectManager();
 	m_pickup_manager = new PickupManager();
@@ -83,7 +84,7 @@ bool GameState::Enter()
 
 	m_collision_manager = new CollisionManager(m_object_manager, m_pickup_manager);
 
-	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager);
+	m_light_system = new LightSystem(m_system->m_window, m_system->m_view, m_object_manager,m_system);
 
 	m_listener = new sf::Listener();
 	m_listener->setGlobalVolume(m_system->m_volume*100);
@@ -168,6 +169,7 @@ bool GameState::Enter()
 	if (!LoadLevel("../data/levels/level1.txt"))
 		return false;
 
+	m_light_system->logic();
 	
 	// WALLS
 	
@@ -210,12 +212,12 @@ bool GameState::Enter()
 
 	//std::cout << "\n";
 	
-	addPickup(sf::Vector2f(128,128),1);
-	addPickup(sf::Vector2f(256,256),2);
+	//addPickup(sf::Vector2f(128,128),1);
+	//addPickup(sf::Vector2f(256,256),2);
 
 	//m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(3584,3584));
-	m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(WIDTH,HEIGHT));
-	m_light_system->update();
+	//m_light_system->setBounds(sf::Vector2f(0,0),sf::Vector2f(WIDTH,HEIGHT));
+	
 
 	return true;
 }
@@ -339,6 +341,8 @@ void GameState::addCrawler(sf::Vector2f _pos)
 
 	spr_crawler->setOrigin(128.f,128.f);
 	spr_crawler_turn->setOrigin(128.f,128.f);
+
+	spr_crawler->setRotation(-90.f);
 
 	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
@@ -553,6 +557,8 @@ sf::Vector2f GameState::getSide(sf::Vector2f _pos)
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
+	sf::Vector2f prev_light_pos = m_light_system->getLightLocation();
+
 	playerCollision();
 	pickupCollision();
 
@@ -583,14 +589,14 @@ bool GameState::Update(float _deltatime){
 	//Player breathing
 	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
 
-	FlickerLight(_deltatime);
-	m_light_system->logic();
-	spr_player_shadow->setPosition(player->getPosition());
-	spr_player_shadow->turnToPoint(m_light_system->getLightLocation());
-	
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
 	m_system->m_window->setView(*m_system->m_view);
+
+	FlickerLight(_deltatime);
+
+	spr_player_shadow->setPosition(player->getPosition());
+	spr_player_shadow->turnToPoint(m_light_system->getLightLocation());
 	
 	if (!m_system->m_keyboard->IsDown(sf::Keyboard::LControl))
 	{
@@ -603,6 +609,7 @@ bool GameState::Update(float _deltatime){
 				sf::Vector2f pos(floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
 								floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
 				addWall(pos, 5);
+				m_light_updated = true;
 				m_light_system->update();
 				m_level_system->pathReset();
 
@@ -633,11 +640,11 @@ bool GameState::Update(float _deltatime){
 								snd_Mining_with_pebbles->play();
 								m_object_manager->destroy(ID);
 								m_level_system->pathReset();
+								m_light_updated = true;
+								m_light_system->logic();
 							}
 							else
 								snd_Mining_Pickaxe->play();
-								
-							m_light_system->update();
 						}
 					}
 				}
@@ -661,11 +668,14 @@ bool GameState::Update(float _deltatime){
 				if ( path != nullptr)
 					player->setPath(path);
 		}
-		else if (m_system->m_mouse->IsDown(Right)) // HIT WALL
-		{
-			
-		}
 	}
+
+	sf::Vector2f new_light_pos = m_light_system->getLightLocation();
+
+	if (( prev_light_pos != new_light_pos) && !m_light_updated)
+	m_light_system->logic();
+
+	m_light_updated = false;
 
 	if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape))
 	return true;
@@ -684,7 +694,7 @@ void GameState::Draw()
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
-	m_light_system->Draw(player->getPosition());
+	m_light_system->Draw();
 
 	// PLAYER SHADOW
 	//if (player->hasCandle() )
@@ -697,14 +707,14 @@ void GameState::Draw()
 	// FLOOR
 	drawFloor();
 
+	m_pickup_manager->Draw(m_system->m_window, brightness);
+
 	// PLAYER
 	player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
 	m_enemy_manager->Draw(m_system->m_window);
-	
-	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	m_system->m_window->draw(*spr_critter);
 

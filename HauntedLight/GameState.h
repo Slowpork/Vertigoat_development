@@ -70,6 +70,8 @@ private:
 	float WIDTH;
 	float HEIGHT;
 
+	bool m_light_updated;
+
 	ObjectManager* m_object_manager;
 	EnemyManager* m_enemy_manager;
 	PickupManager* m_pickup_manager;

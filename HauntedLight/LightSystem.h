@@ -52,11 +52,11 @@ class LightSystem
 {
 public:
 
-	LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager);
+	LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager, System* _system);
 	~LightSystem();
 
 	void logic();
-	void Draw(sf::Vector2f _pos = sf::Vector2f(0,0));
+	void Draw();
 
 	// Updates all the lists
 	void update();
@@ -113,6 +113,7 @@ private:
 
 	sf::RenderWindow* m_window;
 	ObjectManager* m_object_manager;
+	System* m_system;
 
 	sf::View* m_view;
 };

@@ -179,8 +179,11 @@ void Engine::updateEvents()
 	}
 
 	// TOGGLE DEBUG
+	#ifdef _DEBUG
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F1))
 		m_system->toggleDebug();
+
+	#endif // _DEBUG
 	
 	// TOGGLE FULLSREEN
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::F11) 

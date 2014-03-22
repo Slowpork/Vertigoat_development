@@ -24,7 +24,7 @@ System::System()
 	m_height = 720;
 	m_bit = 32;
 
-	m_title = "Haunted Light - BETA";
+	m_title = "Haunted Light";
 
 	m_fullscreen = false;
 	m_borderless = false;

@@ -43,12 +43,6 @@
     <Filter Include="Source Files\SubSystems">
       <UniqueIdentifier>{3da9a8ce-57e7-40f3-b1a9-de176877b876}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SubSystems\Light">
-      <UniqueIdentifier>{19354dee-b51b-40f5-a721-7d7bef16e722}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SubSystems\Light">
-      <UniqueIdentifier>{54b3dd9f-7040-4d21-b362-bebb701dbb8c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Objects\Enemies">
       <UniqueIdentifier>{4f9822d0-88d9-4594-80fc-8b15f4a63681}</UniqueIdentifier>
     </Filter>
@@ -60,12 +54,6 @@
     </Filter>
     <Filter Include="Source Files\Managers\Objects">
       <UniqueIdentifier>{f2d7f7aa-9e50-482e-8ba9-c6919bb708c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SubSystems\Level">
-      <UniqueIdentifier>{b2e45f69-4bfc-4c61-b7ba-c96f66c99047}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SubSystems\Level">
-      <UniqueIdentifier>{8845a632-22a5-4687-b6bb-2a16e742ff82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +68,6 @@
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Source Files\SubSystems</Filter>
-    </ClCompile>
-    <ClCompile Include="LightSystem.cpp">
-      <Filter>Source Files\SubSystems\Light</Filter>
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Source Files\States</Filter>
@@ -147,9 +132,6 @@
     <ClCompile Include="PauseState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSystem.cpp">
-      <Filter>Source Files\SubSystems\Level</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\SubSystems</Filter>
     </ClCompile>
@@ -168,6 +150,12 @@
     <ClCompile Include="EnemyObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="LightSystem.cpp">
+      <Filter>Source Files\SubSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSystem.cpp">
+      <Filter>Source Files\SubSystems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -181,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="Random.h">
       <Filter>Header Files\SubSystems</Filter>
-    </ClInclude>
-    <ClInclude Include="LightSystem.h">
-      <Filter>Header Files\SubSystems\Light</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Header Files\States</Filter>
@@ -254,9 +239,6 @@
     <ClInclude Include="PauseState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="LevelSystem.h">
-      <Filter>Header Files\SubSystems\Level</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
@@ -271,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="CreditsState.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSystem.h">
+      <Filter>Header Files\SubSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSystem.h">
+      <Filter>Header Files\SubSystems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

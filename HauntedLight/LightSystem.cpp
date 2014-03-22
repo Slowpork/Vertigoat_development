@@ -17,11 +17,14 @@
 #include "GameObject.h"
 #include "AnimatedSprite.h"
 
-LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager)
+#include "System.h"
+
+LightSystem::LightSystem(sf::RenderWindow* _window, sf::View* _view, ObjectManager* _object_manager, System* _system)
 {
 	m_window = _window;
 	m_view = _view;
 	m_object_manager = _object_manager;
+	m_system = _system;
 
 	mapPos = sf::Vector2f(0.f,0.f);
 	mapSize = sf::Vector2f(1024.f,1024.f);
@@ -80,8 +83,8 @@ void LightSystem::logic()
 	addSegment(_pos.x + size.x, _pos.y + size.y, _pos.x - size.x, _pos.y + size.y);
 	addSegment(_pos.x - size.x, _pos.y + size.y, _pos.x - size.x, _pos.y - size.y);*/
 	
-
 	sweep();
+	update();
 
 	/*
 	deleteSegment(_pos.x - size.x, _pos.y - size.y, _pos.x + size.x, _pos.y - size.y);
@@ -90,7 +93,7 @@ void LightSystem::logic()
 	deleteSegment(_pos.x - size.x, _pos.y + size.y, _pos.x - size.x, _pos.y - size.y);*/
 }
 
-void LightSystem::Draw(sf::Vector2f _pos)
+void LightSystem::Draw()
 {
 	/*m_window->clear(); // Clear the window
 	m_window->draw(*guard); // Draw the guard(light)*/
@@ -108,6 +111,9 @@ void LightSystem::Draw(sf::Vector2f _pos)
 
 		m_window->draw(rect);*/
 	}
+
+	//std::string txt = std::to_string(segments.size() / 2 ) + " light";
+	//m_system->drawDebugText(sf::Vector2f(16,64),txt);
 
 	field_of_view.setPrimitiveType(sf::PrimitiveType::Triangles);
 	m_window->draw(field_of_view ,sf::BlendAlpha); // Draw the light itself
@@ -140,23 +146,37 @@ void LightSystem::setBounds(sf::Vector2f position, sf::Vector2f size)
 
 void LightSystem::update()
 {
+	sf::Vector2f view_size = m_window->getView().getSize();
+	view_size.x /= 2;
+	view_size.y /= 2;
+	//view_size.x -= 128;
+	//view_size.y -= 128;
+	sf::Vector2f view_pos = m_window->getView().getCenter();
+
+	sf::Vector2f pos(view_pos.x - view_size.x,view_pos.y - view_size.y);
+	sf::Vector2f size(view_size.x * 2,view_size.y * 2);
+
 	segments.clear();
 	endPoints.clear();
-	setBounds(mapPos, mapSize);
+	setBounds(pos, size);
 	
 	for(auto& object: m_object_manager->m_objects)
 	{
-		if (object.second->getDepth() == 5)
+		//if (object.second->getDepth() == 5 )
 		{
 			sf::Vector2f point1(object.second->getPosition().x, object.second->getPosition().y);
 			sf::Vector2f point2(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y);
 			sf::Vector2f point3(object.second->getPosition().x + object.second->getSprite()->getSize().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
 			sf::Vector2f point4(object.second->getPosition().x, object.second->getPosition().y + object.second->getSprite()->getSize().y);
-	
-			addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
-			addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right
-			addSegment(point3.x , point3.y , point4.x , point4.y ); // Lower right to lower left
-			addSegment(point4.x , point4.y , point1.x , point1.y ); // Lower left to upper left
+			
+			if ( pointInside(pos,size,point1) || pointInside(pos,size,point2)
+			||   pointInside(pos,size,point3) || pointInside(pos,size,point4))
+			{
+				addSegment(point1.x , point1.y , point2.x , point2.y ); // Upper left to upper right
+				addSegment(point2.x , point2.y , point3.x , point3.y ); // Upper right to lower right
+				addSegment(point3.x , point3.y , point4.x , point4.y ); // Lower right to lower left
+				addSegment(point4.x , point4.y , point1.x , point1.y ); // Lower left to upper left
+			}
 
 			//std::cout << "woo";
 		}
@@ -291,21 +311,38 @@ const float LightSystem::getLightBrightness() const
 bool sortEndPoints(EndPoint* a, EndPoint* b)
 {
 	if (a->angle > b->angle)
+	{
+		//std::cout << "false " << std::endl;
 		return false;
+	}
 	if (a->angle < b->angle)
+	{
+		//std::cout << "true " << std::endl;
 		return true;
-
+	}
 	if (!a->begin && b->begin)
+	{
+		//std::cout << "false " << std::endl;
 		return false;
+	}
 	if (a->begin && !b->begin)
+	{
+		//std::cout << "true " << std::endl;
 		return true;
+	}
+	//std::cout << "false " << std::endl;
 	return false;
 }
 
 bool LightSystem::pointInside(sf::Vector2f _pos, sf::Vector2f _size, sf::Vector2f _point)
 {
-	return (_point.x > _pos.x && _point.x < _pos.x + _size.x &&
-	   _point.y > _pos.y && _point.y < _pos.y + _size.y);
+	if (_point.x > _pos.x && _point.x < _pos.x + _size.x &&
+	   _point.y > _pos.y && _point.y < _pos.y + _size.y)
+	{
+		//std::cout << "What?";
+		return true;
+	}
+	return false;
 }
 
 void LightSystem::sweep()
@@ -316,12 +353,16 @@ void LightSystem::sweep()
 	open.clear();
 	float startingAngle = 0.0f;
 
+	//std::cout << "####################################" << std::endl;
+
 	for (unsigned int i = 0; i <= 1; i++)
 	{
 		for (auto& p : endPoints)
 		{
 			/*if (!pointInside(pos,size,sf::Vector2f(p->x,p->y)) )
 				continue;*/
+
+			//std::cout << "X:" << p->x << " Y: " << p->y << " begin: " << p->begin << std::endl;
 
 			Segment* current_old = open.empty() ? nullptr : open.front();
 			
@@ -351,6 +392,7 @@ void LightSystem::sweep()
 			Segment* current_new = open.empty() ? nullptr : open.front();
 			if (current_old != current_new) {
 				if (i == 1) {
+					//std::cout << " add triangle" << std::endl;
 					addTriangle(startingAngle, p->angle, current_old);
 				}
 				startingAngle = p->angle;
