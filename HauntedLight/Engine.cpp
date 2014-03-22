@@ -11,7 +11,7 @@
 #include "InputManager.h"
 
 #include "MenuState.h"
-#include "LoadingState.h"
+#include "LoseState.h"
 #include "OptionsState.h"
 #include "GameState.h"
 #include "CreditsState.h"
@@ -45,7 +45,7 @@ bool Engine::Init()
 
 	m_state_manager.Attach(new GameState(m_system));
 	m_state_manager.Attach(new MenuState(m_system));
-	m_state_manager.Attach(new LoadingState(m_system));
+	m_state_manager.Attach(new LoseState(m_system));
 	m_state_manager.Attach(new OptionsState(m_system));
 	m_state_manager.Attach(new CreditsState(m_system));
 	m_state_manager.Attach(new PauseState(m_system));

@@ -31,7 +31,7 @@ class System
 	friend class State;
 
 	friend class GameState;
-	friend class LoadingState;
+	friend class LoseState;
 	friend class PauseState;
 	friend class MenuState;
 	friend class OptionsState;
@@ -81,6 +81,8 @@ private:
 	bool m_fullscreen;
 	bool m_borderless;
 	bool m_vsync;
+
+	int m_highscore;
 
 	sf::Font* fnt_debug;
 	bool m_debug;

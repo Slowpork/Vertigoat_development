@@ -150,9 +150,6 @@ bool GameState::Enter()
 	spr_player_shadow = m_system->m_sprite_manager->getSprite("Game/spr_player_shadow.png",0,0,960,1080);
 	spr_player_shadow->setOrigin(960.f,540.f);
 
-	spr_critter = m_system->m_sprite_manager->getSprite("Game/spr_critter_walk.png",0,0,128,128,7);
-	spr_critter->setPosition(640,640);
-
 	spr_darkness = m_system->m_sprite_manager->getSprite("Game/darkness.png",0,0,1280,720);
 	spr_darkness->setOrigin(1280/2,720/2);
 	spr_darkness->setScale(scale.x,scale.y);
@@ -288,6 +285,7 @@ bool GameState::LoadLevel(const std::string _filename)
 			{
 			case 'P': player->setPosition(sf::Vector2f(X,Y)); break;
 			case 'C': addCrawler(sf::Vector2f(X,Y)); break;
+			case 'S': addCritter(sf::Vector2f(X,Y)); break;
 			case '#': addWall(sf::Vector2f(X,Y),5); break;
 			case '@': addWall(sf::Vector2f(X,Y),4); break;
 			case 'M': addPickup(sf::Vector2f(X,Y),2); break;
@@ -350,6 +348,27 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	crawler->setSprite(spr_crawler_turn);
 	crawler->setPosition(_pos);
 	m_enemy_manager->Add(crawler);
+}
+
+void GameState::addCritter(sf::Vector2f _pos)
+{
+	AnimatedSprite* spr_critter_walk = m_system->m_sprite_manager->getSprite(
+		"Game/spr_critter_walk.png",0,0,128,128,7);
+	AnimatedSprite* spr_critter_idle = m_system->m_sprite_manager->getSprite(
+		"Game/spr_critter_idle.png",0,0,128,128,7);
+	AnimatedSprite* spr_critter_attack = m_system->m_sprite_manager->getSprite(
+		"Game/spr_critter_attack.png",0,0,128,128,9);
+
+	spr_critter_walk->setOrigin(64.f,64.f);
+	spr_critter_idle->setOrigin(64.f,64.f);
+	spr_critter_attack->setOrigin(64.f,64.f);
+
+	Collider* col_critter = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
+	Crawler* critter = new Crawler(spr_critter_walk,col_critter);
+
+	//critter->setSprite(spr_critter_idle,spr_critter_attack);
+	critter->setPosition(_pos);
+	m_enemy_manager->Add(critter);
 }
 
 void GameState::addPickup(sf::Vector2f _pos, int _obj)
@@ -599,16 +618,7 @@ bool GameState::Update(float _deltatime){
 	m_level_system->Update(player->getPosition(), player->getPosition());
 	//m_listener->setPosition(sf::Vector3f(player->getPosition().x,player->getPosition().y,0.f));
 
-	//Citter
-	spr_critter->play(_deltatime);
-
 	m_enemy_manager->Update(_deltatime, player->getPosition());
-
-	if (critter_spawned == true)
-	{
-		msc_critter_walk->play();
-		critter_spawned = false;
-	}
 
 	viewScale(_deltatime);
 
@@ -747,9 +757,8 @@ void GameState::Draw()
 		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
 	m_system->m_window->draw(*player->getSprite());
 
+	// ENEMIES
 	m_enemy_manager->Draw(m_system->m_window);
-
-	m_system->m_window->draw(*spr_critter);
 
 	// OBJECTS
 	m_object_manager->setActiveDepth(4,5);

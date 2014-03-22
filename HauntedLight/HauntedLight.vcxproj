@@ -107,7 +107,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="LightSystem.cpp" />
-    <ClCompile Include="LoadingState.cpp" />
+    <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="micropather.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="LevelSystem.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightSystem.h" />
-    <ClInclude Include="LoadingState.h" />
+    <ClInclude Include="LoseState.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="micropather.h" />

@@ -45,6 +45,7 @@ private:
 	bool LoadLevel(const std::string _filename);
 	void addWall(sf::Vector2f _pos, int _depth);
 	void addCrawler(sf::Vector2f _pos);
+	void addCritter(sf::Vector2f _pos);
 	void addPickup(sf::Vector2f _pos, int _obj);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);
@@ -90,7 +91,6 @@ private:
 	AnimatedSprite* spr_matches_hud;
 	AnimatedSprite* spr_pickaxe_hud;
 	AnimatedSprite* spr_player_shadow;
-	AnimatedSprite* spr_critter;
 
 	bool critter_spawned;
 

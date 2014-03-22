@@ -32,6 +32,8 @@ System::System()
 	m_vsync = false;
 	m_debug = false;
 
+	m_highscore = 0;
+
 	m_ticks = 0.f;
 	m_fps = 0;
 
@@ -86,6 +88,9 @@ void System::writeSettings()
 
 	temp = std::to_string(m_volume) + "\n";
 	m_file_manager->Append("../bin/settings.ini",temp);
+
+	temp = std::to_string(m_highscore) + "\n";
+	m_file_manager->Append("../bin/settings.ini",temp);
 }
 
 void System::readSettings()
@@ -102,6 +107,8 @@ void System::readSettings()
 	std::istringstream (temp) >> m_height;
 	temp = m_file_manager->Read("../bin/settings.ini", 4);
 	std::istringstream (temp) >> m_volume;
+	temp = m_file_manager->Read("../bin/settings.ini", 5);
+	std::istringstream (temp) >> m_highscore;
 }
 
 
@@ -232,7 +239,11 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_wall_stone.png");
 	m_sprite_manager->addTexture("Game/spr_floor.png");
 	m_sprite_manager->addTexture("Game/spr_player_shadow.png");
+
 	m_sprite_manager->addTexture("Game/spr_critter_walk.png");
+	m_sprite_manager->addTexture("Game/spr_critter_attack.png");
+	m_sprite_manager->addTexture("Game/spr_critter_idle.png");
+
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big_turn.png");
 
