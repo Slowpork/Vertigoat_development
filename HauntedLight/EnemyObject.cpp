@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iostream>
 
+#include <iostream>
+
 EnemyObject::EnemyObject(AnimatedSprite* _sprite, Collider* _collider)
 	: GameObject(_sprite, _collider)
 {
@@ -42,6 +44,8 @@ float EnemyObject::getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2)
 	difx = _obj2.x - _obj1.x;
 
 	dif = sqrt(pow(dify,2) + pow(difx,2));
+
+	std::cout << dif << std::endl;
 
 	return dif;
 }

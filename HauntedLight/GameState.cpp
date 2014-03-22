@@ -162,6 +162,8 @@ bool GameState::Enter()
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
+
+	//addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
 	if (!LoadLevel("../data/levels/level1.txt"))
 		return false;
@@ -347,6 +349,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 
 	crawler->setSprite(spr_crawler_turn);
 	crawler->setPosition(_pos);
+	crawler->setDepth(1);
 	m_enemy_manager->Add(crawler);
 }
 
@@ -368,6 +371,7 @@ void GameState::addCritter(sf::Vector2f _pos)
 
 	//critter->setSprite(spr_critter_idle,spr_critter_attack);
 	critter->setPosition(_pos);
+	critter->setDepth(3);
 	m_enemy_manager->Add(critter);
 }
 
@@ -582,7 +586,11 @@ void GameState::enemyCollision()
 			static_cast<EnemyObject*>(enemyobject)->hasCollided();
 		break;
 		}
+<<<<<<< HEAD
 		//std::cout << "COLLIDE!";
+=======
+		std::cout << object;
+>>>>>>> e41f0e12a9c246e6e2f3a6af4c3ddf5d560268df
 
 	}
 }
