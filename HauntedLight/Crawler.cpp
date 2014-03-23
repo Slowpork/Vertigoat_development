@@ -12,12 +12,8 @@
 Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
 	: EnemyObject(_sprite, _col)
 {
-<<<<<<< HEAD
 	m_dir = 0;
 	m_turning = false;
-=======
-	m_speed = 3;
->>>>>>> 121ef28ba04e26e388396a311b9c1af104d52d86
 }
 
 void Crawler::Draw(sf::RenderWindow* _window)
@@ -109,7 +105,6 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 		int prev_dir = m_dir;
 		
 		if (m_pos.x < dest.x)
-<<<<<<< HEAD
 		{
 			m_dir = 1;
 			m_pos.x += speed *_deltatime * 2;
@@ -130,17 +125,6 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 			m_dir = 2;
 			m_pos.y -= speed *_deltatime * 2;
 		}
-=======
-			m_pos.x += speed *_deltatime * m_speed;
-		else if (m_pos.x > dest.x)
-			m_pos.x -= speed *_deltatime * m_speed;
-
-		if (m_pos.y < dest.y)
-			m_pos.y += speed *_deltatime * m_speed;
-		else if (m_pos.y > dest.y)
-			m_pos.y -= speed *_deltatime * m_speed;
-
->>>>>>> 121ef28ba04e26e388396a311b9c1af104d52d86
 
 		int goal_count = 0;
 		if ( abs(m_pos.x - dest.x) < 8 ) // X AXIS DONE
