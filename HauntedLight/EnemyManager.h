@@ -11,6 +11,7 @@ namespace sf
 	class RenderWindow;
 };
 
+class LevelSystem;
 class GameObject;
 
 class EnemyManager
@@ -18,7 +19,7 @@ class EnemyManager
 	friend class CollisionManager;
 public:
 
-	EnemyManager();
+	EnemyManager(LevelSystem* _level_manager);
 	~EnemyManager();
 
 	void Add(GameObject* _object);
@@ -28,10 +29,12 @@ public:
 	void Draw(sf::RenderWindow* _window);
 
 private:
-
+	sf::Vector2f Snap(sf::Vector2f _value);
 
 private:
 
 	std::map<int,GameObject*> m_objects;
 	static int ID;
+
+	LevelSystem* m_level_manager;
 };

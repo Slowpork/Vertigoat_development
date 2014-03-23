@@ -43,6 +43,14 @@ bool Crawler::turn(int _dir)
 	return false;
 }
 
+bool Crawler::needPath()
+{
+	if (m_path == nullptr)
+		return true;
+	else 
+		return false;
+}
+
 void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	float speed = 44.f;
@@ -54,14 +62,14 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
 		
 		if (m_pos.x < dest.x)
-			m_pos.x += speed *_deltatime * 10;
+			m_pos.x += speed *_deltatime * 2;
 		else if (m_pos.x > dest.x)
-			m_pos.x -= speed *_deltatime * 10;
+			m_pos.x -= speed *_deltatime * 2;
 
 		if (m_pos.y < dest.y)
-			m_pos.y += speed *_deltatime * 10;
+			m_pos.y += speed *_deltatime * 2;
 		else if (m_pos.y > dest.y)
-			m_pos.y -= speed *_deltatime * 10;
+			m_pos.y -= speed *_deltatime * 2;
 
 
 		int goal_count = 0;

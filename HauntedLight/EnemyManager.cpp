@@ -4,13 +4,17 @@
 #include "EnemyObject.h"
 #include "Collider.h"
 
+#include "Crawler.h"
+
+#include "LevelSystem.h"
+
 #include <iostream>
 
 int EnemyManager::ID = 0;
 
-EnemyManager::EnemyManager()
+EnemyManager::EnemyManager(LevelSystem* _level_manager)
 {
-
+	m_level_manager = _level_manager;
 }
 
 EnemyManager::~EnemyManager()
@@ -53,10 +57,30 @@ GameObject* EnemyManager::getObject(int _ID)
 	return nullptr;
 }
 
+sf::Vector2f EnemyManager::Snap(sf::Vector2f _value)
+{
+	return sf::Vector2f(
+			floor(_value.x - ((int)_value.x % 128)),
+			floor(_value.y - ((int)_value.y % 128))
+			);
+}
+
 void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	for(auto& obj: m_objects)
 	{
+		// CRAWLER
+		if (obj.second->getDepth() == 1)
+		{
+			if ( static_cast<Crawler*>(obj.second)->needPath() )
+			{
+				std::vector<sf::Vector2f>* path = m_level_manager->getPath(
+					Snap(obj.second->getPosition()),Snap(_playerpos));
+
+				if (path != nullptr)
+					static_cast<Crawler*>(obj.second)->setPath(path);
+			}
+		}
 		static_cast<EnemyObject*> (obj.second)->Update(_deltatime, _playerpos);
 	}
 }

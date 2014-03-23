@@ -22,6 +22,8 @@ public:
 	void setSprite(AnimatedSprite* _sprite);
 
 	void setPath(std::vector<sf::Vector2f>* _path);
+
+	bool needPath();
 private:
 
 	bool turn(int _dir);

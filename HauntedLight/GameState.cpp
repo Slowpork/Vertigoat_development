@@ -78,9 +78,9 @@ bool GameState::Enter()
 	m_object_manager = new ObjectManager();
 	m_pickup_manager = new PickupManager();
 
-	m_enemy_manager = new EnemyManager();
-
 	m_level_system = new LevelSystem(m_object_manager, m_system->m_sprite_manager);
+
+	m_enemy_manager = new EnemyManager(m_level_system);
 
 	m_collision_manager = new CollisionManager(m_object_manager, m_pickup_manager, m_enemy_manager);
 
@@ -753,6 +753,7 @@ void GameState::Draw()
 	// FLOOR
 	drawFloor();
 
+	// PICKUPS
 	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	// PLAYER
