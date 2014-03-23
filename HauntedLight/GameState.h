@@ -73,6 +73,8 @@ private:
 	float WIDTH;
 	float HEIGHT;
 
+	sf::Vector2f m_crawler_pos;
+
 	bool m_light_updated;
 
 	ObjectManager* m_object_manager;

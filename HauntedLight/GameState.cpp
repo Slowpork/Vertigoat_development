@@ -368,7 +368,7 @@ void GameState::addCritter(sf::Vector2f _pos)
 	spr_critter_attack->setOrigin(64.f,64.f);
 
 	Collider* col_critter = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Crawler* critter = new Crawler(spr_critter_walk,col_critter);
+	Critter* critter = new Critter(spr_critter_walk,col_critter);
 
 	//critter->setSprite(spr_critter_idle,spr_critter_attack);
 	critter->setPosition(_pos);
@@ -563,6 +563,7 @@ void GameState::pickupCollision()
 bool GameState::enemyCollision()
 {
 	sf::Vector2f offset;
+	sf::Vector2f pos;
 	int ID, object = -1;
 	object = m_collision_manager->checkCollision(player->getCollider(),offset, ENEMY,ID);
 	if (object != -1)
@@ -572,6 +573,9 @@ bool GameState::enemyCollision()
 		switch(object)
 		{
 		case 1:
+			pos = enemyobject->getCollider()->m_pos;
+			std::cout << "X: " << pos.x << " Y: " << pos.y << std::endl;
+			m_crawler_pos = pos;
 			return true;
 		break;
 		case 2:
@@ -621,11 +625,14 @@ bool GameState::Update(float _deltatime){
 
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
+		//std::cout << "hit!";
+		/*
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();
 		m_next = "LoseState";
 		Pause();
 		return false;
+		*/
 	}
 
 	player->Update(_deltatime);
@@ -786,6 +793,8 @@ void GameState::Draw()
 
 	m_system->drawDebugRect(m_light_system->getLightLocation(),
 			sf::Vector2f(4,4));
+
+	m_system->drawDebugRect(m_crawler_pos,sf::Vector2f(128.f,128.f));
 
 	// INTERFACE ##################################
 	m_system->m_window->setView(m_system->m_window->getDefaultView());

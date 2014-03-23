@@ -12,6 +12,7 @@ public:
 
 	void setFrame(int _frame);
 	int getFrame();
+	int getFrames();
 	void play(float _deltatime);
 
 	sf::Vector2f getSize();
