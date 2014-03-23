@@ -15,18 +15,22 @@ Critter::Critter(AnimatedSprite* _sprite, Collider* _collider)
 	m_chase = false;
 	m_collided = false;
 	m_dir = sf::Vector2f(0,0);
+	m_vel = sf::Vector2f(0,0);
 	m_timer = 0.f;
 
 	m_sprite->setOrigin((m_sprite->getSize().x/2)*m_sprite->getScale().x, (m_sprite->getSize().y)*m_sprite->getScale().y);
+	m_pos = m_sprite->getPosition();
 	m_homePos = m_sprite->getPosition();
 }
 
 void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 {
-	std::cout << "update" << std::endl;
+	//std::cout << "update" << std::endl;
 
 	m_pos = m_sprite->getPosition();
-	const float speed = 32.f;
+	const float speed = 28.f;
+
+	std::cout << "m_vel: " << m_vel.x << ", " << m_vel.y << std::endl;
 
 	if(m_pos == m_homePos)
 	{
@@ -41,7 +45,7 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		m_vel = sf::Vector2f(0,0);
 	}
 
-	if(getDistance(m_pos, _playerpos) < 100.f && m_home)
+	if(getDistance(m_pos, _playerpos) < 150.f && m_home)
 	{
 		std::cout << "chase";
 		m_chase = true;
@@ -59,8 +63,8 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		turnToPoint(_playerpos);
 		m_dir = getDirection(m_pos, _playerpos);
 
-		m_vel.x += speed * m_dir.x * _deltatime;
-		m_vel.y += speed * m_dir.y * _deltatime;
+		m_vel.x += speed*m_dir.x*_deltatime;
+		m_vel.y += speed*m_dir.y*_deltatime;
 
 		m_sprite->play(_deltatime);
 	}
@@ -74,6 +78,7 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 
 		m_vel.x += speed*m_dir.x*_deltatime;
 		m_vel.y += speed*m_dir.y*_deltatime;
+
 		m_sprite->play(_deltatime);
 	}
 	

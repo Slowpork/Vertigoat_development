@@ -34,7 +34,7 @@ void EnemyObject::hasCollided()
 
 float EnemyObject::getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2)
 {
-	std::cout << "getDistance";
+	//std::cout << "getDistance";
 
 	float dif;
 	float dify;
@@ -45,7 +45,7 @@ float EnemyObject::getDistance(sf::Vector2f _obj1, sf::Vector2f _obj2)
 
 	dif = sqrt(pow(dify,2) + pow(difx,2));
 
-	std::cout << dif << std::endl;
+	//std::cout << dif << std::endl;
 
 	return dif;
 }

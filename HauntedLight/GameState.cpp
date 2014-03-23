@@ -368,7 +368,7 @@ void GameState::addCritter(sf::Vector2f _pos)
 	spr_critter_attack->setOrigin(64.f,64.f);
 
 	Collider* col_critter = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Crawler* critter = new Crawler(spr_critter_walk,col_critter);
+	Critter* critter = new Critter(spr_critter_walk,col_critter);
 
 	//critter->setSprite(spr_critter_idle,spr_critter_attack);
 	critter->setPosition(_pos);
@@ -583,8 +583,8 @@ bool GameState::enemyCollision()
 			}
 		break;
 		case 3:
-			player->blowout();
 			static_cast<EnemyObject*>(enemyobject)->hasCollided();
+			player->blowout();
 		break;
 		}
 		std::cout << object;
