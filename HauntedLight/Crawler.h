@@ -39,4 +39,6 @@ private:
 
 	AnimatedSprite* m_spr_idle;
 	AnimatedSprite* m_spr_turn;
+
+	int m_speed;
 };
