@@ -49,7 +49,7 @@ bool LoseState::Enter(){
 
 	sf::Vector2f scale = m_system->m_scale;
 
-	spr_button_back = m_system->m_sprite_manager->getSprite("Menu/spr_button_resume.png",0,0,219,64,2);
+	spr_button_back = m_system->m_sprite_manager->getSprite("Menu/spr_button_retry.png",0,0,219,64,2);
 	spr_button_back->setScale(scale.x, scale.y);
 	m_button_back = new Button(spr_button_back, spr_button_back->getSize().x*spr_button_back->getScale().x, 
 		spr_button_back->getSize().y*spr_button_back->getScale().y, 
@@ -95,7 +95,7 @@ bool LoseState::Update(float _deltatime){
 
 	if(m_button_back->Update(_deltatime, m_system->m_mouse))
 	{
-		m_next = "";
+		m_next = "GameState";
 		return false;
 	}
 

@@ -93,6 +93,7 @@ bool GameState::Enter()
 	HEIGHT = 0.f;
 
 	m_timer = 0.f;
+	m_highscore = 0.f;
 
 	m_ui_alpha = 0.f;
 
@@ -559,7 +560,7 @@ void GameState::pickupCollision()
 	}
 }
 
-void GameState::enemyCollision()
+bool GameState::enemyCollision()
 {
 	sf::Vector2f offset;
 	int ID, object = -1;
@@ -571,7 +572,7 @@ void GameState::enemyCollision()
 		switch(object)
 		{
 		case 1:
-
+			return true;
 		break;
 		case 2:
 			if( static_cast<EnemyObject*>(enemyobject)->getSprite()->getFrame() < 7 &&
@@ -588,6 +589,8 @@ void GameState::enemyCollision()
 		}
 		std::cout << object;
 	}
+
+	return false;
 }
 
 sf::Vector2f GameState::getSide(sf::Vector2f _pos)
@@ -615,7 +618,15 @@ bool GameState::Update(float _deltatime){
 
 	playerCollision();
 	pickupCollision();
-	enemyCollision();
+
+	if ( enemyCollision() ) // return true if hit Crawler
+	{
+		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
+		m_system->writeSettings();
+		m_next = "LoseState";
+		Pause();
+		return false;
+	}
 
 	player->Update(_deltatime);
 	m_level_system->Update(player->getPosition(), player->getPosition());

@@ -52,7 +52,7 @@ private:
 	float LightFactor();
 	void playerCollision();
 	void pickupCollision();
-	void enemyCollision();
+	bool enemyCollision();
 	void drawFloor();
 	sf::Vector2f getSide(sf::Vector2f _pos);
 
@@ -67,6 +67,7 @@ private:
 	
 	// SYSTEMS
 	float m_timer;
+	float m_highscore;
 
 	float m_ui_alpha;
 	float WIDTH;

@@ -223,6 +223,7 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_button_apply.png");
 	m_sprite_manager->addTexture("Menu/spr_button_resume.png");
 	m_sprite_manager->addTexture("Options/spr_button_return.png");
+	m_sprite_manager->addTexture("Menu/spr_button_retry.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_low.png");
 	m_sprite_manager->addTexture("Options/spr_button_resolution_high.png");
 	m_sprite_manager->addTexture("Options/spr_checkbox_empty.png");

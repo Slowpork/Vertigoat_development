@@ -92,6 +92,7 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 			std::cout << "  Node: " << m_current_node << "  X: " << dest.x << " Y: " << dest.y << std::endl;
 			if (m_current_node == m_path->size())
 			{
+				//std::cout << "Deleted path..." << std::endl;
 				m_current_node = 0;
 				m_path->clear();
 				delete m_path;

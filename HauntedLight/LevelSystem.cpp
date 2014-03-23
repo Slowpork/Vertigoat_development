@@ -183,6 +183,7 @@ std::vector<sf::Vector2f>* LevelSystem::getPath(sf::Vector2f _pos, sf::Vector2f 
 	if ( Passable(_dest.x, _dest.y) )
 	{
 		result = m_pather->Solve(XYToNode(_pos.x,_pos.y), XYToNode( _dest.x, _dest.y), &path, &totalcost);
+		if (totalcost != 0)
 		std::cout << "\n  Totalcost: " << totalcost << std::endl << "--------------------" << std::endl;
 		if (result == m_pather->SOLVED)
 			return ConvertPath(&path);
