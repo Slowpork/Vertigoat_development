@@ -63,6 +63,11 @@ int AnimatedSprite::getFrame()
 	return m_current;
 }
 
+int AnimatedSprite::getFrames()
+{
+	return m_frames;
+}
+
 void AnimatedSprite::play(float _deltatime)
 {
 	m_time += _deltatime;

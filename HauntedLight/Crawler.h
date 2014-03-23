@@ -26,7 +26,8 @@ public:
 	bool needPath();
 private:
 
-	bool turn(int _dir);
+	void turn();
+	int getDir();
 private:
 
 	// PATHFINDING
@@ -34,6 +35,7 @@ private:
 	int m_current_node;
 
 	bool m_turning;
+	int m_dir;
 
 	AnimatedSprite* m_spr_idle;
 	AnimatedSprite* m_spr_turn;
