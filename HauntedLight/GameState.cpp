@@ -586,12 +586,7 @@ void GameState::enemyCollision()
 			static_cast<EnemyObject*>(enemyobject)->hasCollided();
 		break;
 		}
-<<<<<<< HEAD
-		//std::cout << "COLLIDE!";
-=======
 		std::cout << object;
->>>>>>> e41f0e12a9c246e6e2f3a6af4c3ddf5d560268df
-
 	}
 }
 
