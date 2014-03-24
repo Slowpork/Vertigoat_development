@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <time.h>
 
 #include "SFML\Graphics\Sprite.hpp"
 #include "SFML\Graphics\View.hpp"
@@ -64,6 +65,8 @@ GameState::GameState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
+	
+
 	m_system = _system;
 }
 
@@ -89,6 +92,8 @@ bool GameState::Enter()
 	m_listener = new sf::Listener();
 	m_listener->setGlobalVolume(m_system->m_volume*100);
 
+
+
 	WIDTH = 0.f;
 	HEIGHT = 0.f;
 
@@ -101,6 +106,11 @@ bool GameState::Enter()
 	m_view_beat = 0.f;
 
 	sf::Vector2f scale = m_system->m_scale;
+
+	//Highscore
+	m_clock = nullptr;
+	m_elapsed_time = 0.0f;
+	m_clock = new sf::Clock;
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -133,6 +143,9 @@ bool GameState::Enter()
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
 	spr_player_run->setScale(.5,.5);
+	AnimatedSprite* spr_player_hack = m_system->m_sprite_manager->getSprite("Game/spr_player_hack.png",0,0,148,128,3);
+	spr_player_hack->setScale(.5,.5);
+
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
 	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_pickup.png",0,0,128,128,8);
@@ -162,7 +175,7 @@ bool GameState::Enter()
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
-	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
+	player->setSprites(spr_player_run, spr_player_run, spr_player_hack);
 
 	addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
@@ -248,13 +261,18 @@ void GameState::Exit(){
 void GameState::Pause()
 {
 	m_paused = true;
-
 	std::cout << "  II PAUSED" << std::endl;
+
+	sf::Time elapsed = m_clock->getElapsedTime();
+	m_elapsed_time += elapsed.asSeconds();
+	std::cout << m_elapsed_time << std::endl;
+
 }
 
 void GameState::Resume()
 {
 	m_paused = false;
+	m_clock->restart();
 }
 
 bool GameState::LoadLevel(const std::string _filename)
@@ -321,13 +339,21 @@ void GameState::addWall(sf::Vector2f _pos, int _depth)
 		spr_wall = m_system->m_sprite_manager->getSprite(
 			"Game/spr_wall_stone.png",0,0,128,128,16);
 	}
-	AnimatedSprite* spr_wall_cracks = m_system->m_sprite_manager->getSprite(
-		"Game/spr_crack_overlay.png",0,0,128,128,5);
-	spr_wall_cracks->setOrigin(64.f,64.f);
+
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
-	wall->setCracks(spr_wall_cracks);
+
+	AnimatedSprite* spr_wall_crack[4];
+
+	for(int i = 0; i < 4; i++)
+	{
+		spr_wall_crack[i] = m_system->m_sprite_manager->getSprite(
+			"Game/spr_crack_overlay.png",0,0,128,128,5);
+		spr_wall_crack[i]->setOrigin(64.f,64.f);
+		wall->setCracks(spr_wall_crack[i],i);
+	}
+	
 	m_object_manager->Add(wall,_depth);
 }
 
@@ -409,7 +435,7 @@ void GameState::addPickup(sf::Vector2f _pos, int _obj)
 	spr->setScale(0.5f,0.5f);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
 	GameObject* obj = new GameObject(spr,col_Pickaxe);
-	obj->setPosition(_pos);
+	obj->setPosition(sf::Vector2f(_pos.x + 32.f, _pos.y + 32.f));
 	obj->setDepth(_obj);
 	m_pickup_manager->Add(obj);
 }
@@ -642,13 +668,13 @@ bool GameState::Update(float _deltatime){
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
 		//std::cout << "hit!";
-		/*
+		m_highscore = m_elapsed_time;
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();
 		m_next = "LoseState";
 		Pause();
 		return false;
-		*/
+		
 	}
 
 	player->Update(_deltatime);

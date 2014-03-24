@@ -27,12 +27,15 @@ public:
 private:
 
 	void turn();
-	int getDir();
+	void setDir();
+	void decideDir();
 private:
 
 	// PATHFINDING
 	std::vector<sf::Vector2f>* m_path;
 	int m_current_node;
+
+	float snap_factor;
 
 	bool m_turning;
 	int m_dir;

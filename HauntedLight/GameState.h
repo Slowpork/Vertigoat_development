@@ -23,6 +23,7 @@ namespace sf
 	class Sound;
 	class Music;
 	class Listener;
+	class Clock;
 };
 
 class GameState : public State {
@@ -135,4 +136,8 @@ private:
 
 	// VARIABLES
 	float m_view_beat;
+
+	//HighScore
+	sf::Clock* m_clock;
+	float m_elapsed_time;
 };
