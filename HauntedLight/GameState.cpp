@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <time.h>
 
 #include "SFML\Graphics\Sprite.hpp"
 #include "SFML\Graphics\View.hpp"
@@ -64,6 +65,8 @@ GameState::GameState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
+	
+
 	m_system = _system;
 }
 
@@ -89,6 +92,8 @@ bool GameState::Enter()
 	m_listener = new sf::Listener();
 	m_listener->setGlobalVolume(m_system->m_volume*100);
 
+
+
 	WIDTH = 0.f;
 	HEIGHT = 0.f;
 
@@ -101,6 +106,11 @@ bool GameState::Enter()
 	m_view_beat = 0.f;
 
 	sf::Vector2f scale = m_system->m_scale;
+
+	//Highscore
+	m_clock = nullptr;
+	m_elapsed_time = 0.0f;
+	m_clock = new sf::Clock;
 
 	// SOUNDS
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
@@ -251,13 +261,18 @@ void GameState::Exit(){
 void GameState::Pause()
 {
 	m_paused = true;
-
 	std::cout << "  II PAUSED" << std::endl;
+
+	sf::Time elapsed = m_clock->getElapsedTime();
+	m_elapsed_time += elapsed.asSeconds();
+	std::cout << m_elapsed_time << std::endl;
+
 }
 
 void GameState::Resume()
 {
 	m_paused = false;
+	m_clock->restart();
 }
 
 bool GameState::LoadLevel(const std::string _filename)
@@ -637,13 +652,13 @@ bool GameState::Update(float _deltatime){
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
 		//std::cout << "hit!";
-		/*
+		m_highscore = m_elapsed_time;
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();
 		m_next = "LoseState";
 		Pause();
 		return false;
-		*/
+		
 	}
 
 	player->Update(_deltatime);
