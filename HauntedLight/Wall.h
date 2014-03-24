@@ -17,11 +17,11 @@ public:
 
 	bool hit(sf::Vector2f _side);
 	void drawCracks(sf::RenderWindow* _window);
-	void setCracks(AnimatedSprite* _sprite);
+	void setCracks(AnimatedSprite* _sprite, int _index);
 private:
 
 private:
 
 	int m_health;
-	AnimatedSprite* spr_cracks;
+	AnimatedSprite* spr_cracks[4];
 };

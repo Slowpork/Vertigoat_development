@@ -133,6 +133,9 @@ bool GameState::Enter()
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
 	spr_player_run->setScale(.5,.5);
+	AnimatedSprite* spr_player_hack = m_system->m_sprite_manager->getSprite("Game/spr_player_hack.png",0,0,148,128,3);
+	spr_player_hack->setScale(.5,.5);
+
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
 
 	AnimatedSprite* spr_pickaxe = m_system->m_sprite_manager->getSprite("Game/spr_pickaxe_pickup.png",0,0,128,128,8);
@@ -162,7 +165,7 @@ bool GameState::Enter()
 
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
-	player->setSprites(spr_player_run, spr_player_run, spr_player_run);
+	player->setSprites(spr_player_run, spr_player_run, spr_player_hack);
 
 	//addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
@@ -320,13 +323,21 @@ void GameState::addWall(sf::Vector2f _pos, int _depth)
 		spr_wall = m_system->m_sprite_manager->getSprite(
 			"Game/spr_wall_stone.png",0,0,128,128,16);
 	}
-	AnimatedSprite* spr_wall_cracks = m_system->m_sprite_manager->getSprite(
-		"Game/spr_crack_overlay.png",0,0,128,128,5);
-	spr_wall_cracks->setOrigin(64.f,64.f);
+
 	Collider* col_wall = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Wall* wall = new Wall(spr_wall,col_wall);
 	wall->setPosition(_pos);
-	wall->setCracks(spr_wall_cracks);
+
+	AnimatedSprite* spr_wall_crack[4];
+
+	for(int i = 0; i < 4; i++)
+	{
+		spr_wall_crack[i] = m_system->m_sprite_manager->getSprite(
+			"Game/spr_crack_overlay.png",0,0,128,128,5);
+		spr_wall_crack[i]->setOrigin(64.f,64.f);
+		wall->setCracks(spr_wall_crack[i],i);
+	}
+	
 	m_object_manager->Add(wall,_depth);
 }
 
@@ -393,7 +404,7 @@ void GameState::addPickup(sf::Vector2f _pos, int _obj)
 	spr->setScale(0.5f,0.5f);
 	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
 	GameObject* obj = new GameObject(spr,col_Pickaxe);
-	obj->setPosition(_pos);
+	obj->setPosition(sf::Vector2f(_pos.x + 32.f, _pos.y + 32.f));
 	obj->setDepth(_obj);
 	m_pickup_manager->Add(obj);
 }

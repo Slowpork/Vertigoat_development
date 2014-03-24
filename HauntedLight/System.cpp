@@ -272,6 +272,10 @@ bool System::Init()
 	sf::Texture* tex_player_run = m_sprite_manager->getTexture("Game/spr_player_run.png");
 	tex_player->setSmooth(true);
 
+	m_sprite_manager->addTexture("Game/spr_player_hack.png");
+	sf::Texture* tex_player_hack = m_sprite_manager->getTexture("Game/spr_player_hack.png");
+	tex_player_hack->setSmooth(true);
+
 	m_sprite_manager->addTexture("Game/spr_pickaxe_pickup.png");
 	sf::Texture* tex_pickaxe_pickup = m_sprite_manager->getTexture("Game/spr_pickaxe_pickup.png");
 	tex_pickaxe_pickup->setSmooth(true);

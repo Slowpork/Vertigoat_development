@@ -85,9 +85,10 @@ bool PlayerObject::doMine(float _deltatime)
 		m_mining = true;
 		m_sprite = m_spr_mine;
 		int prev_frame = m_sprite->getFrame();
+		m_sprite->setPosition(m_pos);
 		m_sprite->play(_deltatime);
 		int cur_frame = m_sprite->getFrame();
-		if (cur_frame != prev_frame && cur_frame == 3)
+		if (cur_frame != prev_frame && cur_frame == 2)
 		{
 			return true;
 		}
@@ -246,7 +247,10 @@ void PlayerObject::Update(float _deltatime)
 	if (m_mining)
 	{
 		if (!m_mouse->IsDown(Left))
+		{
+			m_spr_mine->setFrame(0);
 			m_mining = false;
+		}
 	}
 
 	// MOVE
@@ -329,7 +333,7 @@ void PlayerObject::Update(float _deltatime)
 	// MATCHES DEBUG
 	if (m_keyboard->IsDownOnce(sf::Keyboard::Add) )
 	{
-		m_matches++;
+		m_pickaxe++;
 	}
 	else if (m_keyboard->IsDownOnce(sf::Keyboard::Subtract) )
 	{
