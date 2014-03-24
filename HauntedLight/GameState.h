@@ -78,6 +78,7 @@ private:
 
 	bool m_light_updated;
 
+	// MANAGERS
 	ObjectManager* m_object_manager;
 	EnemyManager* m_enemy_manager;
 	PickupManager* m_pickup_manager;
@@ -85,11 +86,23 @@ private:
 	LightSystem* m_light_system;
 	LevelSystem* m_level_system;
 
-	// OBJECTS
+	// INTRO-SEQUENCE
+	bool m_intro;
+	int m_intro_part;
+	AnimatedSprite* spr_cutscene1;
+	AnimatedSprite* spr_cutscene2;
+
+	AnimatedSprite* spr_shift;
+	AnimatedSprite* spr_w;
+	AnimatedSprite* spr_a;
+	AnimatedSprite* spr_s;
+	AnimatedSprite* spr_d;
+	AnimatedSprite* spr_mouselick;
+
+	// GAME-PLAY
 	PlayerObject* player;
 	PickaxeObject* pickaxe;
 	MatchesObject* matches;
-	AnimatedSprite* spr_cursor;
 	AnimatedSprite* spr_darkness;
 	AnimatedSprite* spr_floor;
 	AnimatedSprite* spr_matches_hud;

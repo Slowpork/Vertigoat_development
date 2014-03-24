@@ -64,6 +64,12 @@ int MouseObject::GetY() const
 	return y;
 }
 
+void MouseObject::setPos(int _x, int _y)
+{
+	x = _x;
+	y = _y;
+}
+
 sf::Vector2f MouseObject::getPos() const
 {
 	return m_pos;

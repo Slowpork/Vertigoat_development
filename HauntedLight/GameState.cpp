@@ -92,7 +92,8 @@ bool GameState::Enter()
 	m_listener = new sf::Listener();
 	m_listener->setGlobalVolume(m_system->m_volume*100);
 
-
+	m_intro = true;
+	m_intro_part = 1;
 
 	WIDTH = 0.f;
 	HEIGHT = 0.f;
@@ -139,6 +140,17 @@ bool GameState::Enter()
 	msc_critter_walk->setLoop(true);
 
 	// SPRITES
+
+	spr_cutscene1 = m_system->m_sprite_manager->getSprite("Game/spr_cutscene1.png",0,0,528,192,25);
+	spr_cutscene1->setOrigin(264.f,96.f);
+	spr_cutscene1->setRotation(-90);
+	spr_cutscene1->setScale(.5,.5);
+
+	spr_cutscene2 = m_system->m_sprite_manager->getSprite("Game/spr_cutscene2.png",0,0,528,192,25);
+	spr_cutscene2->setOrigin(264.f,96.f);
+	spr_cutscene2->setRotation(-90);
+	spr_cutscene2->setScale(.5,.5);
+
 	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
 	spr_player->setScale(.5,.5);
 	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
@@ -183,6 +195,12 @@ bool GameState::Enter()
 		return false;
 
 	m_light_system->logic();
+	sf::Vector2f cutscene_pos(player->getPosition().x + 64.f,player->getPosition().y + 64.f);
+	spr_cutscene1->setPosition(cutscene_pos);
+	spr_cutscene2->setPosition(cutscene_pos);
+
+	sf::Vector2f pos = spr_cutscene2->getPosition();
+	player->setPosition(pos);
 	
 	// WALLS
 	
@@ -266,7 +284,6 @@ void GameState::Pause()
 	sf::Time elapsed = m_clock->getElapsedTime();
 	m_elapsed_time += elapsed.asSeconds();
 	std::cout << m_elapsed_time << std::endl;
-
 }
 
 void GameState::Resume()
@@ -304,7 +321,7 @@ bool GameState::LoadLevel(const std::string _filename)
 
 			switch(row[i])
 			{
-			case 'P': player->setPosition(sf::Vector2f(X,Y)); break;
+			case 'P': player->setPosition(sf::Vector2f(X ,Y )); break;
 			case 'C': addCrawler(sf::Vector2f(X,Y)); break;
 			case 'S': addCritter(sf::Vector2f(X,Y)); break;
 			case '#': addWall(sf::Vector2f(X,Y),5); break;
@@ -361,13 +378,13 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	AnimatedSprite* spr_crawler = m_system->m_sprite_manager->getSprite(
 		"Game/spr_monster_big.png",0,0,256,256,12);
 	AnimatedSprite* spr_crawler_turn = m_system->m_sprite_manager->getSprite(
-		"Game/spr_monster_big_turn.png",0,0,256,256,22);
+		"Game/spr_monster_big_turn.png",0,0,128,128,22);
 
 	spr_crawler->setScale(.5f,.5f);
-	spr_crawler_turn->setScale(.5f,.5f);
+	//spr_crawler_turn->setScale(.5f,.5f);
 
 	spr_crawler->setOrigin(128.f,128.f);
-	spr_crawler_turn->setOrigin(128.f,128.f);
+	spr_crawler_turn->setOrigin(64.f,64.f);
 
 	spr_crawler->setRotation(-90.f);
 
@@ -646,19 +663,63 @@ bool GameState::Update(float _deltatime){
 
 	sf::Vector2f prev_light_pos = m_light_system->getLightLocation();
 
+	if (m_intro)
+	{
+		
+		player->setPosition(sf::Vector2f(player->getPosition().x, player->getPosition().y - _deltatime*16));
+		m_system->m_mouse->setPos(m_system->m_width / 2, - 5);
+		if (m_intro_part == 1)
+		{
+			spr_cutscene1->play(_deltatime);
+			if (spr_cutscene1->getFrame() >= spr_cutscene1->getFrames() - 1)
+				m_intro_part = 2;
+		}
+		if (m_intro_part == 2)
+		{
+			spr_cutscene2->play(_deltatime);
+			if (spr_cutscene2->getFrame() >= spr_cutscene2->getFrames() - 1)
+			{
+				sf::Vector2f pos = spr_cutscene2->getPosition();
+				player->setPosition(sf::Vector2f(pos.x + 14.f, pos.y));
+				m_intro = false;
+			}
+		}
+
+		m_system->m_view->setCenter(player->getPosition());
+		m_system->m_window->setView(*m_system->m_view);
+
+		viewScale(_deltatime);
+
+		//m_level_system->Update(player->getPosition(), player->getPosition());
+
+		FlickerLight(_deltatime);
+
+		m_light_system->logic();
+
+		if (!m_system->m_keyboard->IsDownOnce(sf::Keyboard::Escape))
+		return true;
+		else
+		{
+			m_next = "PauseState";
+			Pause();
+			return false;
+		}
+	}
+
 	playerCollision();
 	pickupCollision();
 
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
 		//std::cout << "hit!";
+		/*
 		m_highscore = m_elapsed_time;
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();
 		m_next = "LoseState";
 		Pause();
 		return false;
-		
+		*/
 	}
 
 	player->Update(_deltatime);
@@ -801,9 +862,28 @@ void GameState::Draw()
 	m_pickup_manager->Draw(m_system->m_window, brightness);
 
 	// PLAYER
-	player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
-		,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
-	m_system->m_window->draw(*player->getSprite());
+	if (!m_intro)
+	{
+		player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
+			,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
+		m_system->m_window->draw(*player->getSprite());
+	}
+	else
+	{
+		if (m_intro_part == 1)
+		{
+			spr_cutscene1->setColor(sf::Color((int)m_light_system->getLightBrightness()
+			,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
+			m_system->m_window->draw(*spr_cutscene1);
+		}
+
+		if (m_intro_part == 2)
+		{
+			spr_cutscene2->setColor(sf::Color((int)m_light_system->getLightBrightness()
+			,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
+			m_system->m_window->draw(*spr_cutscene2);
+		}
+	}
 
 	// ENEMIES
 	m_enemy_manager->Draw(m_system->m_window);

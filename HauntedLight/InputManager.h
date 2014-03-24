@@ -50,6 +50,7 @@ public:
 	int GetX() const;
 	int GetY() const;
 
+	void setPos(int _x, int _y);
 	sf::Vector2f getPos() const;
 	bool IsDown(EMouseButton _button) const;
 	bool IsDownOnce(EMouseButton _button) const;

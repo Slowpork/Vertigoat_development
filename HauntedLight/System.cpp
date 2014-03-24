@@ -200,7 +200,6 @@ bool System::Init()
 	// LOAD ALL THE TEXTURES #############################################################
 
 	// MAIN MENU
-	
 	m_sprite_manager->addTexture("Menu/spr_title.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_idle.png");
 	m_sprite_manager->addTexture("Menu/spr_candle_blow.png");
@@ -230,6 +229,14 @@ bool System::Init()
 	m_sprite_manager->addTexture("Options/spr_checkbox_checked.png");
 
 	ProcessLoad();
+
+	// INTRO
+	m_sprite_manager->addTexture("Game/spr_cutscene1.png");
+	sf::Texture* tex_cutscene1 = m_sprite_manager->getTexture("Game/spr_cutscene1.png");
+	tex_cutscene1->setSmooth(true);
+	m_sprite_manager->addTexture("Game/spr_cutscene2.png");
+	sf::Texture* tex_cutscene2 = m_sprite_manager->getTexture("Game/spr_cutscene2.png");
+	tex_cutscene2->setSmooth(true);
 
 	// GAME
 	m_sprite_manager->addTexture("spr_cursor.png");
