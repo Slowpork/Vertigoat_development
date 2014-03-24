@@ -25,6 +25,7 @@ public:
 	const int& getDepth() const;
 	void setDepth(int _depth);
 
+	void addSprite(AnimatedSprite* _spritealt);
 	bool hasSprite();
 	AnimatedSprite* getSprite();
 
@@ -42,7 +43,10 @@ protected:
 protected:
 
 	AnimatedSprite* m_sprite;
+	AnimatedSprite* m_sprite_alt;
 	Collider* m_collider;
+
+	bool alt_sprite;
 
 	float m_friction;
 	float m_min_friction;

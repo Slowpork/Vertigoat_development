@@ -39,7 +39,7 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
-	m_volume = .2f;
+	m_volume = .5f;
 
 	m_window = nullptr;
 	m_icon = nullptr;
@@ -254,6 +254,9 @@ bool System::Init()
 
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big_turn.png");
+
+	m_sprite_manager->addTexture("Game/spr_monster_waller_idle.png");
+	m_sprite_manager->addTexture("Game/spr_monster_waller_attack.png");
 
 	ProcessLoad();
 
