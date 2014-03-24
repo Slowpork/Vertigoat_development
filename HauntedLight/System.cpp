@@ -248,6 +248,9 @@ bool System::Init()
 	m_sprite_manager->addTexture("Game/spr_monster_big.png");
 	m_sprite_manager->addTexture("Game/spr_monster_big_turn.png");
 
+	m_sprite_manager->addTexture("Game/spr_monster_waller_idle.png");
+	m_sprite_manager->addTexture("Game/spr_monster_waller_attack.png");
+
 	ProcessLoad();
 
 	sf::Texture* tex_critter = m_sprite_manager->getTexture("Game/spr_critter_walk.png");
