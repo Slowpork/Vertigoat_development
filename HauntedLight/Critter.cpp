@@ -74,19 +74,6 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 
 		turnToPoint(_playerpos);
 		m_dir = getDirection(m_pos, _playerpos);
-
-		if(!alt_sprite)
-		{
-			AnimatedSprite* spr_temp;
-			spr_temp = m_sprite;
-
-			m_sprite = m_sprite_alt;
-			addSprite(spr_temp);
-
-			alt_sprite = !alt_sprite;
-		}
-
-		m_sprite->play(_deltatime);
 	}
 
 	if(!m_chase && !m_home)
@@ -96,19 +83,6 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 		turnToPoint(m_homePos);
 
 		m_dir = getDirection(m_pos, m_homePos);
-
-		if(!alt_sprite)
-		{
-			AnimatedSprite* spr_temp;
-			spr_temp = m_sprite;
-
-			m_sprite = m_sprite_alt;
-			addSprite(spr_temp);
-
-			alt_sprite = !alt_sprite;
-		}
-
-		m_sprite->play(_deltatime);
 	}
 
 	m_vel.x += speed*m_dir.x*_deltatime;
@@ -120,6 +94,33 @@ void Critter::Update(float _deltatime, sf::Vector2f _playerpos)
 	}
 	
 	//m_vel = sf::Vector2f(0,0);
+
+	if(m_vel.x == 0 && m_vel.y == 0)
+	{
+		if(alt_sprite)
+		{
+			AnimatedSprite* spr_temp;
+			spr_temp = m_sprite;
+
+			m_sprite = m_sprite_alt;
+			addSprite(spr_temp);
+
+			alt_sprite = !alt_sprite;
+		}
+	}else{
+		if(!alt_sprite)
+		{
+			AnimatedSprite* spr_temp;
+			spr_temp = m_sprite;
+
+			m_sprite = m_sprite_alt;
+			addSprite(spr_temp);
+
+			alt_sprite = !alt_sprite;
+		}
+	}
+
+	m_sprite->play(_deltatime);
 
 	std::cout << "m_dir: " << m_dir.x << ", " << m_dir.y << std::endl;
 
