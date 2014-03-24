@@ -349,7 +349,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
 
 	crawler->setSprite(spr_crawler_turn);
-	crawler->setPosition(_pos);
+	crawler->setPosition(sf::Vector2f(_pos.x + 64.f, _pos.y + 64.f));
 	crawler->setDepth(1);
 	m_enemy_manager->Add(crawler);
 }
