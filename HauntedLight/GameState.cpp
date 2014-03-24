@@ -192,10 +192,10 @@ bool GameState::Enter()
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run, spr_player_hack);
 
-	addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
+	//addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
-	/*if (!LoadLevel("../data/levels/level1.txt"))
-		return false;*/
+	if (!LoadLevel("../data/levels/level1.txt"))
+		return false;
 
 	m_light_system->logic();
 	sf::Vector2f cutscene_pos(player->getPosition().x + 64.f,player->getPosition().y + 64.f);
@@ -733,11 +733,8 @@ bool GameState::Update(float _deltatime){
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
 		//std::cout << "hit!";
-<<<<<<< HEAD
 		/*
-=======
 		snd_Player_dies->play();
->>>>>>> 9f975648a85c570a55a604aa27bfd0bfa9e79ec2
 		m_highscore = m_elapsed_time;
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();
