@@ -46,6 +46,8 @@ protected:
 	AnimatedSprite* m_sprite_alt;
 	Collider* m_collider;
 
+	bool alt_sprite;
+
 	float m_friction;
 	float m_min_friction;
 	float m_max_friction;
