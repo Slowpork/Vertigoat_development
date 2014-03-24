@@ -124,6 +124,9 @@ bool GameState::Enter()
 	snd_Mining_Pickaxe = m_system->m_sound_manager->getSound("snd_Mining_Pickaxe.wav");
 	snd_Mining_Pickaxe->setVolume(25.f);
 
+	snd_Player_dies = m_system->m_sound_manager->getSound("snd_New_Game_button.wav");
+	snd_Player_dies->setVolume(25.f);
+
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
 	music_main->setVolume(25.f);
 	music_main->setLoop(true);
@@ -668,6 +671,7 @@ bool GameState::Update(float _deltatime){
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
 		//std::cout << "hit!";
+		snd_Player_dies->play();
 		m_highscore = m_elapsed_time;
 		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 		m_system->writeSettings();

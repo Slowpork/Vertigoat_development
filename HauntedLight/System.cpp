@@ -39,7 +39,7 @@ System::System()
 
 	m_video_modes = sf::VideoMode::getFullscreenModes();
 
-	m_volume = .2f;
+	m_volume = .5f;
 
 	m_window = nullptr;
 	m_icon = nullptr;
