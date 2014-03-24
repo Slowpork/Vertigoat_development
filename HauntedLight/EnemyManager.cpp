@@ -74,7 +74,6 @@ void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 		// CRAWLER
 		if (obj.second->getDepth() == 1)
 		{
-			/*
 			if ( static_cast<Crawler*>(obj.second)->needPath() )
 			{
 				std::vector<sf::Vector2f>* path = m_level_manager->getPath(
@@ -82,7 +81,7 @@ void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 
 				if (path != nullptr)
 					static_cast<Crawler*>(obj.second)->setPath(path);
-			}*/
+			}
 		}
 	}
 }

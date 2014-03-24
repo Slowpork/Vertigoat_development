@@ -14,6 +14,7 @@ Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
 {
 	m_dir = 0;
 	m_turning = false;
+	snap_factor = 8.f;
 }
 
 void Crawler::Draw(sf::RenderWindow* _window)
@@ -37,6 +38,7 @@ void Crawler::setPath(std::vector<sf::Vector2f>* _path)
 		m_path = nullptr;
 	}
 	m_path = _path;
+	decideDir();
 }
 
 void Crawler::turn()
@@ -52,20 +54,30 @@ void Crawler::turn()
 
 	if (frame == 11 || frame == m_sprite->getFrames() - 1 ) // ROTATE
 	{
+		//std::cout << "DIRECTION!!!!: " << m_dir << std::endl;
 		switch (m_dir)
 		{
 		case 0:
-			m_sprite->setRotation(270);
+			//std::cout << "UP" << std::endl;
+			m_sprite->setRotation(-90);
+			m_spr_idle->setRotation(-90);
 		break;
 		case 1:
-			m_sprite->setRotation(180);
-		break;
-		case 2:
-			m_sprite->setRotation(90);
+			//std::cout << "RIGHT" << std::endl;
+			m_sprite->setRotation(0);
+			m_spr_idle->setRotation(0);
 		break;
 		case 3:
-			m_sprite->setRotation(0);
+			//std::cout << "LEFT" << std::endl;
+			m_sprite->setRotation(180);
+			m_spr_idle->setRotation(180);
 		break;
+		case 2:
+			//std::cout << "DOWN" << std::endl;
+			m_sprite->setRotation(90);
+			m_spr_idle->setRotation(90);
+		break;
+		
 		}
 	}
 }
@@ -78,62 +90,91 @@ bool Crawler::needPath()
 		return false;
 }
 
-int Crawler::getDir()
+void Crawler::setDir()
 {
-	if (m_pos.y < m_path->at(m_current_node).y)
-	return 0;
-	if (m_pos.x > m_path->at(m_current_node).x)
-	return 1;
-	if (m_pos.y > m_path->at(m_current_node).y)
-	return 2;
-	if (m_pos.x < m_path->at(m_current_node).x)
-	return 3;
+	//std::cout << "  setDir()" << std::endl;
+	//std::cout << "X: " <<  m_path->at(m_current_node).x << " Y: " <<  m_path->at(m_current_node).y << std::endl;
+	if (m_pos.y > m_path->at(m_current_node).y + 64.f)
+	{
+		if (m_pos.y - m_path->at(m_current_node).y + 64.f > snap_factor )
+		{
+			//std::cout << "UP" << std::endl;
+			m_dir = 0;
+		}
+	}
+	if (m_pos.x > m_path->at(m_current_node).x + 64.f )
+	{
+		if ( m_pos.x - m_path->at(m_current_node).x + 64.f > snap_factor )
+		{
+			//std::cout << "LEFT" << std::endl;
+			m_dir = 3;
+		}
+	}
+	if (m_pos.y < m_path->at(m_current_node).y + 64.f )
+	{
+		if ( m_path->at(m_current_node).y + 64.f - m_pos.y > snap_factor )
+		{
+			//std::cout << "DOWN" << std::endl;
+			m_dir = 2;
+		}
+	}
+	if (m_pos.x < m_path->at(m_current_node).x + 64.f)
+	{
+		if (m_path->at(m_current_node).x + 64.f - m_pos.x > snap_factor )
+		{
+			//std::cout << "RIGHT" << std::endl;
+			m_dir = 1;
+		}
+	}
+}
+
+void Crawler::decideDir()
+{
+	if (m_path != nullptr)
+	{
+		int prev_dir = m_dir;
+		setDir();
+		//std::cout << "prev: " << prev_dir << " dir: " << m_dir << std::endl;
+
+		if (prev_dir != m_dir )
+		{
+			m_sprite = m_spr_turn;
+			m_sprite->setFrame(0);
+			m_turning = true;
+		}
+	}
 }
 
 void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 {
 	float speed = 44.f;
 
-	m_sprite->play(_deltatime);
+	m_sprite->play(_deltatime* (1 + m_turning));
 
 	if (m_turning)
 	turn();
 	else if (m_path != nullptr) // PATHFINDING
 	{
 		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
-
-		int prev_dir = m_dir;
 		
 		if (m_pos.x < dest.x)
-		{
-			m_dir = 1;
 			m_pos.x += speed *_deltatime * 2;
-		}
 		else if (m_pos.x > dest.x)
-		{
-			m_dir = 3;
 			m_pos.x -= speed *_deltatime * 2;
-		}
 
 		if (m_pos.y < dest.y)
-		{
-			m_dir = 0;
 			m_pos.y += speed *_deltatime * 2;
-		}
 		else if (m_pos.y > dest.y)
-		{
-			m_dir = 2;
 			m_pos.y -= speed *_deltatime * 2;
-		}
 
 		int goal_count = 0;
-		if ( abs(m_pos.x - dest.x) < 8 ) // X AXIS DONE
+		if ( abs(m_pos.x - dest.x) < snap_factor ) // X AXIS DONE
 		{
 			m_pos.x = dest.x;
 			goal_count++;
 		}
 
-		if ( abs(m_pos.y - dest.y) < 8 ) // Y AXIS DONE
+		if ( abs(m_pos.y - dest.y) < snap_factor ) // Y AXIS DONE
 		{
 			m_pos.y = dest.y;
 			goal_count++;
@@ -143,8 +184,6 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 		{
 			m_pos = dest;
 			m_current_node++;
-			std::cout << "  Node: " << m_current_node << "  X: " << dest.x << " Y: " << dest.y << std::endl;
-			//std::cout << "dir: " << m_dir << "prev: " << prev_dir << std::endl;
 			
 			if (m_current_node == m_path->size())
 			{
@@ -155,15 +194,9 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 				m_path = nullptr;
 			}
 
-			m_dir = getDir();
-			std::cout << "dir: " << m_dir;
-			if (prev_dir != m_dir && m_path != nullptr)
-			{
-				m_sprite = m_spr_turn;
-				m_sprite->setFrame(0);
-				m_turning = true;
-			}
+			decideDir();
 		}
 	}
+
 	setPosition(m_pos);
 }

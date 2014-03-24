@@ -61,6 +61,10 @@ void Engine::Run()
 	{
 		// UPDATE
 		updateDeltatime();
+
+		if (m_system->m_keyboard->IsDown(sf::Keyboard::Space))
+			m_deltatime *= 4;
+
 		m_system->setFps(m_fps);
 		updateEvents();
 		m_state_manager.Update(m_deltatime);
