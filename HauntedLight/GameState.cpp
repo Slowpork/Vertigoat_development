@@ -398,9 +398,10 @@ void GameState::addCritter(sf::Vector2f _pos)
 	spr_critter_attack->setOrigin(64.f,64.f);
 
 	Collider* col_critter = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
-	Critter* critter = new Critter(spr_critter_walk,col_critter);
+	Critter* critter = new Critter(spr_critter_idle,col_critter);
 
 	//critter->setSprite(spr_critter_idle,spr_critter_attack);
+	critter->addSprite(spr_critter_walk);
 	critter->setPosition(_pos);
 	critter->setDepth(3);
 	m_enemy_manager->Add(critter);
@@ -415,7 +416,8 @@ void GameState::addWaller(sf::Vector2f _pos)
 
 	Collider* col_waller = new Collider(sf::Vector2f(0,0), sf::Vector2f(128,128));
 	Waller* waller = new Waller(spr_waller_idle, col_waller);
-
+	
+	waller->addSprite(spr_waller_attack);
 	waller->setPosition(_pos);
 	waller->setDepth(2);
 	m_enemy_manager->Add(waller);

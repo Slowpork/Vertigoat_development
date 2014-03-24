@@ -18,6 +18,7 @@ void Waller::Update(float _deltatime, sf::Vector2f _playerpos)
 	if(getDistance(m_pos, _playerpos) < 120)
 	{
 		m_sprite->play(_deltatime);
+		
 	}
 }
 

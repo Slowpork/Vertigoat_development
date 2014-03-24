@@ -116,6 +116,10 @@ void GameObject::turnToPoint(sf::Vector2f _point, float _speed)
 	}
 }
 
+void GameObject::addSprite(AnimatedSprite* _spritealt)
+{
+	m_sprite_alt = _spritealt;
+}
 
 bool GameObject::hasSprite()
 {
