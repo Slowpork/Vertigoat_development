@@ -30,6 +30,8 @@ public:
 
 private:
 	sf::Vector2f Snap(sf::Vector2f _value);
+	void AlligntoWall(int _ID);
+	int atPosition(sf::Vector2f _pos);
 
 private:
 

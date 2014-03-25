@@ -210,6 +210,9 @@ bool GameState::Enter()
 	if (!LoadLevel("../data/levels/level1.txt"))
 		return false;
 
+	/*if(!LoadLevel("../data/levels/level2.txt"))
+		return false;*/
+
 	m_light_system->logic();
 	sf::Vector2f cutscene_pos(player->getPosition().x + 64.f,player->getPosition().y + 64.f);
 	spr_cutscene1->setPosition(cutscene_pos);
@@ -435,7 +438,6 @@ void GameState::addCritter(sf::Vector2f _pos)
 	Collider* col_critter = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Critter* critter = new Critter(spr_critter_idle,col_critter);
 
-	//critter->setSprite(spr_critter_idle,spr_critter_attack);
 	critter->addSprite(spr_critter_walk);
 	critter->setPosition(_pos);
 	critter->setDepth(3);
@@ -453,7 +455,7 @@ void GameState::addWaller(sf::Vector2f _pos)
 	Waller* waller = new Waller(spr_waller_idle, col_waller);
 	
 	waller->addSprite(spr_waller_attack);
-	waller->setPosition(_pos);
+	waller->setPosition(sf::Vector2f(_pos.x + 64.f, _pos.y + 64.f));
 	waller->setDepth(2);
 	m_enemy_manager->Add(waller);
 }

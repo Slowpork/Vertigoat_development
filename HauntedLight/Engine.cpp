@@ -41,7 +41,6 @@ bool Engine::Init()
 	spr_sight->setOrigin(8,8);
 
 	FileManager file_manager;
-	file_manager.Write("../bin/Awesome.txt", "#Yolo");
 
 	m_state_manager.Attach(new GameState(m_system));
 	m_state_manager.Attach(new MenuState(m_system));
