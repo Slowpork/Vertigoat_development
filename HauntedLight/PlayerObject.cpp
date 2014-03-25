@@ -40,23 +40,17 @@ PlayerObject::PlayerObject(KeyboardObject* _keyboard, MouseObject* _mouse,
 
 	m_health = 100.f;
 	m_stamina = 100.f;
-	m_matches = 2;
+	m_matches = 3;
 	m_pickaxe = 3;
 	
 	m_light = 1.f;
 	m_candle = true;
 
-	m_path = nullptr;
-	m_current_node = 0;
 }
 
 PlayerObject::~PlayerObject()
 {
-	if (m_path != nullptr)
-	{
-		delete m_path;
-		m_path = nullptr;
-	}
+
 }
 
 void PlayerObject::setSprites(AnimatedSprite* _idle, AnimatedSprite* _run, AnimatedSprite* _mine)
@@ -86,7 +80,7 @@ bool PlayerObject::doMine(float _deltatime)
 		m_sprite = m_spr_mine;
 		int prev_frame = m_sprite->getFrame();
 		m_sprite->setPosition(m_pos);
-		m_sprite->play(_deltatime);
+		m_sprite->play(_deltatime/2);
 		int cur_frame = m_sprite->getFrame();
 		if (cur_frame != prev_frame && cur_frame == 2)
 		{
@@ -151,6 +145,16 @@ const float PlayerObject::getHealth()
 	return m_health;
 }
 
+void PlayerObject::setStamina(float _value)
+{
+	m_stamina = _value;
+
+	if (m_stamina > 100.f)
+		m_stamina = 100.f;
+	if (m_stamina < 0.0f)
+		m_stamina = 0.0f;
+}
+
 const float PlayerObject::getStamina()
 {
 	return m_stamina;
@@ -170,6 +174,12 @@ const int PlayerObject::getPickaxe()
 const float PlayerObject::getLight()
 {
 	return m_light;
+}
+
+void PlayerObject::lightCandle()
+{
+	m_candle = true;
+	m_matches--;
 }
 
 const bool PlayerObject::hasCandle()
@@ -222,18 +232,6 @@ void PlayerObject::updateLight(float _deltatime)
 		m_light = 0.3f;
 }
 
-void PlayerObject::setPath(std::vector<sf::Vector2f>* _path)
-{
-	//std::cout << "SetPath" << std::cout;
-	m_current_node = 0;
-	if (m_path != nullptr)
-	{
-		delete m_path;
-		m_path = nullptr;
-	}
-	m_path = _path;
-}
-
 void PlayerObject::Update(float _deltatime)
 {
 	float speed = 44.f;
@@ -278,49 +276,6 @@ void PlayerObject::Update(float _deltatime)
 		}
 	}
 
-	if (m_path != nullptr)
-	{
-		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
-		
-		if (m_pos.x < dest.x)
-			m_pos.x += speed *_deltatime * 10;
-		else if (m_pos.x > dest.x)
-			m_pos.x -= speed *_deltatime * 10;
-
-		if (m_pos.y < dest.y)
-			m_pos.y += speed *_deltatime * 10;
-		else if (m_pos.y > dest.y)
-			m_pos.y -= speed *_deltatime * 10;
-
-
-		int goal_count = 0;
-		if ( abs(m_pos.x - dest.x) < 8 ) // X AXIS DONE
-		{
-			m_pos.x = dest.x;
-			goal_count++;
-		}
-
-		if ( abs(m_pos.y - dest.y) < 8 ) // Y AXIS DONE
-		{
-			m_pos.y = dest.y;
-			goal_count++;
-		}
-
-		if (goal_count == 2) // AT POSITION - set next || clear
-		{
-			m_pos = dest;
-			m_current_node++;
-			std::cout << "  Node: " << m_current_node << "  X: " << dest.x << " Y: " << dest.y << std::endl;
-			if (m_current_node == m_path->size())
-			{
-				m_current_node = 0;
-				m_path->clear();
-				delete m_path;
-				m_path = nullptr;
-			}
-		}
-	}
-
 	// LIGHT CANDLE
 	if (m_mouse->IsDownOnce(Middle) && ( m_matches > 0 || m_candle) )
 	{
@@ -334,6 +289,7 @@ void PlayerObject::Update(float _deltatime)
 	if (m_keyboard->IsDownOnce(sf::Keyboard::Add) )
 	{
 		m_pickaxe++;
+		m_matches++;
 	}
 	else if (m_keyboard->IsDownOnce(sf::Keyboard::Subtract) )
 	{
@@ -349,7 +305,7 @@ void PlayerObject::Update(float _deltatime)
 			if ( moving)
 			{
 				m_running = true;
-				//m_stamina -= _deltatime*25.f;
+				m_stamina -= _deltatime*25.f;
 			}
 		}
 	}
@@ -357,6 +313,8 @@ void PlayerObject::Update(float _deltatime)
 	{
 		m_running = false;
 		m_stamina = 0.f;
+		m_friction = m_max_friction;
+		m_candle = false;
 	}
 
 	if (!moving || !m_keyboard->IsDown(sf::Keyboard::LShift))
@@ -364,7 +322,7 @@ void PlayerObject::Update(float _deltatime)
 		m_running = false;
 		m_friction = m_max_friction;
 		if (m_stamina < 100.f)
-			m_stamina += _deltatime*(5.f + (5.f*!moving));
+			m_stamina += _deltatime*(10.f + (5.f*!moving));
 		else
 		m_stamina = 100.f;
 	}

@@ -95,6 +95,12 @@ bool GameState::Enter()
 	m_intro = true;
 	m_intro_part = 1;
 
+	m_mining = false;
+	m_mine_location = sf::Vector2f(0.f,0.f);
+
+	m_death_fade = 0.f;
+	m_hit = false;
+
 	WIDTH = 0.f;
 	HEIGHT = 0.f;
 
@@ -102,6 +108,7 @@ bool GameState::Enter()
 	m_highscore = 0.f;
 
 	m_ui_alpha = 0.f;
+	m_ui_matches = true;
 
 	m_view_beat = Math::PI_HALF;
 	m_view_beat = 0.f;
@@ -114,36 +121,41 @@ bool GameState::Enter()
 	m_clock = new sf::Clock;
 
 	// SOUNDS
+	float volume = m_system->m_volume;
+
 	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
-	snd_thud->setVolume(100);
+	snd_thud->setVolume(100*volume);
 
 	snd_Equipment_selection = m_system->m_sound_manager->getSound("snd_Equipment_selection.wav");
 	snd_pickaxe_pickup		= m_system->m_sound_manager->getSound("snd_pickaxe_pickup.wav");
 
+	snd_Player_Lighting_Candle = m_system->m_sound_manager->getSound("snd_Player_Lighting_Candle.wav");
+	snd_Player_Lighting_Candle->setVolume(50.f*volume);
+
+
 	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
-	snd_Mining_with_pebbles->setVolume(25.f);
+	snd_Mining_with_pebbles->setVolume(25.f*volume);
 	snd_Mining_Pickaxe = m_system->m_sound_manager->getSound("snd_Mining_Pickaxe.wav");
-	snd_Mining_Pickaxe->setVolume(25.f);
+	snd_Mining_Pickaxe->setVolume(25.f*volume);
 
 	snd_Player_dies = m_system->m_sound_manager->getSound("snd_New_Game_button.wav");
-	snd_Player_dies->setVolume(25.f);
+	snd_Player_dies->setVolume(25.f*volume);
 
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
-	music_main->setVolume(25.f);
+	music_main->setVolume(25.f*volume);
 	music_main->setLoop(true);
 	music_main->play();
 
 	msc_Player_breathing = m_system->m_sound_manager->getMusic("msc_Player_breathing.wav");
-	msc_Player_breathing->setVolume(12.f);
+	msc_Player_breathing->setVolume(12.f*volume);
 	msc_Player_breathing->setLoop(true);
 	msc_Player_breathing->play();
 
 	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
-	msc_critter_walk->setVolume(25.f);
+	msc_critter_walk->setVolume(25.f*volume);
 	msc_critter_walk->setLoop(true);
 
 	// SPRITES
-
 	spr_cutscene1 = m_system->m_sprite_manager->getSprite("Game/spr_cutscene1.png",0,0,528,192,25);
 	spr_cutscene1->setOrigin(264.f,96.f);
 	spr_cutscene1->setRotation(-90);
@@ -191,6 +203,7 @@ bool GameState::Enter()
 	player = new PlayerObject(m_system->m_keyboard, m_system->m_mouse, spr_player, col_player);
 	player->setPosition(sf::Vector2f(256,10*SIZE));
 	player->setSprites(spr_player_run, spr_player_run, spr_player_hack);
+	player->setStamina(0.f);
 
 	//addCritter(sf::Vector2f(player->getPosition().x + 256.f,player->getPosition().y));
 	
@@ -204,6 +217,11 @@ bool GameState::Enter()
 
 	sf::Vector2f pos = spr_cutscene2->getPosition();
 	player->setPosition(pos);
+
+	/*
+	player->setPosition(sf::Vector2f(
+		player->getPosition().x + 28.f, 
+		player->getPosition().y - 16.f));*/
 	
 	// WALLS
 	
@@ -455,7 +473,7 @@ void GameState::addPickup(sf::Vector2f _pos, int _obj)
 		"Game/spr_matches_pickup.png",0,0,128,128);
 	}
 	spr->setScale(0.5f,0.5f);
-	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(64,64));
+	Collider* col_Pickaxe = new Collider(sf::Vector2f(0,0),sf::Vector2f(32,32));
 	GameObject* obj = new GameObject(spr,col_Pickaxe);
 	obj->setPosition(sf::Vector2f(_pos.x + 32.f, _pos.y + 32.f));
 	obj->setDepth(_obj);
@@ -464,7 +482,7 @@ void GameState::addPickup(sf::Vector2f _pos, int _obj)
 
 void GameState::viewScale(float _deltatime)
 {
-	float tracking = player->getSpeed();
+	float tracking = player->getStamina();
 
 	if (tracking == 0.92f)
 	{
@@ -480,6 +498,10 @@ void GameState::viewScale(float _deltatime)
 		else
 			m_view_beat = 1.f;
 	}
+
+	tracking /= 100;
+
+	m_view_beat = tracking;
 
 	if (m_view_beat > 1.f)
 		m_view_beat = 1.f;
@@ -607,6 +629,7 @@ void GameState::pickupCollision()
 		case 1:
 			if (player->addPickaxe())
 			{
+				m_ui_matches = false;
 				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
 				snd_pickaxe_pickup->play();
@@ -615,6 +638,7 @@ void GameState::pickupCollision()
 		case 2:
 			if (player->addMatch())
 			{
+				m_ui_matches = true;
 				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
 				snd_Equipment_selection->play();
@@ -683,12 +707,16 @@ bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
 
 	sf::Vector2f prev_light_pos = m_light_system->getLightLocation();
+	float prev_light_brightness = m_light_system->getLightBrightness();
 
+	// ###########################################################################
+	// INTRO #####################################################################
+	// ###########################################################################
 	if (m_intro)
 	{
-		
+		player->setStamina(player->getStamina() + _deltatime*25);
 		player->setPosition(sf::Vector2f(player->getPosition().x, player->getPosition().y - _deltatime*16));
-		m_system->m_mouse->setPos(m_system->m_width / 2, - 5);
+		m_system->m_mouse->setPos(m_system->m_width / 2, -256.f);
 		if (m_intro_part == 1)
 		{
 			spr_cutscene1->play(_deltatime);
@@ -701,7 +729,11 @@ bool GameState::Update(float _deltatime){
 			if (spr_cutscene2->getFrame() >= spr_cutscene2->getFrames() - 1)
 			{
 				sf::Vector2f pos = spr_cutscene2->getPosition();
-				player->setPosition(sf::Vector2f(pos.x + 14.f, pos.y));
+				//std::cout << "prev X: " << player->getPosition().x << " Y: " << player->getPosition().y << std::endl;
+				/*player->setPosition(sf::Vector2f(
+					player->getPosition().x + 28.f, 
+					player->getPosition().y - 16.f));*/
+				//std::cout << "NEW X: " << player->getPosition().x << " Y: " << player->getPosition().y << std::endl;
 				m_intro = false;
 			}
 		}
@@ -711,7 +743,7 @@ bool GameState::Update(float _deltatime){
 
 		viewScale(_deltatime);
 
-		//m_level_system->Update(player->getPosition(), player->getPosition());
+		m_level_system->Update(player->getPosition(), player->getPosition());
 
 		FlickerLight(_deltatime);
 
@@ -732,16 +764,30 @@ bool GameState::Update(float _deltatime){
 
 	if ( enemyCollision() ) // return true if hit Crawler
 	{
-		//std::cout << "hit!";
 		/*
-		snd_Player_dies->play();
-		m_highscore = m_elapsed_time;
-		m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
-		m_system->writeSettings();
-		m_next = "LoseState";
-		Pause();
-		return false;
-		*/
+		if (player->getStamina() < 1.f)
+		{
+			
+		}
+		else
+			player->setStamina(player->getStamina() - _deltatime*50);*/
+
+		m_hit = true;
+	}
+
+	if (m_hit)
+	{
+		m_death_fade += _deltatime;
+		if (m_death_fade > 1.000f)
+		{
+			snd_Player_dies->play();
+			m_highscore = m_elapsed_time;
+			m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
+			m_system->writeSettings();
+			m_next = "LoseState";
+			Pause();
+			return false;
+		}
 	}
 
 	player->Update(_deltatime);
@@ -760,7 +806,13 @@ bool GameState::Update(float _deltatime){
 	}
 	
 	//Player breathing
-	//msc_Player_breathing->setVolume(100 - (player->getStamina()));
+
+	float vol = 100.f - player->getStamina();
+	if (vol > 100.f)
+		vol = 100.f;
+	if (vol < 0.f)
+		vol = 0.f;
+	msc_Player_breathing->setVolume(vol);
 
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
@@ -770,35 +822,43 @@ bool GameState::Update(float _deltatime){
 
 	spr_player_shadow->setPosition(player->getPosition());
 	spr_player_shadow->turnToPoint(m_light_system->getLightLocation());
-	
-	if (!m_system->m_keyboard->IsDown(sf::Keyboard::LControl))
-	{
-		if (m_system->m_mouse->IsDown(Right))
-		{
-			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
-			if ( ID == -1)
-			{
-				
-				sf::Vector2f pos(floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
-								floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
-				addWall(pos, 5);
-				m_light_updated = true;
-				m_light_system->update();
-				m_level_system->pathReset();
 
-				snd_thud->setPosition(m_system->getSoundValue(player->getPosition(),pos));
-				snd_thud->play();
-			}
-		}
-		else if (m_system->m_mouse->IsDown(Left)) // HIT WALL
+	m_mining = false;
+	
+	/*
+	if (m_system->m_mouse->IsDown(Right))
+	{
+		int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
+		if ( ID == -1)
 		{
-			int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
-			if ( ID != -1)
+				
+			sf::Vector2f pos(floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
+							floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128)));
+			addWall(pos, 5);
+			m_light_updated = true;
+			m_light_system->update();
+			m_level_system->pathReset();
+
+			snd_thud->setPosition(m_system->getSoundValue(player->getPosition(),pos));
+			snd_thud->play();
+		}
+	}*/
+
+	// MINE
+	int ID = m_object_manager->atPosition(m_system->m_mouse->getPos());
+	if ( ID != -1)
+	{
+		if ( player->getPickaxe() > 0)
+		{
+			if (m_object_manager->getDistance(player->getPosition(),ID) < 140.f && m_object_manager->getObject(ID)->getDepth() == 5)
 			{
-				if (m_object_manager->getDistance(player->getPosition(),ID) < 140.f)
+				m_mining = true;
+				m_mine_location = m_object_manager->getObject(ID)->getPosition();
+				if (m_system->m_mouse->IsDown(Left))
 				{
 					if (player->doMine(_deltatime))
 					{
+						m_ui_matches = false;
 						m_ui_alpha = 128.f;
 						sf::Vector2f side = getSide(m_object_manager->getPosition(ID));
 						GameObject* go = m_object_manager->getObject(ID);
@@ -824,28 +884,32 @@ bool GameState::Update(float _deltatime){
 			}
 		}
 	}
-	else
-	{
-		if (m_system->m_mouse->IsDownOnce(Left))
-		{
-			sf::Vector2f pos(
-					floor(player->getPosition().x - ((int)player->getPosition().x % 128)),
-					floor(player->getPosition().y - ((int)player->getPosition().y % 128))
-					);
-			sf::Vector2f dest(
-					floor(m_system->m_mouse->getPos().x - ((int)m_system->m_mouse->getPos().x % 128)),
-					floor(m_system->m_mouse->getPos().y - ((int)m_system->m_mouse->getPos().y % 128))
-					);
 
-			std::vector<sf::Vector2f>* path = m_level_system->getPath(pos,dest);
-				if ( path != nullptr)
-					player->setPath(path);
+	// LIGHT CANDLE
+	if (!player->hasCandle() && player->getMatches() > 0) 
+	{
+		if (m_system->m_mouse->IsDownOnce(Right))
+		{
+			m_ui_matches = true;
+			m_ui_alpha = 128.f;
+			snd_Player_Lighting_Candle->play();
+			
+			if (Random::between(1,3) == 1) // SUCCESS
+			{
+				player->lightCandle();
+			}
+			else // FAIL
+			{
+				player->setStamina(player->getStamina() - 30.f);
+			}
 		}
 	}
 
 	sf::Vector2f new_light_pos = m_light_system->getLightLocation();
+	float new_light_brightness = m_light_system->getLightBrightness();
 
-	if (( prev_light_pos != new_light_pos) && !m_light_updated)
+	if (( prev_light_pos != new_light_pos || prev_light_brightness != new_light_brightness) 
+		&& !m_light_updated)
 	m_light_system->logic();
 
 	m_light_updated = false;
@@ -882,6 +946,14 @@ void GameState::Draw()
 
 	// PICKUPS
 	m_pickup_manager->Draw(m_system->m_window, brightness);
+
+	int temp_frame = spr_cutscene2->getFrame();
+	spr_cutscene2->setColor(sf::Color((int)m_light_system->getLightBrightness()
+			,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),128));
+			spr_cutscene2->setFrame(spr_cutscene2->getFrames() - 1);
+			m_system->m_window->draw(*spr_cutscene2);
+
+	spr_cutscene2->setFrame(temp_frame);
 
 	// PLAYER
 	if (!m_intro)
@@ -924,6 +996,20 @@ void GameState::Draw()
 
 	m_system->drawDebugRect(m_crawler_pos,sf::Vector2f(128.f,128.f));
 
+	// MINING INDICATOR
+	if (m_mining)
+	{
+		float alpha = 0.5 + 0.5*(m_system->m_mouse->IsDown(Left));
+
+		sf::RectangleShape rect_mining_box(sf::Vector2f( 128.f, 128.f));
+		rect_mining_box.setFillColor(sf::Color(0,0,0,0));
+		rect_mining_box.setOutlineColor(sf::Color(205,132,0,64*alpha));
+		rect_mining_box.setOutlineThickness(2);
+		rect_mining_box.setPosition(m_mine_location);
+
+		m_system->m_window->draw(rect_mining_box);
+	}
+
 	// INTERFACE ##################################
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
 	
@@ -931,13 +1017,13 @@ void GameState::Draw()
 	m_system->m_window->draw(*spr_darkness);
 
 	// MATCHES
-	if (player->holdMatch())
+	if (m_ui_matches)
 	{
 		spr_matches_hud->setOpacity(m_ui_alpha);
 		spr_matches_hud->setFrame(player->getMatches());
 		m_system->m_window->draw(*spr_matches_hud);
 	}
-	else if (player->getPickaxe() > 0)
+	else
 	{
 		spr_pickaxe_hud->setOpacity(m_ui_alpha);
 		spr_pickaxe_hud->setFrame(4 - player->getPickaxe());
@@ -947,6 +1033,10 @@ void GameState::Draw()
 	// DEBUG WALLS
 	std::string txt = std::to_string(m_object_manager->getObjects()) + " walls";
 	m_system->drawDebugText(sf::Vector2f(16,32),txt);
+
+	// BLACK DEATH FADE
+	sf::RectangleShape rect_fade(sf::Vector2f( m_system->m_width, m_system->m_height));
+	rect_fade.setFillColor(sf::Color(0,0,0,m_death_fade*255));
 }
 
 std::string GameState::Next(){

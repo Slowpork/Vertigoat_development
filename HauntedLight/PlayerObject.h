@@ -11,7 +11,6 @@ class KeyboardObject;
 class MouseObject;
 class System;
 
-
 class PlayerObject : public GameObject
 {
 public:
@@ -21,7 +20,6 @@ public:
 
 	void Update(float _deltatime);
 	
-	void setPath(std::vector<sf::Vector2f>* _path);
 	void setVelocity(sf::Vector2f _vel);
 	void doFriction();
 
@@ -36,11 +34,13 @@ public:
 	bool holdMatch();
 
 	const float getHealth();
+	void setStamina(float _value);
 	const float getStamina();
 	const int getMatches();
 	const int getPickaxe();
 	const float getLight();
 	const bool hasCandle();
+	void lightCandle();
 private:
 
 	void setState(std::string _state);
@@ -50,16 +50,10 @@ private:
 	KeyboardObject* m_keyboard;
 	MouseObject* m_mouse;
 
-	std::vector<sf::Vector2f>* m_path;
-	int m_current_node;
-
 	AnimatedSprite* m_spr_run;
 	AnimatedSprite* m_spr_walk;
 	AnimatedSprite* m_spr_idle;
 	AnimatedSprite* m_spr_mine;
-
-	System* m_system;
-
 
 	bool m_running;
 	bool m_hold_match;

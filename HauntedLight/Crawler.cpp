@@ -14,7 +14,7 @@ Crawler::Crawler(AnimatedSprite* _sprite, Collider* _col)
 {
 	m_dir = 0;
 	m_turning = false;
-	snap_factor = 8.f;
+	snap_factor = 4.f;
 }
 
 void Crawler::Draw(sf::RenderWindow* _window)
@@ -158,14 +158,14 @@ void Crawler::Update(float _deltatime, sf::Vector2f _playerpos)
 		sf::Vector2f dest(m_path->at(m_current_node).x + 64.f,m_path->at(m_current_node).y + 64.f);
 		
 		if (m_pos.x < dest.x)
-			m_pos.x += speed *_deltatime * 2;
+			m_pos.x += speed *_deltatime * 5;
 		else if (m_pos.x > dest.x)
-			m_pos.x -= speed *_deltatime * 2;
+			m_pos.x -= speed *_deltatime * 5;
 
 		if (m_pos.y < dest.y)
-			m_pos.y += speed *_deltatime * 2;
+			m_pos.y += speed *_deltatime * 5;
 		else if (m_pos.y > dest.y)
-			m_pos.y -= speed *_deltatime * 2;
+			m_pos.y -= speed *_deltatime * 5;
 
 		int goal_count = 0;
 		if ( abs(m_pos.x - dest.x) < snap_factor ) // X AXIS DONE

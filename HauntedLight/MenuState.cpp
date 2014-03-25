@@ -86,6 +86,8 @@ bool MenuState::Enter()
 
 	sf::Vector2f scale = m_system->m_scale;
 
+	float volume = m_system->m_volume;
+
 	// Background
 	spr_background = m_system->m_sprite_manager->getSprite("Menu/spr_menu_background.png",0,0,1288,720);
 	spr_background->setScale(scale.x,scale.y);
@@ -153,19 +155,19 @@ bool MenuState::Enter()
 
 	//Sounds
 	snd_Start_Up_screen = m_system->m_sound_manager->getSound("snd_Start_Up_screen.wav");
-	snd_Start_Up_screen->setVolume(25.f);
+	snd_Start_Up_screen->setVolume(25.f*m_system->m_volume);
 	snd_Start_Up_screen->play();
 	
 	if (snd_Start_Up_screen->getStatus() == snd_Start_Up_screen->Playing)
 	{
 		music_main = m_system->m_sound_manager->getMusic("msc_Main_Menu.wav");
-		music_main->setVolume(25.f);
+		music_main->setVolume(25.f*m_system->m_volume);
 		music_main->setLoop(true);
 		music_main->play();
 	}
 
 	snd_Main_Menu_blow_out_candle = m_system->m_sound_manager->getSound("snd_Main_Menu_blow_out_candle.wav");
-	snd_Main_Menu_blow_out_candle->setVolume(25.f);
+	snd_Main_Menu_blow_out_candle->setVolume(25.f*m_system->m_volume);
 
 	snd_button = m_system->m_sound_manager->getSound("snd_Mining_not_hitting_anything.wav");
 
@@ -232,7 +234,7 @@ void MenuState::Pause()
 void MenuState::Resume()
 {
 	m_paused = false;
-	music_main->setVolume(m_system->m_volume*100);
+	music_main->setVolume(m_system->m_volume*25.f);
 }
 
 bool MenuState::Update(float _deltatime){

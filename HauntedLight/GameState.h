@@ -72,6 +72,11 @@ private:
 	float m_highscore;
 
 	float m_ui_alpha;
+	float m_ui_matches;
+
+	float m_death_fade;
+	bool m_hit;
+
 	float WIDTH;
 	float HEIGHT;
 
@@ -111,6 +116,9 @@ private:
 	AnimatedSprite* spr_player_shadow;
 
 	bool critter_spawned;
+	bool m_mining;
+	sf::Vector2f m_mine_location;
+
 
 	// SOUNDS
 	sf::Listener* m_listener;
