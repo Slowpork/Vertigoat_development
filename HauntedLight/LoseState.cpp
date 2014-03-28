@@ -40,7 +40,7 @@ LoseState::LoseState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
-	m_textSize = 28;
+	m_textSize = 128;
 
 	m_system = _system;
 	object_manager = new ObjectManager();
@@ -66,6 +66,14 @@ bool LoseState::Enter(){
 
 	fnt_options = m_system->m_font_manager->getFont("MTCORSVA.TTF");
 
+	m_textSize *= scale.x;
+
+	m_text_fullscreen.setString("Highscore: " + std::to_string(m_system->m_highscore));
+	m_text_fullscreen.setFont(*fnt_options);
+	m_text_fullscreen.setCharacterSize((int)(m_textSize*((scale.x + scale.y)/2)));
+	m_text_fullscreen.setPosition(m_system->m_width / 2 - (m_text_fullscreen.getLocalBounds().width/2),
+		m_system->m_height / 5 - m_text_fullscreen.getLocalBounds().height - 5*scale.y);
+	m_text_fullscreen.setColor(sf::Color(155,148,129));
 
 	m_paused = false;
 	return true;
@@ -133,6 +141,8 @@ void LoseState::Draw(){
 
 	m_button_back->getSprite()->setOpacity(255);
 	m_button_back->Draw(m_system->m_window);
+
+	m_system->m_window->draw(m_text_fullscreen);
 
 	object_manager->Draw(m_system->m_window);
 }

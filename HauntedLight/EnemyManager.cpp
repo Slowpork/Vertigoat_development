@@ -18,6 +18,8 @@ EnemyManager::EnemyManager(LevelSystem* _level_manager)
 	m_level_manager = _level_manager;
 
 	crawler_pos = sf::Vector2f(0,0);
+
+	crawler_update = false;
 }
 
 EnemyManager::~EnemyManager()
@@ -43,6 +45,11 @@ void EnemyManager::Add(GameObject* _object)
 sf::Vector2f EnemyManager::getCrawlerPos()
 {
 	return crawler_pos;
+}
+
+void EnemyManager::incCrawlerSpeed()
+{
+	crawler_update = true;
 }
 
 void EnemyManager::destroy(int _ID)
@@ -139,6 +146,9 @@ void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 					static_cast<Crawler*>(obj.second)->setPath(path);
 			}
 			crawler_pos = obj.second->getPosition();
+
+			if (crawler_update)
+			static_cast<Crawler*>(obj.second)->incSpeed();
 		}
 	}
 }

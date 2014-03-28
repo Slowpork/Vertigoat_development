@@ -74,6 +74,8 @@ private:
 	float m_ui_alpha;
 	float m_ui_matches;
 
+	float crawler_timer;
+
 	float m_death_fade;
 	bool m_hit;
 

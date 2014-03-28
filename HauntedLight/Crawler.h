@@ -23,6 +23,8 @@ public:
 
 	void setPath(std::vector<sf::Vector2f>* _path);
 
+	void incSpeed();
+
 	bool needPath();
 private:
 
@@ -36,6 +38,8 @@ private:
 	int m_current_node;
 
 	float snap_factor;
+
+	float crawler_speed;
 
 	bool m_turning;
 	int m_dir;

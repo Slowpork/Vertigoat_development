@@ -98,6 +98,8 @@ bool GameState::Enter()
 	m_mining = false;
 	m_mine_location = sf::Vector2f(0.f,0.f);
 
+	crawler_timer = 0.f;
+
 	m_death_fade = 0.f;
 	m_hit = false;
 
@@ -142,7 +144,7 @@ bool GameState::Enter()
 	snd_Player_dies->setVolume(25.f*volume);
 
 	snd_big_monster_1 = m_system->m_sound_manager->getSound("snd_big_monster_1.wav");
-	snd_big_monster_1->setVolume(25.f*volume);
+	snd_big_monster_1->setVolume(75.f*volume);
 	snd_big_monster_1->play();
 
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
@@ -157,9 +159,10 @@ bool GameState::Enter()
 
 	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
 	msc_critter_walk->setVolume(100.f*volume);
-	msc_critter_walk->setLoop(true);
+	msc_critter_walk->setLoop(false);
 //	msc_critter_walk->stop();
 	msc_critter_walk->play();
+	msc_critter_walk->setLoop(true);
 
 
 
@@ -412,17 +415,17 @@ void GameState::addWall(sf::Vector2f _pos, int _depth)
 void GameState::addCrawler(sf::Vector2f _pos)
 {
 	AnimatedSprite* spr_crawler = m_system->m_sprite_manager->getSprite(
-		"Game/spr_monster_big.png",0,0,256,256,12);
+		"Game/spr_monster_big.png",0,0,740,248,12);
 	AnimatedSprite* spr_crawler_turn = m_system->m_sprite_manager->getSprite(
-		"Game/spr_monster_big_turn.png",0,0,128,128,22);
+		"Game/spr_monster_big_turn.png",0,0,382,128,22);
 
-	spr_crawler->setScale(.5f,.5f);
-	//spr_crawler_turn->setScale(.5f,.5f);
+	//spr_crawler->setScale(.5f,.5f);
+	spr_crawler_turn->setScale(2.f,2.f);
 
-	spr_crawler->setOrigin(128.f,128.f);
-	spr_crawler_turn->setOrigin(190.f,64.f);
+	spr_crawler->setOrigin(370.f,124.f);
+	spr_crawler_turn->setOrigin(191.f,64.f);
 
-	spr_crawler->setRotation(+90.f);
+	spr_crawler->setRotation(-90.f);
 
 	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
@@ -794,7 +797,7 @@ bool GameState::Update(float _deltatime){
 	if (m_hit)
 	{
 		m_death_fade += _deltatime;
-		if (m_death_fade > 1.000f)
+		//if (m_death_fade > 1.000f)
 		{
 			snd_Player_dies->play();
 			m_highscore = m_elapsed_time;
@@ -811,6 +814,18 @@ bool GameState::Update(float _deltatime){
 	//m_listener->setPosition(sf::Vector3f(player->getPosition().x,player->getPosition().y,0.f));
 
 	m_enemy_manager->Update(_deltatime, player->getPosition());
+
+	crawler_timer += _deltatime;
+	if (crawler_timer > 10)
+	{
+		std::cout << crawler_timer << std::endl;
+		sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
+		snd_big_monster_1->setPosition(m_system->getSoundValue(player->getPosition(),pos));
+		snd_big_monster_1->play();
+		
+		crawler_timer = 0;
+		m_enemy_manager->incCrawlerSpeed();
+	}
 
 	sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
 	msc_critter_walk->setPosition(m_system->getSoundValue(player->getPosition(),pos));
