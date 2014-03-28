@@ -141,6 +141,10 @@ bool GameState::Enter()
 	snd_Player_dies = m_system->m_sound_manager->getSound("snd_New_Game_button.wav");
 	snd_Player_dies->setVolume(25.f*volume);
 
+	snd_big_monster_1 = m_system->m_sound_manager->getSound("snd_big_monster_1.wav");
+	snd_big_monster_1->setVolume(25.f*volume);
+	snd_big_monster_1->play();
+
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
 	music_main->setVolume(25.f*volume);
 	music_main->setLoop(true);
@@ -154,8 +158,10 @@ bool GameState::Enter()
 	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
 	msc_critter_walk->setVolume(100.f*volume);
 	msc_critter_walk->setLoop(true);
-	msc_critter_walk->stop();
+//	msc_critter_walk->stop();
 	msc_critter_walk->play();
+
+
 
 	// SPRITES
 	spr_cutscene1 = m_system->m_sprite_manager->getSprite("Game/spr_cutscene1.png",0,0,528,192,25);
@@ -416,7 +422,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	spr_crawler->setOrigin(128.f,128.f);
 	spr_crawler_turn->setOrigin(190.f,64.f);
 
-	spr_crawler->setRotation(-90.f);
+	spr_crawler->setRotation(+90.f);
 
 	Collider* col_crawler = new Collider(sf::Vector2f(0,0),sf::Vector2f(128,128));
 	Crawler* crawler = new Crawler(spr_crawler,col_crawler);
