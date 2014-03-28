@@ -159,8 +159,8 @@ bool GameState::Enter()
 
 	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
 	msc_critter_walk->setVolume(100.f*volume);
-	msc_critter_walk->setLoop(false);
 //	msc_critter_walk->stop();
+	if (msc_critter_walk->getStatus() != sf::Music::Status::Playing)
 	msc_critter_walk->play();
 	msc_critter_walk->setLoop(true);
 
@@ -309,6 +309,7 @@ void GameState::Exit(){
 	music_main->stop();
 	msc_Player_breathing->stop();
 	snd_thud->stop();
+	msc_critter_walk->stop();
 }
 
 void GameState::Pause()
@@ -800,7 +801,7 @@ bool GameState::Update(float _deltatime){
 		//if (m_death_fade > 1.000f)
 		{
 			snd_Player_dies->play();
-			m_highscore = m_elapsed_time;
+			m_highscore = m_elapsed_time + m_clock->getElapsedTime().asSeconds();
 			m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 			m_system->writeSettings();
 			m_next = "LoseState";
@@ -816,15 +817,16 @@ bool GameState::Update(float _deltatime){
 	m_enemy_manager->Update(_deltatime, player->getPosition());
 
 	crawler_timer += _deltatime;
-	if (crawler_timer > 10)
+	if (crawler_timer > 60)
 	{
-		std::cout << crawler_timer << std::endl;
+		/*
+		std::cout << "WOO" << std::endl;
 		sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
 		snd_big_monster_1->setPosition(m_system->getSoundValue(player->getPosition(),pos));
 		snd_big_monster_1->play();
 		
 		crawler_timer = 0;
-		m_enemy_manager->incCrawlerSpeed();
+		m_enemy_manager->incCrawlerSpeed();*/
 	}
 
 	sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
@@ -981,13 +983,14 @@ void GameState::Draw()
 	// PICKUPS
 	m_pickup_manager->Draw(m_system->m_window, brightness);
 
+	/*
 	int temp_frame = spr_cutscene2->getFrame();
 	spr_cutscene2->setColor(sf::Color((int)m_light_system->getLightBrightness()
 			,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),128));
 			spr_cutscene2->setFrame(spr_cutscene2->getFrames() - 1);
 			m_system->m_window->draw(*spr_cutscene2);
-
-	spr_cutscene2->setFrame(temp_frame);
+			
+	spr_cutscene2->setFrame(temp_frame);*/
 
 	// PLAYER
 	if (!m_intro)
