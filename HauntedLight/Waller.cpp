@@ -41,7 +41,7 @@ void Waller::Update(float _deltatime, sf::Vector2f _playerpos)
 
 		m_sprite->play(_deltatime);
 	}else{
-		if(!alt_sprite)
+		if(!alt_sprite && m_sprite->getFrame() == 0)
 		{
 			m_sprite = m_spr_idle;
 
