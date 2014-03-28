@@ -16,6 +16,8 @@ int EnemyManager::ID = 0;
 EnemyManager::EnemyManager(LevelSystem* _level_manager)
 {
 	m_level_manager = _level_manager;
+
+	crawler_pos = sf::Vector2f(0,0);
 }
 
 EnemyManager::~EnemyManager()
@@ -36,6 +38,11 @@ void EnemyManager::Add(GameObject* _object)
 	{
 		AlligntoWall(ID);
 	}*/
+}
+
+sf::Vector2f EnemyManager::getCrawlerPos()
+{
+	return crawler_pos;
 }
 
 void EnemyManager::destroy(int _ID)
@@ -131,6 +138,7 @@ void EnemyManager::Update(float _deltatime, sf::Vector2f _playerpos)
 				if (path != nullptr)
 					static_cast<Crawler*>(obj.second)->setPath(path);
 			}
+			crawler_pos = obj.second->getPosition();
 		}
 	}
 }

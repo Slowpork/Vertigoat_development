@@ -11,6 +11,8 @@
 #include "SFML\Graphics\View.hpp"
 #include "SFML\Graphics\RenderWindow.hpp"
 #include "SFML\Graphics\RectangleShape.hpp"
+#include "SFML\Graphics\Font.hpp"
+#include "SFML\Graphics\Text.hpp"
 
 #include "System.h"
 
