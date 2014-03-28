@@ -152,8 +152,10 @@ bool GameState::Enter()
 	msc_Player_breathing->play();
 
 	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
-	msc_critter_walk->setVolume(25.f*volume);
+	msc_critter_walk->setVolume(100.f*volume);
 	msc_critter_walk->setLoop(true);
+	msc_critter_walk->stop();
+	msc_critter_walk->play();
 
 	// SPRITES
 	spr_cutscene1 = m_system->m_sprite_manager->getSprite("Game/spr_cutscene1.png",0,0,528,192,25);
@@ -409,7 +411,7 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	//spr_crawler_turn->setScale(.5f,.5f);
 
 	spr_crawler->setOrigin(128.f,128.f);
-	spr_crawler_turn->setOrigin(64.f,64.f);
+	spr_crawler_turn->setOrigin(190.f,64.f);
 
 	spr_crawler->setRotation(-90.f);
 
@@ -797,6 +799,9 @@ bool GameState::Update(float _deltatime){
 	//m_listener->setPosition(sf::Vector3f(player->getPosition().x,player->getPosition().y,0.f));
 
 	m_enemy_manager->Update(_deltatime, player->getPosition());
+
+	sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
+	msc_critter_walk->setPosition(m_system->getSoundValue(player->getPosition(),pos));
 
 	viewScale(_deltatime);
 

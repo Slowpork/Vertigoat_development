@@ -27,6 +27,7 @@ public:
 	GameObject* getObject(int _ID);
 	void Update(float _deltatime, sf::Vector2f _playerpos);
 	void Draw(sf::RenderWindow* _window);
+	sf::Vector2f getCrawlerPos();
 
 private:
 	sf::Vector2f Snap(sf::Vector2f _value);
@@ -36,6 +37,7 @@ private:
 private:
 
 	std::map<int,GameObject*> m_objects;
+	sf::Vector2f crawler_pos;
 	static int ID;
 
 	LevelSystem* m_level_manager;
