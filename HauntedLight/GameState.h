@@ -47,7 +47,7 @@ private:
 	void addWall(sf::Vector2f _pos, int _depth);
 	void addCrawler(sf::Vector2f _pos);
 	void addCritter(sf::Vector2f _pos);
-	void addWaller(sf::Vector2f _pos);
+	void addWaller(sf::Vector2f _pos, int _rotation);
 	void addPickup(sf::Vector2f _pos, int _obj);
 	void viewScale(float _deltatime);
 	void FlickerLight(float _deltatime);

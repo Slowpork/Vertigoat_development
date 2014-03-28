@@ -16,4 +16,9 @@ public:
 
 	void Update(float _deltatime, sf::Vector2f _playerpos);
 	void Draw(sf::RenderWindow* _window);
+
+	void setSprite(AnimatedSprite* _sprite);
+
+private:
+	AnimatedSprite* m_spr_idle,* m_spr_attack;
 };

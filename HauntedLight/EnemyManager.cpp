@@ -31,7 +31,11 @@ void EnemyManager::Add(GameObject* _object)
 {
 	ID++;
 	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
-	AlligntoWall(ID);
+
+	/*if(ID == 2)
+	{
+		AlligntoWall(ID);
+	}*/
 }
 
 void EnemyManager::destroy(int _ID)
@@ -80,13 +84,13 @@ void EnemyManager::AlligntoWall(int _ID)
 	at[3] = ( atPosition(sf::Vector2f(objPos.x - 64.f, objPos.y + 64.f)) != -1 );
 
 	if      (at[0])
-		rotation = 0;
-	else if (at[1])
 		rotation = 1;
-	else if (at[2])
+	else if (at[1])
 		rotation = 2;
-	else if (at[3])
+	else if (at[2])
 		rotation = 3;
+	else if (at[3])
+		rotation = 0;
 
 	obj->getSprite()->rotate(rotation*90.f);
 }

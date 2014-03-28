@@ -210,7 +210,7 @@ bool GameState::Enter()
 	if (!LoadLevel("../data/levels/level1.txt"))
 		return false;
 
-	/*if(!LoadLevel("../data/levels/level2.txt"))
+	/*if (!LoadLevel("../data/levels/level2.txt"))
 		return false;*/
 
 	m_light_system->logic();
@@ -347,12 +347,15 @@ bool GameState::LoadLevel(const std::string _filename)
 			{
 			case 'P': player->setPosition(sf::Vector2f(X ,Y )); break;
 			case 'C': addCrawler(sf::Vector2f(X,Y)); break;
-			case 'S': addCritter(sf::Vector2f(X,Y)); break;
+			//case 'S': addCritter(sf::Vector2f(X,Y)); break;
 			case '#': addWall(sf::Vector2f(X,Y),5); break;
 			case '@': addWall(sf::Vector2f(X,Y),4); break;
 			case 'M': addPickup(sf::Vector2f(X,Y),2); break;
 			case 'A': addPickup(sf::Vector2f(X,Y),1); break;
-			case 'W': addWaller(sf::Vector2f(X,Y)); break;
+			case 'N': addWaller(sf::Vector2f(X,Y),3); break;
+			case 'W': addWaller(sf::Vector2f(X,Y),2); break;
+			case 'E': addWaller(sf::Vector2f(X,Y),0); break;
+			case 'S': addWaller(sf::Vector2f(X,Y),1); break;
 			default:
 				update = false;
 			}
@@ -444,17 +447,20 @@ void GameState::addCritter(sf::Vector2f _pos)
 	m_enemy_manager->Add(critter);
 }
 
-void GameState::addWaller(sf::Vector2f _pos)
+void GameState::addWaller(sf::Vector2f _pos, int _rotation)
 {
 	AnimatedSprite* spr_waller_idle = m_system->m_sprite_manager->getSprite(
 		"Game/spr_monster_waller_idle.png",0,0,128,128);
 	AnimatedSprite* spr_waller_attack = m_system->m_sprite_manager->getSprite(
 		"Game/spr_monster_waller_attack.png",0,0,128,128,10);
 
+	spr_waller_attack->rotate(_rotation*90);
+	spr_waller_idle->rotate(_rotation*90);
+
 	Collider* col_waller = new Collider(sf::Vector2f(0,0), sf::Vector2f(128,128));
 	Waller* waller = new Waller(spr_waller_idle, col_waller);
 	
-	waller->addSprite(spr_waller_attack);
+	waller->setSprite(spr_waller_attack);
 	waller->setPosition(sf::Vector2f(_pos.x + 64.f, _pos.y + 64.f));
 	waller->setDepth(2);
 	m_enemy_manager->Add(waller);
