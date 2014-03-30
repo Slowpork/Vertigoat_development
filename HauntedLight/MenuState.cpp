@@ -285,6 +285,8 @@ bool MenuState::Update(float _deltatime){
 		brightness = 0.f;
 
 	// DEBUG STATES
+	#ifdef _DEBUG
+
 	if (m_system->m_keyboard->IsDownOnce(sf::Keyboard::Num1))
 	{
 		state = 0;
@@ -322,6 +324,8 @@ bool MenuState::Update(float _deltatime){
 	{
 		
 	}
+
+	#endif // _DEBUG
 
 	//-------------------------BUTTON---------------------
 	if (m_button_play->Update(_deltatime, m_system->m_mouse))

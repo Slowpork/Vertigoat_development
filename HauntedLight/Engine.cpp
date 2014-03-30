@@ -61,8 +61,10 @@ void Engine::Run()
 		// UPDATE
 		updateDeltatime();
 
+		#ifdef _DEBUG
 		if (m_system->m_keyboard->IsDown(sf::Keyboard::Space))
 			m_deltatime *= 4;
+		#endif // _DEBUG
 
 		m_system->setFps(m_fps);
 		updateEvents();

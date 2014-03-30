@@ -276,6 +276,8 @@ void PlayerObject::Update(float _deltatime)
 		}
 	}
 
+	#ifdef _DEBUG
+
 	// LIGHT CANDLE
 	if (m_mouse->IsDownOnce(Middle) && ( m_matches > 0 || m_candle) )
 	{
@@ -295,6 +297,8 @@ void PlayerObject::Update(float _deltatime)
 	{
 		m_matches--;
 	}
+
+	#endif // _DEBUG
 
 	// RUN
 	if (m_stamina > 0.f)
