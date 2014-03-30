@@ -40,7 +40,7 @@ LoseState::LoseState(System* _system)
 	m_base = false;
 	std::cout << "  *Created " << m_name << std::endl;
 
-	m_textSize = 128;
+	m_textSize = 64;
 
 	m_system = _system;
 	object_manager = new ObjectManager();
