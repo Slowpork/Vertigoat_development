@@ -125,44 +125,19 @@ bool GameState::Enter()
 	// SOUNDS
 	float volume = m_system->m_volume;
 
-	snd_thud = m_system->m_sound_manager->getSound("thud.wav");
-	snd_thud->setVolume(100*volume);
 
-	snd_Equipment_selection = m_system->m_sound_manager->getSound("snd_Equipment_selection.wav");
-	snd_pickaxe_pickup		= m_system->m_sound_manager->getSound("snd_pickaxe_pickup.wav");
-
-	snd_Player_Lighting_Candle = m_system->m_sound_manager->getSound("snd_Player_Lighting_Candle.wav");
-	snd_Player_Lighting_Candle->setVolume(50.f*volume);
-
-
-	snd_Mining_with_pebbles = m_system->m_sound_manager->getSound("snd_Mining_with_pebbles.wav");
-	snd_Mining_with_pebbles->setVolume(25.f*volume);
-	snd_Mining_Pickaxe = m_system->m_sound_manager->getSound("snd_Mining_Pickaxe.wav");
-	snd_Mining_Pickaxe->setVolume(25.f*volume);
-
-	snd_Player_dies = m_system->m_sound_manager->getSound("snd_New_Game_button.wav");
-	snd_Player_dies->setVolume(25.f*volume);
-
+/*
 	snd_big_monster_1 = m_system->m_sound_manager->getSound("snd_big_monster_1.wav");
 	snd_big_monster_1->setVolume(75.f*volume);
 	snd_big_monster_1->play();
-
+*/
+/*
 	music_main = m_system->m_sound_manager->getMusic("msc_In_Game_Ambient.wav");
 	music_main->setVolume(25.f*volume);
 	music_main->setLoop(true);
 	music_main->play();
+*/
 
-	msc_Player_breathing = m_system->m_sound_manager->getMusic("msc_Player_breathing.wav");
-	msc_Player_breathing->setVolume(12.f*volume);
-	msc_Player_breathing->setLoop(true);
-	msc_Player_breathing->play();
-
-	msc_critter_walk = m_system->m_sound_manager->getMusic("msc_critter_walk.wav");
-	msc_critter_walk->setVolume(100.f*volume);
-//	msc_critter_walk->stop();
-	if (msc_critter_walk->getStatus() != sf::Music::Status::Playing)
-	msc_critter_walk->play();
-	msc_critter_walk->setLoop(true);
 
 
 
@@ -177,11 +152,14 @@ bool GameState::Enter()
 	spr_cutscene2->setRotation(-90);
 	spr_cutscene2->setScale(.5,.5);
 
-	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,128,128,8);
+//	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,580,950,8);
+	AnimatedSprite* spr_player = m_system->m_sprite_manager->getSprite("Game/spr_player_walk.png",0,0,950,580);
 	spr_player->setScale(.5,.5);
-	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,160,128,6);
+//	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,580,950,6);
+	AnimatedSprite* spr_player_run = m_system->m_sprite_manager->getSprite("Game/spr_player_run.png",0,0,950,580);
 	spr_player_run->setScale(.5,.5);
-	AnimatedSprite* spr_player_hack = m_system->m_sprite_manager->getSprite("Game/spr_player_hack.png",0,0,148,128,3);
+//	AnimatedSprite* spr_player_hack = m_system->m_sprite_manager->getSprite("Game/spr_player_hack.png",0,0,580,950,3);
+	AnimatedSprite* spr_player_hack = m_system->m_sprite_manager->getSprite("Game/spr_player_hack.png",0,0,950,580);
 	spr_player_hack->setScale(.5,.5);
 
 	spr_floor = m_system->m_sprite_manager->getSprite("Game/spr_floor.png",0,0,256,256);
@@ -305,11 +283,8 @@ void GameState::Exit(){
 	delete m_object_manager; m_object_manager = nullptr;
 	delete m_pickup_manager; m_pickup_manager = nullptr;
 
-	//sounds
-	music_main->stop();
-	msc_Player_breathing->stop();
-	snd_thud->stop();
-	msc_critter_walk->stop();
+
+
 }
 
 void GameState::Pause()
@@ -436,6 +411,8 @@ void GameState::addCrawler(sf::Vector2f _pos)
 	crawler->setDepth(1);
 	m_enemy_manager->Add(crawler);
 }
+
+
 
 void GameState::addCritter(sf::Vector2f _pos)
 {
@@ -652,7 +629,7 @@ void GameState::pickupCollision()
 				m_ui_matches = false;
 				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
-				snd_pickaxe_pickup->play();
+				//snd_pickaxe_pickup->play();
 			}
 		break;
 		case 2:
@@ -661,7 +638,7 @@ void GameState::pickupCollision()
 				m_ui_matches = true;
 				m_ui_alpha = 128.f;
 				m_pickup_manager->destroy(ID);
-				snd_Equipment_selection->play();
+				//snd_Equipment_selection->play();
 			}
 		break;
 		}
@@ -725,6 +702,7 @@ sf::Vector2f GameState::getSide(sf::Vector2f _pos)
 
 bool GameState::Update(float _deltatime){
 	//std::cout << "GameState::Update" << std::endl;
+
 
 	sf::Vector2f prev_light_pos = m_light_system->getLightLocation();
 	float prev_light_brightness = m_light_system->getLightBrightness();
@@ -800,7 +778,7 @@ bool GameState::Update(float _deltatime){
 		m_death_fade += _deltatime;
 		//if (m_death_fade > 1.000f)
 		{
-			snd_Player_dies->play();
+			//snd_Player_dies->play();
 			m_highscore = m_elapsed_time + m_clock->getElapsedTime().asSeconds();
 			m_system->m_highscore = ( m_highscore > m_system->m_highscore ? m_highscore : m_system->m_highscore);
 			m_system->writeSettings();
@@ -830,7 +808,7 @@ bool GameState::Update(float _deltatime){
 	}
 
 	sf::Vector2f pos = m_enemy_manager->getCrawlerPos();
-	msc_critter_walk->setPosition(m_system->getSoundValue(player->getPosition(),pos));
+//	msc_critter_walk->setPosition(m_system->getSoundValue(player->getPosition(),pos));
 
 	viewScale(_deltatime);
 
@@ -848,7 +826,7 @@ bool GameState::Update(float _deltatime){
 		vol = 100.f;
 	if (vol < 0.f)
 		vol = 0.f;
-	msc_Player_breathing->setVolume(vol);
+//	msc_Player_breathing->setVolume(vol);
 
 	// MOVE VIEW
 	m_system->m_view->setCenter(player->getPosition());
@@ -904,16 +882,16 @@ bool GameState::Update(float _deltatime){
 							{
 								player->removePickaxe();
 								if(player->getPickaxe() == 0)
-									snd_thud->play();
+									//snd_thud->play();
 
-								snd_Mining_with_pebbles->play();
+								//snd_Mining_with_pebbles->play();
 								m_object_manager->destroy(ID);
 								m_level_system->pathReset();
 								m_light_updated = true;
 								m_light_system->logic();
 							}
-							else
-								snd_Mining_Pickaxe->play();
+							//else
+								//snd_Mining_Pickaxe->play();
 						}
 					}
 				}
@@ -928,7 +906,7 @@ bool GameState::Update(float _deltatime){
 		{
 			m_ui_matches = true;
 			m_ui_alpha = 128.f;
-			snd_Player_Lighting_Candle->play();
+		//	snd_Player_Lighting_Candle->play();
 			
 			if (Random::between(1,3) == 1) // SUCCESS
 			{

@@ -93,11 +93,12 @@ bool MenuState::Enter()
 	spr_background->setScale(scale.x,scale.y);
 
 	// Title
-	spr_title = m_system->m_sprite_manager->getSprite("Menu/spr_title.png",0,0,458,252);
-	spr_title->setScale(scale.x,scale.y);
-	spr_title->setOrigin(229.f,126);
+//	spr_title = m_system->m_sprite_manager->getSprite("Menu/spr_title.png",0,0,458,252);
+	spr_title = m_system->m_sprite_manager->getSprite("Menu/spr_title.png",0,0,1648,434);
+	spr_title->setScale(scale.x/2,scale.y/2);
+	spr_title->setOrigin(824.f,217);
 	spr_title->setPosition(m_system->m_width/2, m_system->m_height/2 - 186.f*scale.y);
-
+/*
 	// Candle light
 	spr_candle_light = m_system->m_sprite_manager->getSprite("Menu/spr_candle_light.png",0,0,124,124,6);
 	spr_candle_light->setScale(scale.x,scale.y);
@@ -115,9 +116,9 @@ bool MenuState::Enter()
 	spr_candle_blow->setScale(scale.x,scale.y);
 	spr_candle_blow->setOrigin(72,72);
 	spr_candle_blow->setPosition(m_system->m_width/2 + 6*scale.x, m_system->m_height/2 - 54.f*scale.y + 24*scale.y);
-
+*/
 	// Candle
-	spr_candle = m_system->m_sprite_manager->getSprite("Menu/spr_candle.png",0,0,410,410);
+	spr_candle = m_system->m_sprite_manager->getSprite("Menu/spr_candle.png",0,0,773,977);
 	spr_candle->setScale(scale.x,scale.y);
 	spr_candle->setOrigin(205,205);
 	spr_candle->setPosition(m_system->m_width/2, m_system->m_height/2 - 54.f*scale.y);
@@ -153,7 +154,7 @@ bool MenuState::Enter()
 		(m_system->m_height/9)*7 - 32*scale.y);
 	//---------------------------------------------------------------
 
-	//Sounds
+/*	//Sounds
 	snd_Start_Up_screen = m_system->m_sound_manager->getSound("snd_Start_Up_screen.wav");
 	snd_Start_Up_screen->setVolume(25.f*m_system->m_volume);
 	snd_Start_Up_screen->play();
@@ -170,7 +171,7 @@ bool MenuState::Enter()
 	snd_Main_Menu_blow_out_candle->setVolume(25.f*m_system->m_volume);
 
 	snd_button = m_system->m_sound_manager->getSound("snd_Mining_not_hitting_anything.wav");
-
+*/
 	return true;
 }
 
@@ -219,9 +220,7 @@ void MenuState::Exit()
 	//------------------------------------------
 
 	//Sounds
-	music_main->stop();
-	snd_Main_Menu_blow_out_candle->stop();
-	snd_Start_Up_screen->stop();
+//	snd_Start_Up_screen->stop();
 	
 	m_paused = false;
 }
@@ -252,17 +251,17 @@ bool MenuState::Update(float _deltatime){
 			title_alpha = 0.f;
 		}
 
-		spr_candle_light->play(_deltatime/2);
+		//spr_candle_light->play(_deltatime/2);
 		break;
 	case 1:
 		
 		if (title_alpha < 1.f)
 			title_alpha += _deltatime/2;
 
-		spr_candle_idle->play(_deltatime);
+		//spr_candle_idle->play(_deltatime);
 		break;
 	case 2:
-		spr_candle_blow->play(_deltatime);
+		//spr_candle_blow->play(_deltatime);
 
 		brightness -= _deltatime*2;
 		if (brightness < 0.f)
@@ -330,19 +329,19 @@ bool MenuState::Update(float _deltatime){
 	//-------------------------BUTTON---------------------
 	if (m_button_play->Update(_deltatime, m_system->m_mouse))
 	{
-		snd_Main_Menu_blow_out_candle->play();
+		//snd_Main_Menu_blow_out_candle->play();
 		state = 2;
 	}
 	if(m_button_credits->Update(_deltatime, m_system->m_mouse))
 	{
-		snd_button->play();
+		//snd_button->play();
 		m_next = "CreditsState";
 		Pause();
 		return false;
 	}
 	if (m_button_options->Update(_deltatime, m_system->m_mouse))
 	{
-		snd_button->play();
+		//snd_button->play();
 		m_next = "OptionsState";
 		Pause();
 		return false;
@@ -372,13 +371,13 @@ void MenuState::Draw(){
 		switch(state)
 		{
 		case 0:
-			m_system->m_window->draw(*spr_candle_light);
+//			m_system->m_window->draw(*spr_candle_light);
 			break;
 		case 1:
-			m_system->m_window->draw(*spr_candle_idle);
+//			m_system->m_window->draw(*spr_candle_idle);
 			break;
 		case 2:
-			m_system->m_window->draw(*spr_candle_blow);
+//			m_system->m_window->draw(*spr_candle_blow);
 			break;
 		}
 

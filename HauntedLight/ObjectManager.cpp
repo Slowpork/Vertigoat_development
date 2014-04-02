@@ -34,8 +34,9 @@ void ObjectManager::Add(GameObject* _object, int _depth)
 	m_objects.insert( std::pair<int, GameObject*>(ID, _object));
 	tile(ID);
 
-	// FIX PROXIMITY TILING
+/*	// FIX PROXIMITY TILING
 	proximityTiling(ID, _object);
+*/
 }
 
 void ObjectManager::destroy(int _ID)
@@ -100,7 +101,7 @@ bool ObjectManager::CheckDirection(float _x, float _y, int _dir)
 				return true;
 	break;
 	}
-	//std::cout << "woo?" << std::endl;
+	//std::cout << "Test" << std::endl;
 	return false;
 }
 

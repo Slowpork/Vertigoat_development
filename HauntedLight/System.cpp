@@ -16,6 +16,7 @@
 #include "FileManager.h"
 #include "FontManager.h"
 
+#include <cmath>
 #include <iostream>
 #include <sstream>
 
@@ -305,33 +306,8 @@ bool System::Init()
 	ProcessLoad();
 
 	//LOAD ALL THE SOUNDS
-	m_sound_manager->addSoundBuffer("thud.wav");
-	m_sound_manager->addSoundBuffer("snd_Main_Menu_blow_out_candle.wav");
-	m_sound_manager->addSoundBuffer("snd_ambient_alarm.wav");
-	m_sound_manager->addSoundBuffer("snd_big_monster_1.wav");
-	m_sound_manager->addSoundBuffer("snd_big_monster_2.wav");
-	m_sound_manager->addSoundBuffer("snd_big_monster_3.wav");
-	m_sound_manager->addSoundBuffer("snd_critter_attack.wav");
-	m_sound_manager->addSoundBuffer("msc_critter_walk.wav");
-	m_sound_manager->addSoundBuffer("snd_Crunching_sound.wav");
-	m_sound_manager->addSoundBuffer("snd_Door.wav");
-	m_sound_manager->addSoundBuffer("snd_Equipment_selection.wav");
-	m_sound_manager->addSoundBuffer("snd_Equipment_selection_2.wav");
-	m_sound_manager->addSoundBuffer("snd_Mining_not_hitting_anything.wav");
-	m_sound_manager->addSoundBuffer("snd_Mining_Pickaxe.wav");
-	m_sound_manager->addSoundBuffer("snd_Mining_with_pebbles.wav");
-	m_sound_manager->addSoundBuffer("snd_New_Game_button.wav"); ////////////////
-	m_sound_manager->addSoundBuffer("snd_Pickup_Powerup.wav");
-	m_sound_manager->addSoundBuffer("msc_Player_breathing.wav");
-	m_sound_manager->addSoundBuffer("snd_Player_dies.wav");
-	m_sound_manager->addSoundBuffer("snd_Player_Lighting_Candle.wav");
-	m_sound_manager->addSoundBuffer("snd_Player_walk_test.wav");
-	m_sound_manager->addSoundBuffer("snd_Start_Up_screen.wav");
-	m_sound_manager->addSoundBuffer("snd_wall_monster_1.wav");
-	m_sound_manager->addSoundBuffer("snd_wall_monster_2.wav");
-	m_sound_manager->addSoundBuffer("snd_wall_monster_3.wav");
-	m_sound_manager->addSoundBuffer("snd_wall_monster_5.wav");
-	m_sound_manager->addSoundBuffer("snd_pickaxe_pickup.wav");
+//	m_sound_manager->addSoundBuffer("thud.wav");
+
 
 	ProcessLoad();
 

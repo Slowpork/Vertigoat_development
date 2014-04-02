@@ -16,6 +16,7 @@
 
 #include "SoundManager.h"
 
+
 #include <string>
 #include <iostream>
 
@@ -234,10 +235,15 @@ void PlayerObject::updateLight(float _deltatime)
 
 void PlayerObject::Update(float _deltatime)
 {
+
+
 	float speed = 44.f;
 	speed = 32.f;
 
 	bool moving = false;
+
+	//test stuff in prototype
+	m_vel.y -= speed * _deltatime;
 
 	updateLight(_deltatime);
 
@@ -257,12 +263,12 @@ void PlayerObject::Update(float _deltatime)
 		if (m_keyboard->IsDown(sf::Keyboard::A))
 		{
 			moving = true;
-			m_vel.x -= speed * _deltatime;
+			m_vel.x += speed * _deltatime;
 		}
 		else if (m_keyboard->IsDown(sf::Keyboard::D))
 		{
 			moving = true;
-			m_vel.x += speed * _deltatime;
+			m_vel.x -= speed * _deltatime;
 		}
 		if (m_keyboard->IsDown(sf::Keyboard::W))
 		{
@@ -274,6 +280,15 @@ void PlayerObject::Update(float _deltatime)
 			moving = true;
 			m_vel.y += speed * _deltatime;
 		}
+		else if (m_keyboard->IsDown(sf::Keyboard::Space))
+		{
+			moving = true;
+			float dx = m_pos.x - m_mouse->getPos().x;
+			float dy = m_pos.y - m_mouse->getPos().y;
+			float dist = sqrtf((dx*dx) + (dy*dy));
+			m_vel = sf::Vector2f((dx/dist)*speed*_deltatime, (dy/dist)*speed*_deltatime);
+		}
+	
 	}
 
 	#ifdef _DEBUG
