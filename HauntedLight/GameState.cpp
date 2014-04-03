@@ -943,9 +943,12 @@ void GameState::Draw()
 {
 	const float brightness = m_light_system->getLightBrightness();
 
+
 	// GAME-WORLD #################################
 	m_system->m_window->setView(*m_system->m_view);
 
+
+//REMOVED LIGHT
 	m_light_system->Draw();
 
 	// PLAYER SHADOW
@@ -971,6 +974,12 @@ void GameState::Draw()
 			
 	spr_cutscene2->setFrame(temp_frame);*/
 
+
+	player->getSprite()->setColor(sf::Color((int)m_light_system->getLightBrightness()
+	,(int)m_light_system->getLightBrightness(),(int)m_light_system->getLightBrightness(),255));
+	m_system->m_window->draw(*player->getSprite());
+
+/*
 	// PLAYER
 	if (!m_intro)
 	{
@@ -994,6 +1003,7 @@ void GameState::Draw()
 			m_system->m_window->draw(*spr_cutscene2);
 		}
 	}
+*/
 
 	// ENEMIES
 	m_enemy_manager->Draw(m_system->m_window);
@@ -1030,7 +1040,7 @@ void GameState::Draw()
 	m_system->m_window->setView(m_system->m_window->getDefaultView());
 	
 	// DARKNESS
-	m_system->m_window->draw(*spr_darkness);
+//	m_system->m_window->draw(*spr_darkness);
 
 	// MATCHES
 	if (m_ui_matches)
