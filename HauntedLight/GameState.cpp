@@ -355,6 +355,7 @@ bool GameState::LoadLevel(const std::string _filename)
 
 		}
 	}
+	return false;
 }
 
 void GameState::addWall(sf::Vector2f _pos, int _depth)

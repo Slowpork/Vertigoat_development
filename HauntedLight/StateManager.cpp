@@ -104,6 +104,7 @@ bool StateManager::isState(std::string _state)
 			}
 		}
 	}
+	return false;
 }
 
 void StateManager::ChangeState()

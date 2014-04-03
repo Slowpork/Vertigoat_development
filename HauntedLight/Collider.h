@@ -15,6 +15,7 @@ class Collider
 public:
 	Collider();
 	Collider(const sf::Vector2f& _pos, const sf::Vector2f& _ext, Type _type = Rect);
+	~Collider(){};
 
 	//bool Overlap(Collider& _other, sf::Vector2f&_offset);
 
